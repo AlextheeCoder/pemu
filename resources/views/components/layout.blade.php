@@ -30,11 +30,7 @@
 </head>
 
 <body>
-     <!-- loader  -->
-     <div class="loader_bg">
-        <div class="loader"><img src="{{ asset('img/loading.gif') }}" alt="#" /></div>
-    </div>
-    <!-- end loader -->
+   
     <!-- Topbar Start -->
     <div class="container-fluid px-5 d-none d-lg-block">
         <div class="row gx-5 py-3 align-items-center">
@@ -73,12 +69,20 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav mx-auto py-0">
+            <div class="navbar-nav mx-auto py-0" style="display: flex; justify-content: space-between;">
                 <a href="/" class="nav-item nav-link {{ request()->is('/') ? 'active' : '' }}">Home</a>
                 <a href="/about" class="nav-item nav-link {{ request()->is('about') ? 'active' : '' }}">About</a>
                 <a href="/services" class="nav-item nav-link {{ request()->is('services') ? 'active' : '' }}">Services</a>
                 <a href="/blogs" class="nav-item nav-link {{ request()->is('blogs') ? 'active' : '' }}">Blogs</a>
                 <a href="/contact" class="nav-item nav-link {{ request()->is('contact') ? 'active' : '' }}">Contact</a>
+                @auth
+                <a href="{{ route('logout') }}" class="nav-item nav-link" style="color:rgb(248, 5, 5);">Logout</a>
+                @else
+                <a href="/login" class="nav-item nav-link">Join Us</a>
+                @endauth
+               
+                
+                
             </div>
         </div>
         
@@ -161,7 +165,8 @@
         </div>
     </div>
     <!-- Footer End -->
-
+    <x-flash-message />
+    <x-flash-error />
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-secondary py-3 fs-4 back-to-top"><i class="bi bi-arrow-up"></i></a>

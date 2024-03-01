@@ -10,7 +10,11 @@
                             <h3 class="text-white">PEMU Agrifood</h3>
                             <h1 class="display-1 text-white mb-md-4">Growing Together, Regenerating the Future</h1>
                             <a href="" class="btn btn-primary py-md-3 px-md-5 me-3">Explore</a>
-                            <a href="" class="btn btn-secondary py-md-3 px-md-5">Contact</a>
+                            @auth
+                                @else
+                                <a href="/login" class="btn btn-secondary py-md-3 px-md-5">Join Us</a>
+                            @endauth
+                           
                         </div>
                     </div>
                 </div>
@@ -21,7 +25,10 @@
                             <h3 class="text-white">PEMU Agrifood</h3>
                             <h1 class="display-1 text-white mb-md-4">Growing Together, Regenerating the Future</h1>
                             <a href="" class="btn btn-primary py-md-3 px-md-5 me-3">Explore</a>
-                            <a href="" class="btn btn-secondary py-md-3 px-md-5">Contact</a>
+                            @auth
+                            @else
+                            <a href="/login" class="btn btn-secondary py-md-3 px-md-5">Join Us</a>
+                        @endauth
                         </div>
                     </div>
                 </div>
@@ -233,7 +240,11 @@
                             <i class="fa fa-check-circle" aria-hidden="true" style="font-size:36px"></i>
                         </div>
                         <h4 class="text-white">Become a Member</h4>
-                        <a href="" class="btn btn-secondary py-md-3 px-md-5">Sign IN</a>
+                        @auth
+                            @else
+                            <a href="/login" class="btn btn-secondary py-md-3 px-md-5">Sign IN</a>
+                        @endauth
+                       
                     </div>
                    
                 </div>
@@ -278,7 +289,11 @@
             <p>Becoming a member of PEMU Agrifood Academy not only connects you with our network of experts but also gives you access to a wealth of resources tailored to help your business flourish. If you're not already a member, consider joining today to take full advantage of "Meet the Expert" and many other benefits.</p>
             <p>Let's embark on this journey of growth and learning together. Your success is our mission.</p>
            
-            <a href="#" class="btn btn-primary">Join Us</a> 
+            @auth
+                @else
+                <a href="/login" class="btn btn-primary">Join Us</a> 
+            @endauth
+           
         </div>
     </div>
 </div>

@@ -1,6 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +31,22 @@ Route::get('/contact', function () {
 Route::get('/services', function () {
     return view('pages.service');
 });
+
+
+Route::get('/login', [UserController::class, 'login']);
+
+Route::get('/register', [UserController::class, 'register']);
+
+//Storing users in database
+Route::post('/users', [UserController::class, 'store']);
+
+Route::get('/logout', function() {
+    Auth::logout(); // Invalidate session
+    return redirect('/'); // Redirect to homepage
+})->name('logout'); 
+
+
+Route::post('/authenticate', [UserController::class, 'authenticate']);
+
+//Admin Panel
+Route::get('/pemu-admin',[AdminController::class,'index']);

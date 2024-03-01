@@ -68,6 +68,14 @@
     background: var(--secondary);
 }
 
+
+.nav-item .nav-link.logout { 
+    background-color: var(--secondary);
+    color: #f80a0a;
+    border-radius: 5px;
+}
+
+
 @media (max-width: 991.98px) {
     .navbar-dark .navbar-nav .nav-link  {
         padding: 10px;
@@ -400,3 +408,21 @@
 .loader img {
     width: 280px;
 }
+
+/*---------------------------- Auth ----------------------------*/
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+.h-custom {
+height: calc(100% - 73px);
+}
+@media (max-width: 450px) {
+.h-custom {
+height: 100%;
+}
+}
+
