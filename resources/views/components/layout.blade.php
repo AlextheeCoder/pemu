@@ -9,7 +9,8 @@
     <meta content="PEMU" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link rel="icon" type="image/x-icon" href="img/plogo.png">
+    
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -36,7 +37,7 @@
         <div class="row gx-5 py-3 align-items-center">
             <div class="col-lg-3">
                 <div class="d-flex align-items-center justify-content-start">
-                    <i class="bi bi-phone-vibrate fs-1 text-primary me-2"></i>
+                    <i class="bi bi-envelope-open-fill fs-1 text-primary me-2"></i>
                     <h2 class="mb-0">info@pemuagrifood.com</h2>
                 </div>
             </div>
@@ -49,9 +50,9 @@
             </div>
             <div class="col-lg-3">
                 <div class="d-flex align-items-center justify-content-end">
-                    <a class="btn btn-primary btn-square rounded-circle me-2" href="#"><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-primary btn-square rounded-circle me-2" href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-primary btn-square rounded-circle me-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-primary btn-square rounded-circle me-2" href="https://twitter.com/"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-primary btn-square rounded-circle me-2" href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-primary btn-square rounded-circle me-2" href="https://www.linkedin.com/"><i class="fab fa-linkedin-in"></i></a>
                  
                 </div>
             </div>
@@ -161,7 +162,7 @@
     </div>
     <div class="container-fluid bg-dark text-white py-4">
         <div class="container text-center">
-            <p class="mb-0">&copy; <a class="text-secondary fw-bold" href="#">pemuagrifood.com</a>. All Rights Reserved. Designed by PEMU</p>
+            <p class="mb-0">&copy; 2024 <a class="text-secondary fw-bold" href="/">pemuagrifood.com</a>. All Rights Reserved</p>
         </div>
     </div>
     <!-- Footer End -->

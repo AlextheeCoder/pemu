@@ -53,5 +53,14 @@ class AdminController extends Controller
             
              'userstoday'=>$userstoday,
         ]);
+
+        
+    }
+
+
+    public function create_blog(){
+
+        return view('Admin.pages.create-blog');
+
     }
 }

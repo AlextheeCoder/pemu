@@ -331,7 +331,7 @@
                             <div class="h-100 d-flex flex-column align-items-center justify-content-around bg-secondary py-5">
                                 <a class="btn btn-square rounded-circle bg-white" href="#"><i class="fab fa-twitter text-secondary"></i></a>
                                 <a class="btn btn-square rounded-circle bg-white" href="#"><i class="fab fa-facebook-f text-secondary"></i></a>
-                                <a class="btn btn-square rounded-circle bg-white" href="#"><i class="fab fa-linkedin-in text-secondary"></i></a>
+                                <a class="btn btn-square rounded-circle bg-white" href="https://www.linkedin.com/in/peter-muthee-mwangi-18697952/"><i class="fab fa-linkedin-in text-secondary"></i></a>
                               
                             </div>
                         </div>

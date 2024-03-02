@@ -50,3 +50,11 @@ Route::post('/authenticate', [UserController::class, 'authenticate']);
 
 //Admin Panel
 Route::get('/pemu-admin',[AdminController::class,'index']);
+
+//Create Blog Page
+Route::get('/pemu/create/blog',[AdminController::class,'create_blog']);
+
+
+Route::get('/pemu/admin/view/blogs', function () {
+   return view('Admin.pages.viewblogs');
+}); 
