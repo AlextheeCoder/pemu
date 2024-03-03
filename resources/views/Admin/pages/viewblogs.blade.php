@@ -42,6 +42,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @unless(count($blogs) == 0)
                                     @foreach($blogs as $blog)
                                     <tr>
                                         <td>{{$blog->id}}</td>
@@ -64,6 +65,9 @@
                                     </tr>
                                     
                                     @endforeach
+                                    @else
+                                        <td >No Blogs posted</td>
+                                    @endunless
                                 </tbody>
                             </table>
                         </div>

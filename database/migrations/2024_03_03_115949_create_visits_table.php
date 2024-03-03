@@ -17,6 +17,7 @@ return new class extends Migration
             $table->ipAddress('ip_address')->nullable();
             $table->string('country_name')->nullable();
             $table->string('city')->nullable();
+            $table->string('country_code')->nullable();
             $table->timestamps();
         });
     }

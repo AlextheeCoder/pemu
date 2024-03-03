@@ -9,42 +9,43 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Log;
+use Stevebauman\Location\Facades\Location;
 
 class BlogController extends Controller
 {
     //
 
-    public function index($apiKey = null, $ip = null)
-    {
-        // Get API key from environment (better security)
-        $apiKey = $apiKey ?? env('IP_GEOLOCATION_API_KEY');
-    
-        // Use the visitor's IP if not provided explicitly
-        $ip = $ip ?? request()->ip();
-    
-        // Get Geolocation Data 
-        $client = new Client();
-        $response = $client->get('https://api.ipgeolocation.io/ipgeo', [
-            'query' => [
-                'apiKey' => $apiKey,
-                'ip' => $ip,
-                
-            ] 
-        ]);
-    
-        $locationData = json_decode($response->getBody(), true);
-    
-        // Store Visit Data (adjust fields as needed)
+    public function index(Request $request){
+
+ 
+        $ip = $request->ip();
+        if ($ip == '127.0.0.1' || $ip == '::1') {
+            
+            $ip = 'localhost';
+        }
+
+       
+        $location=Location::get($ip);
+        $city=$location->cityName;
+        $country=$location->countryName;
+        $countrycode=$location->countryCode;
+        
         Visit::create([
             'visited_on' => Carbon::today(),
             'ip_address' => $ip,
-            'country_name' => $locationData['country_name'] ?? null, 
-            'city' => $locationData['city'] ?? null
+            'country_name' => $country, 
+            'city' => $city,
+            'country_code' => $countrycode
+
         ]);
     
-        // Pass location data to your view (optional)
-        return view('index', ['locationData' => $locationData]); 
+       
+        return view('index'); 
     }
+
+
+
+
     
     public function store(Request $request) {
         $formFields = $request->validate([

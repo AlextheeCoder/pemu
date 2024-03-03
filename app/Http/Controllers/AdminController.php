@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Blog;
 use App\Models\User;
+use App\Models\Visit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,6 +19,33 @@ class AdminController extends Controller
         $providersCount = User::where('role', 'provider')->count();
        
         $blogs = Blog::latest('created_at')->limit(4)->get();
+
+        $currentMonthStart = Carbon::now()->startOfMonth();
+        $currentMonthEnd = Carbon::now()->endOfMonth();
+        
+
+        $numberOfVisitors = Visit::where('visited_on', '>=', $currentMonthStart)
+                                ->where('visited_on', '<=', $currentMonthEnd)
+                                ->distinct('ip_address') // Replace 'user_id' with your actual column
+                                ->count();
+        // Last month
+        $lastMonthStart = Carbon::now()->subMonth()->startOfMonth();
+        $lastMonthEnd = Carbon::now()->subMonth()->endOfMonth();
+        $lastMonthVisitors = Visit::where('visited_on', '>=', $lastMonthStart)
+                                ->where('visited_on', '<=', $lastMonthEnd)
+                                ->distinct('ip_address') 
+                                ->count();
+
+        // Difference and percentage change
+        $difference = $numberOfVisitors - $lastMonthVisitors;
+
+        if ($lastMonthVisitors == 0) {
+            $percentageChange = $numberOfVisitors > 0 ? 100 : -100; // Treat as 100% increase or decrease
+        } else {
+            $percentageChange = ($difference / $lastMonthVisitors) * 100;
+        }
+
+
         
 
         //Latest users
@@ -47,11 +75,9 @@ class AdminController extends Controller
             'latestUsers' => $latestUsers,
             'farmersCount' => $farmersCount,
             'providersCount' => $providersCount,
-        
-            'farmersCountToday' => $farmersCountToday,
-            'providersCountToday' => $providersCountToday,
-           
+            'numberOfVisitors' =>$numberOfVisitors,
             'farmersIncrease' => $farmersIncrease,
+            'percentageChange'=>$percentageChange,
             'providersIncrease' => $providersIncrease,
             'blogs' =>$blogs,
             'userstoday'=>$userstoday,

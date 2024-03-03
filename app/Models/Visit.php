@@ -11,6 +11,9 @@ class Visit extends Model
     protected $fillable = [
         'visited_on',
         'ip_address',
+        'country_name',
+        'city',
+        'country_code',
     ];
 
 }
