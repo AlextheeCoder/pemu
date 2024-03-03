@@ -4,7 +4,7 @@
         <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="w-100" src="img/carousel-1.jpg" alt="Image" style="max-height: 900px">
+                    <img class="w-100" src="{{ asset('img/carousel-1.jpg') }}" alt="Image" style="max-height: 900px">
                     <div class="carousel-caption top-0 bottom-0 start-0 end-0 d-flex flex-column align-items-center justify-content-center">
                         <div class="text-start p-5" style="max-width: 900px;">
                             <h3 class="text-white">PEMU Agrifood</h3>
@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img class="w-100" src="img/carousel-2.jpg" alt="Image" style="max-height: 900px">
+                    <img class="w-100" src="{{ asset('img/carousel-2.jpg')}}" alt="Image" style="max-height: 900px">
                     <div class="carousel-caption top-0 bottom-0 start-0 end-0 d-flex flex-column align-items-center justify-content-center">
                         <div class="text-start p-5" style="max-width: 900px;">
                             <h3 class="text-white">PEMU Agrifood</h3>
@@ -320,7 +320,7 @@
                     <div class="row g-0">
                         <div class="col-10">
                             <div class="position-relative">
-                                <img class="img-fluid w-100" src="img/founder.jpg" alt="">
+                                <img class="img-fluid w-100" src="{{asset ('img/founder.jpg')}}" alt="">
                                 <div class="position-absolute start-0 bottom-0 w-100 py-3 px-4" style="background: rgba(5,106,59);">
                                     <h4 class="text-white">Peter Muthee</h4>
                                     <span class="text-white">Founder</span>
