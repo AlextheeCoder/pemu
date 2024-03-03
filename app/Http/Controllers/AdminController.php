@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Blog;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -15,6 +17,7 @@ class AdminController extends Controller
         $farmersCount = User::where('role', 'farmer')->count();
         $providersCount = User::where('role', 'provider')->count();
        
+        $blogs = Blog::latest('created_at')->limit(4)->get();
         
 
         //Latest users
@@ -50,8 +53,8 @@ class AdminController extends Controller
            
             'farmersIncrease' => $farmersIncrease,
             'providersIncrease' => $providersIncrease,
-            
-             'userstoday'=>$userstoday,
+            'blogs' =>$blogs,
+            'userstoday'=>$userstoday,
         ]);
 
         
@@ -63,4 +66,51 @@ class AdminController extends Controller
         return view('Admin.pages.create-blog');
 
     }
+
+
+    public function viewblogs (){
+
+        $blogs = Blog::all();
+        return view('Admin.pages.viewblogs', compact('blogs'));
+    }
+
+
+    public function login()
+    {
+        if(!auth()->check()) {
+           
+            return view('Admin.auth.login');
+        }
+        else {
+            return redirect('/')->with('message', 'You are already logged in. Please log out first before accessing the login page.');
+        }
+    
+      
+    }
+
+    public function authenticate(Request $request){
+        $formFields = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => 'required'
+        ]);
+    
+        // Retrieve the user instance directly from the database
+        $user = User::where('email', $formFields['email'])->first();
+    
+        // Check if the user exists and the password is correct
+        if ($user && Hash::check($formFields['password'], $user->password)) {
+            $user->save();
+             // Log the user in
+             auth()->login($user);
+        
+             // Clear the email from the session
+             $request->session()->forget('email');
+     
+             return redirect('/pemu-admin')->with('message', 'You are now logged in!');
+
+        } else {
+            return redirect('/pemu/admin/login')->with('error', 'Wrong credentials!!');
+        }
+    }
+
 }

@@ -7,14 +7,13 @@
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="page-header">
-                            <h2 class="pageheader-title">Blank Pageheader </h2>
-                            <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce sit amet vestibulum mi. Morbi lobortis pulvinar quam.</p>
+                            <h2 class="pageheader-title">Create Blog </h2>
                             <div class="page-breadcrumb">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Pages</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Blank Pageheader</li>
+                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Create</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Blog</li>
                                     </ol>
                                 </nav>
                             </div>
@@ -26,7 +25,7 @@
                 <!-- ============================================================== -->
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h3 class="text-center">Content goes here!</h3>
+                        <h3 class="text-center">Be creative !</h3>
                     </div>
                 </div>
             </div>
@@ -36,57 +35,71 @@
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="section-block" id="basicform">
-                                    <h3 class="section-title">Basic Form Elements</h3>
-                                    <p>Use custom button styles for actions in forms, dialogs, and more with support for multiple sizes, states, and more.</p>
+                                    <h3 class="section-title">Create Your Blog</h3>
+                                    
                                 </div>
                                 <div class="card">
-                                    <h5 class="card-header">Basic Form</h5>
+                                    <h5 class="card-header">Create</h5>
                                     <div class="card-body">
-                                        <form>
+                                        <form class="blog-form" method="POST" action="/pemu/blogs/store" enctype="multipart/form-data" onsubmit="return validateForm()">
+                                            @csrf
+
+
                                             <div class="form-group">
-                                                <label for="inputText3" class="col-form-label">Input Text</label>
-                                                <input id="inputText3" type="text" class="form-control">
+                                                <label for="inputText3" class="col-form-label">Blog Title</label>
+                                                <input id="inputText3" type="text" class="form-control" name="title" required>
+                                                @error('title')
+                                                    <p class="text-red-500 text-xs mt-1">{{$message}}</p>
+                                                @enderror
                                             </div>
-                                            <div class="form-group">
-                                                <label for="inputEmail">Email address</label>
-                                                <input id="inputEmail" type="email" placeholder="name@example.com" class="form-control">
-                                                <p>We'll never share your email with anyone else.</p>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="inputText4" class="col-form-label">Number Input</label>
-                                                <input id="inputText4" type="number" class="form-control" placeholder="Numbers">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="inputPassword">Password</label>
-                                                <input id="inputPassword" type="password" placeholder="Password" class="form-control">
-                                            </div>
+                                          
+                                           
+                                          
                                             <div class="custom-file mb-3">
-                                                <input type="file" class="custom-file-input" id="customFile">
-                                                <label class="custom-file-label" for="customFile">File Input</label>
+                                                
+                                                <input type="file" class="custom-file-input" id="customFile" required name="image">
+                                                <label class="custom-file-label" for="customFile">Blog Image</label>
+                                                @error('image')
+                                                 <p class="text-red-500 text-xs mt-1">{{$message}}</p>
+                                                @enderror
                                             </div>
                                             <div class="form-group">
-                                                <label for="exampleFormControlTextarea1">Example textarea</label>
-                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                <label for="input-select">Category</label>
+                                                <select class="form-control" id="input-select" name="category">
+                                                    <option>Crops</option>
+                                                    <option>Livestock</option>
+                                                </select>
+                                                @error('category')
+                                                    <p class="text-red-500 text-xs mt-1">{{$message}}</p>
+                                                @enderror
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputText3" class="col-form-label">Blog Tags</label>
+                                                <input id="inputText3" type="text" class="form-control" name="tags"  placeholder="Example: Farming, Accounting, Marketing, etc">
+
+                                                @error('tags')
+                                                    <p class="text-red-500 text-xs mt-1">{{$message}}</p>
+                                                @enderror
+
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="exampleFormControlTextarea1">Write !!</label>
+                                                <div id="exampleFormControlTextarea1" style="height:500px;"></div> 
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" style="display:none;" name="content"></textarea>
+                                                @error('content')
+                                                    <p class="text-red-500 text-xs mt-1">{{$message}}</p>
+                                                @enderror
+                                            </div>
+                                            <div class="form-group">
+                                                
+                                                <input type="hidden" name="status" id="status" value="">
+                                                <button type="submit" class="btn btn-success" onclick="setStatus('published')">Publish</button>
+                                                <button type="submit" class="btn btn-warning" style="margin-left: 30px" onclick="setStatus('staged')">Stage</button>
                                             </div>
                                         </form>
                                     </div>
-                                    <div class="card-body border-top">
-                                        <h3>Sizing</h3>
-                                        <form>
-                                            <div class="form-group">
-                                                <label for="inputSmall" class="col-form-label">Small</label>
-                                                <input id="inputSmall" type="text" value=".form-control-sm" class="form-control form-control-sm">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="inputDefault" class="col-form-label">Default</label>
-                                                <input id="inputDefault" type="text" value="Default input" class="form-control">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="inputLarge" class="col-form-label">Large</label>
-                                                <input id="inputLarge" type="text" value=".form-control-lg" class="form-control form-control-lg">
-                                            </div>
-                                        </form>
-                                    </div>
+                           
                                 </div>
                             </div>
                         </div>
@@ -94,60 +107,45 @@
                         <!-- end basic form  -->
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
  
- <!-- Optional JavaScript -->
- <script src="../assets/vendor/jquery/jquery-3.3.1.min.js"></script>
- <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
- <script src="../assets/vendor/slimscroll/jquery.slimscroll.js"></script>
- <script src="../assets/libs/js/main-js.js"></script>
- <script src="../assets/vendor/inputmask/js/jquery.inputmask.bundle.js"></script>
- <script>
- $(function(e) {
-     "use strict";
-     $(".date-inputmask").inputmask("dd/mm/yyyy"),
-         $(".phone-inputmask").inputmask("(999) 999-9999"),
-         $(".international-inputmask").inputmask("+9(999)999-9999"),
-         $(".xphone-inputmask").inputmask("(999) 999-9999 / x999999"),
-         $(".purchase-inputmask").inputmask("aaaa 9999-****"),
-         $(".cc-inputmask").inputmask("9999 9999 9999 9999"),
-         $(".ssn-inputmask").inputmask("999-99-9999"),
-         $(".isbn-inputmask").inputmask("999-99-999-9999-9"),
-         $(".currency-inputmask").inputmask("$9999"),
-         $(".percentage-inputmask").inputmask("99%"),
-         $(".decimal-inputmask").inputmask({
-             alias: "decimal",
-             radixPoint: "."
-         }),
 
-         $(".email-inputmask").inputmask({
-             mask: "*{1,20}[.*{1,20}][.*{1,20}][.*{1,20}]@*{1,20}[*{2,6}][*{1,2}].*{1,}[.*{2,6}][.*{1,2}]",
-             greedy: !1,
-             onBeforePaste: function(n, a) {
-                 return (e = e.toLowerCase()).replace("mailto:", "")
-             },
-             definitions: {
-                 "*": {
-                     validator: "[0-9A-Za-z!#$%&'*+/=?^_`{|}~/-]",
-                     cardinality: 1,
-                     casing: "lower"
-                 }
-             }
-         })
- });
- </script>            
+
+    
+ 
+ <script src="https://cdn.quilljs.com/1.1.3/quill.js"></script>
+ <script>
+     const quill = new Quill('#exampleFormControlTextarea1', {
+       modules: {
+         toolbar: [
+           [{ header: [1, 2, false] }],
+           ['bold', 'italic', 'underline' , 'image']
+         ],
+       },
+       placeholder: 'Write your Blog here...',
+       theme: 'snow'
+     });           
+        const form = document.querySelector('.blog-form'); 
+
+        form.addEventListener('submit', function(event) { 
+            document.querySelector('textarea[name="content"]').value = quill.root.innerHTML;
+          ow
+        });
+
+       
+        function validateForm() {
+            if (quill.getText().trim().length === 0) { 
+                alert('Please add some content to your blog.');
+                return false; 
+            }
+            return true; 
+        }
+
+        function setStatus(status) {
+        document.getElementById('status').value = status;
+    }
+
+   </script>
+
+
+
 </x-adminlayout>

@@ -18,7 +18,7 @@ php artisan make:migration create_knowledgeproviders_table --create=knowledgepro
 php artisan migrate:refresh --seed
 php artisan make:controller FarmerController
 php artisan make:controller ProviderController
-php artisan make:controller AdminController
+php artisan make:controller BlogController
 
 php artisan make:controller UserController
 php artisan make:model Message
@@ -30,8 +30,9 @@ php artisan make:model Financial
 php artisan make:model Labor
 
 php artisan make:model Input
+php artisan make:model Blog
 
-php artisan make:model Market
+php artisan make:model Visit
 
 php artisan make:model Knowledgeprovider
 

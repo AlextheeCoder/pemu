@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\Controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +18,9 @@ use App\Http\Controllers\AdminController;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+
+Route::get('/', [BlogController::class, 'index']);
+
 Route::get('/about', function () {
     return view('pages.about');
 });
@@ -45,16 +47,28 @@ Route::get('/logout', function() {
     return redirect('/'); // Redirect to homepage
 })->name('logout'); 
 
-
+//Normal user auth
 Route::post('/authenticate', [UserController::class, 'authenticate']);
 
+
+
+
+
+
+//Admin Login
+Route::get('/pemu/admin/login',[AdminController::class,'login']);
+
+//Admin auth
+Route::post('/pemu/admin/authenticate', [AdminController::class, 'authenticate']);
+
 //Admin Panel
-Route::get('/pemu-admin',[AdminController::class,'index']);
+Route::get('/pemu-admin',[AdminController::class,'index'])->middleware('checkRole:admin');
 
 //Create Blog Page
-Route::get('/pemu/create/blog',[AdminController::class,'create_blog']);
+Route::get('/pemu/create/blog',[AdminController::class,'create_blog'])->middleware('checkRole:admin');
+
+//Store Blog
+Route::post('/pemu/blogs/store', [BlogController::class, 'store'])->middleware('checkRole:admin');
 
 
-Route::get('/pemu/admin/view/blogs', function () {
-   return view('Admin.pages.viewblogs');
-}); 
+Route::get('/pemu/admin/view/blogs',[AdminController::class,'viewblogs'])->middleware('checkRole:admin');
