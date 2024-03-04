@@ -56,6 +56,16 @@ Route::post('/authenticate', [UserController::class, 'authenticate']);
 //Store Comments
 Route::post('/blog/{blog}/comments', [BlogController::class, 'storeComment'])->name('comments.store');
 
+//Store Contacts
+Route::post('/pemu/contact/store', [UserController::class, 'store_contacts']);
+
+//Store Contacts
+Route::post('/pemu/subscriber/store', [UserController::class, 'store_newsletters']);
+
+
+
+
+
 
 
 
@@ -84,7 +94,7 @@ Route::get('/pemu/blog/{id}/edit', [BlogController::class, 'edit'])->name('blog.
 Route::put('/pemu/update/{blog}', [BlogController::class, 'update'])->name('blog.update')->middleware('checkRole:admin');
 
 // Delete Blog
-Route::delete('/pemu/delete/blog/{blog}', [BlogController::class, 'delete'])->name('blog.delete');
+Route::delete('/pemu/delete/blog/{blog}', [BlogController::class, 'delete'])->name('blog.delete')->middleware('checkRole:admin');
 
 
 //Store Blog
@@ -104,3 +114,16 @@ Route::get('/pemu/category/create',[AdminController::class,'category'])->middlew
 Route::get('/pemu/farmers/view',[AdminController::class,'showFarmers'])->middleware('checkRole:admin');
 //Show providers
 Route::get('/pemu/providers/view',[AdminController::class,'showProviders'])->middleware('checkRole:admin');
+
+//View Contacts
+Route::get('/pemu/contacts/view',[AdminController::class,'view_contacts'])->middleware('checkRole:admin');
+
+
+// Delete Contacts
+Route::delete('/pemu/delete/contact/{contact}', [AdminController::class, 'delete_contact'])->name('contact.delete')->middleware('checkRole:admin');
+
+//View single Contact
+Route::get('/pemu/view/contact/{id}', [AdminController::class, 'specific_contact'])->name('contact.detail');
+
+//View Newsletter
+Route::get('/pemu/newsletters/view',[AdminController::class,'view_newsletters'])->middleware('checkRole:admin');

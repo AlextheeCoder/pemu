@@ -13,7 +13,7 @@
 
 <div class="alert alert-success  message"  x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show" >
   <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-  <div>
+  <div style="margin-left: 10px">
     {{session('message')}}
   </div>
 </div>

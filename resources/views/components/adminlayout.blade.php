@@ -21,6 +21,8 @@
     <link rel="stylesheet" href="{{ asset('Admin/assets/vendor/charts/c3charts/c3.css') }}">
     <link rel="stylesheet" href="{{ asset('Admin/assets/vendor/fonts/flag-icon-css/flag-icon.min.css') }}">
     
+    
+    <script src="//unpkg.com/alpinejs" defer></script>
 </head>
 
 <body>
@@ -47,43 +49,36 @@
                                     <div class="notification-title"> Notification</div>
                                     <div class="notification-list">
                                         <div class="list-group">
+                                            @php
+                                                use App\Models\Contact; // Adjust the namespace and model name accordingly
+
+                                            // Fetch the 4 most recent notifications from the contacts table
+                                            $notifications = Contact::orderBy('created_at', 'DESC')->limit(4)->get();
+                                            @endphp
+                                            @unless(count($notifications) == 0)
+                                            @foreach($notifications as $notification)
                                             <a href="#" class="list-group-item list-group-item-action active">
                                                 <div class="notification-info">
                                                     <div class="notification-list-user-img"><img src="{{asset ('Admin/assets/images/avatar-2.jpg')}}" alt="" class="user-avatar-md rounded-circle"></div>
-                                                    <div class="notification-list-user-block"><span class="notification-list-user-name">Jeremy Rakestraw</span>accepted your invitation to join the team.
-                                                        <div class="notification-date">2 min ago</div>
+                                                    <div class="notification-list-user-block"><span class="notification-list-user-name">{{$notification->name}}</span>a{{$notification->subject}}
+                                                        <div class="notification-date">{{$notification->created_at->diffForHumans()}}</div>
                                                     </div>
                                                 </div>
                                             </a>
-                                            <a href="#" class="list-group-item list-group-item-action">
+                                            @endforeach
+                                            @else
+                                            <a href="#" class="list-group-item list-group-item-action active">
                                                 <div class="notification-info">
-                                                    <div class="notification-list-user-img"><img src="{{asset ('Admin/assets/images/avatar-1.jpg')}}" alt="" class="user-avatar-md rounded-circle"></div>
-                                                    <div class="notification-list-user-block"><span class="notification-list-user-name">John Abraham</span>is now following you
-                                                        <div class="notification-date">2 days ago</div>
-                                                    </div>
+                                                    <p>No Notfications</p>
                                                 </div>
                                             </a>
-                                            <a href="#" class="list-group-item list-group-item-action">
-                                                <div class="notification-info">
-                                                    <div class="notification-list-user-img"><img src="{{asset ('Admin/assets/images/avatar-1.jpg')}}" alt="" class="user-avatar-md rounded-circle"></div>
-                                                    <div class="notification-list-user-block"><span class="notification-list-user-name">Monaan Pechi</span> is watching your main repository
-                                                        <div class="notification-date">2 min ago</div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <a href="#" class="list-group-item list-group-item-action">
-                                                <div class="notification-info">
-                                                    <div class="notification-list-user-img"><img src="{{asset ('Admin/assets/images/avatar-1.jpg')}}" alt="" class="user-avatar-md rounded-circle"></div>
-                                                    <div class="notification-list-user-block"><span class="notification-list-user-name">Jessica Caruso</span>accepted your invitation to join the team.
-                                                        <div class="notification-date">2 min ago</div>
-                                                    </div>
-                                                </div>
-                                            </a>
+                                            @endunless
+                                            
                                         </div>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="list-footer"> <a href="#">View all notifications</a></div>
+                                    <div class="list-footer"> <a href="/pemu/contacts/view">View all notifications</a></div>
                                 </li>
                             </ul>
                         </li>
@@ -158,10 +153,10 @@
                                 <div id="submenu-4" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="pages/form-elements.html">Contact Fomr</a>
+                                            <a class="nav-link" href="/pemu/contacts/view">Contacts</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="pages/form-validation.html">Newsletter</a>
+                                            <a class="nav-link" href="/pemu/newsletters/view">Newsletters</a>
                                         </li>
                                        
                                     </ul>
@@ -238,6 +233,9 @@
    <script src="{{ asset('Admin/assets/vendor/charts/c3charts/d3-5.4.0.min.js') }}"></script>
    <script src="{{ asset('Admin/assets/vendor/charts/c3charts/C3chartjs.js') }}"></script>
    <script src="{{ asset('Admin/assets/libs/js/dashboard-ecommerce.js') }}"></script>
+
+   <x-flash-message />
+    <x-flash-error />
 </body>
  
 </html>

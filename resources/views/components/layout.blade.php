@@ -166,10 +166,11 @@
                         <h4 class="text-white">Newsletter</h4>
                         <h6 class="text-white">Subscribe Our Newsletter</h6>
                         <p>Growing Together, Regenerating the Future</p>
-                        <form action="">
+                        <form action="/pemu/subscriber/store" method="POST">
+                            @csrf
                             <div class="input-group">
-                                <input type="text" class="form-control border-white p-3" placeholder="Your Email">
-                                <button class="btn btn-primary">Sign Up</button>
+                                <input type="text" class="form-control border-white p-3" placeholder="Your Email" name="email">
+                                <button class="btn btn-primary" type="submit">Sign Up</button>
                             </div>
                         </form>
                     </div>

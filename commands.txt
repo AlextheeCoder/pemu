@@ -15,7 +15,7 @@ php artisan make:migration create_markets_table --create=markets
 
 php artisan make:migration create_categories_table --create=categories
 
-php artisan make:migration create_comments_table --create=comments
+php artisan make:migration create_comments_contacts --create=contacts
 
 php artisan make:migration create_knowledgeproviders_table --create=knowledgeproviders
 
@@ -36,7 +36,7 @@ php artisan make:model Labor
 php artisan make:model Input
 php artisan make:model Blog
 
-php artisan make:model Visit
+php artisan make:model Newsletter
 
 php artisan make:model Comment
 

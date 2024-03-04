@@ -11,9 +11,9 @@
   </symbol>
 </svg>
 
-<div class="alert alert-warning  message"  x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show" >
+<div class="alert alert-danger  message"  x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show" >
   <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-  <div>
+  <div  style="margin-left: 10px">
     {{session('error')}}
   </div>
 </div>

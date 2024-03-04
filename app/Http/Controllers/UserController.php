@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Contact;
+use App\Models\Newsletter;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Log;
@@ -66,4 +68,37 @@ class UserController extends Controller
             return redirect('/login')->with('error', 'Wrong credentials!!');
         }
     }
+
+
+    public function store_contacts(Request $request){
+        $formFields = $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'subject'=>'nullable',
+            'body' => 'required|max:1000',
+        ]);
+
+        Contact::create($formFields);
+
+        return redirect('/')->with('message', 'Thank you for contacting us!');
+
+    }
+
+    public function store_newsletters(Request $request){
+        $formFields = $request->validate([
+            
+        'email' => ['required', 'email', Rule::unique('newsletters', 'email')],
+           
+        ]);
+
+        try {
+            Newsletter::create($formFields);
+            return redirect('/')->with('message', 'Thank you for subscribing');
+        } catch (\Exception $e) {
+            
+            return redirect('/')->with('error', 'You are already a subscriber!');
+        }
+
+    }
+
 }

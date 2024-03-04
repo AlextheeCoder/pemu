@@ -35,6 +35,19 @@
                 </div>
                 <!-- Blog Detail End -->
 
+               
+
+                    @php
+                        $commentcount=count($comments);
+                    @endphp
+
+                    @if ($commentcount>1)
+                    <h2 class="mb-4">{{$commentcount}} comments</h2>
+                    @else
+                    <h2 class="mb-4">{{$commentcount}} comment</h2>
+                    @endif
+
+               
                 <!-- Comment List Start -->
                 @foreach($comments as $comment)
                 <div class="d-flex mb-4">

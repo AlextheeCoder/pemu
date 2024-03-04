@@ -6973,6 +6973,21 @@ Media Query
 }
 
 
+.message{
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 80px;
+    width: 400px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .message {
+    animation: flash 1s ease-in-out;
+  } 
+  
  
  
 

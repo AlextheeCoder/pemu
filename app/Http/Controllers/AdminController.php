@@ -7,6 +7,8 @@ use App\Models\Blog;
 use App\Models\User;
 use App\Models\Visit;
 use App\Models\Categorie;
+use App\Models\Contact;
+use App\Models\Newsletter;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
@@ -193,5 +195,33 @@ public function showProviders(){
 
 
     }
+
+
+    public function view_contacts(){
+
+        $contacts=Contact::all();
+
+        return view('Admin.pages.view-contacts', compact('contacts'));
+    }
+
+    public function specific_contact($id){
+        $contact = Contact::find($id);
+
+        return view('Admin.pages.single-contact', compact('contact'));
+    }
+
+    public function delete_contact(Contact $contact){
+        $contact->delete();
+        return redirect('/pemu-admin')->with('message', 'Contact deleted successfully');
+
+    }
+
+    public function view_newsletters(){
+
+        $newsletters=Newsletter::all();
+
+        return view('Admin.pages.view-newsletters', compact('newsletters'));
+    }
+
 
 }
