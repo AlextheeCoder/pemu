@@ -13,6 +13,10 @@ php artisan make:migration create_labors_table --create=labors
 php artisan make:migration create_inputs_table --create=inputs
 php artisan make:migration create_markets_table --create=markets
 
+php artisan make:migration create_categories_table --create=categories
+
+php artisan make:migration create_comments_table --create=comments
+
 php artisan make:migration create_knowledgeproviders_table --create=knowledgeproviders
 
 php artisan migrate:refresh --seed
@@ -23,7 +27,7 @@ php artisan make:controller BlogController
 php artisan make:controller UserController
 php artisan make:model Message
 php artisan make:model Provider
-php artisan make:model Reports
+php artisan make:model Categorie
 php artisan make:model Profile
 php artisan make:model Financial
 
@@ -33,6 +37,8 @@ php artisan make:model Input
 php artisan make:model Blog
 
 php artisan make:model Visit
+
+php artisan make:model Comment
 
 php artisan make:model Knowledgeprovider
 

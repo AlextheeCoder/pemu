@@ -129,6 +129,8 @@
                                                         <th class="border-0">Date Created</th>
                                                         <th class="border-0">Author</th>
                                                         <th class="border-0">Status</th>
+                                                        <th></th>
+                                                        <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -149,9 +151,15 @@
                                                         <td><span class="badge-dot badge-brand mr-1"></span>{{$blog->status}} </td>
                                                         @endif
                                                         
-                                                        <td> <a href="#" class="btn btn-danger">Delete</a> 
-                                                            <a href="#" class="btn btn-success">Edit</a>
+                                                        <td>
+
+                                                            <form method="POST" action="{{ route('blog.delete', ['blog' => $blog->id]) }}">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button class="btn btn-danger"> Delete</button>
+                                                              </form>   
                                                         </td>
+                                                        <td><a href="{{ route('blog.edit', ['id' => $blog->id]) }}" class="btn btn-success">Edit</a></td>
                                                     </tr>
                                                     
                                                     @endforeach
@@ -188,47 +196,27 @@
                                                     <tr class="border-0">
                                                         <th class="border-0">Title</th>
                                                         <th class="border-0">Views</th>
-                                                        <th class="border-0">Date Created</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @unless(count($mostviewdblogs) == 0)
+                                                    @foreach ($mostviewdblogs as $mostviewdblog)
+                                                        <tr>
+                                                            <td class="truncate-title"><a href="{{ route('blog.detail', ['id' => $mostviewdblog->id]) }}">{{ $mostviewdblog->title }}</a></td>
+                                                            <td>{{ $mostviewdblog->views }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    @else
+                                                    <td >No Blogs posted</td>
+                                                    @endunless
                                                     <tr>
-                                                        <td>Campaign#1</td>
-                                                        <td>98,789 </td>
-                                                        <td>$4563</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Campaign#2</td>
-                                                        <td>2,789 </td>
-                                                        <td>$325</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Campaign#3</td>
-                                                        <td>1,459 </td>
-                                                        <td>$225</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Campaign#4</td>
-                                                        <td>5,035 </td>
-                                                        <td>$856</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Campaign#5</td>
-                                                        <td>10,000 </td>
-                                                        <td>$1000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Campaign#5</td>
-                                                        <td>10,000 </td>
-                                                        <td>$1000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="3">
-                                                            <a href="#" class="btn btn-outline-light float-right">View All Blogs</a>
+                                                        <td colspan="2">
+                                                            <a href="/pemu/admin/view/blogs" class="btn btn-outline-light float-right">View All Blogs</a>
                                                         </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -338,4 +326,14 @@
                 </div>
             </div>
 
+            <script>
+                const titleElements = document.querySelectorAll('.truncate-title a');
+
+titleElements.forEach(element => {
+  const title = element.textContent;
+  const words = title.split(' ').slice(0, 2);  
+  element.textContent = words.join(' ') + '...'; 
+});
+
+            </script>
 </x-adminlayout>

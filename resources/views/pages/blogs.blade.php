@@ -20,115 +20,42 @@
             <!-- Blog list Start -->
             <div class="col-lg-8">
                 <div class="row g-5">
+                    @unless(count($blogs) == 0)
+                    @foreach($blogs as $blog)
+                        @if($blog->status == 'published')
+                            <div class="col-md-6">
+                                <div class="blog-item position-relative overflow-hidden">
+                                    <img class="img-fluid" style="height: 400px;" src="{{$blog->image ? asset('storage/' . $blog->image) : asset('img/blog-1.jpg')}}" alt="">
+                                    <a class="blog-overlay" href="{{ route('blog.detail', ['id' => $blog->id]) }}">
+                                        <h4 class="text-white">{{ $blog->title}}</h4>
+                                        <span class="text-white fw-bold">{{$blog->created_at->diffForHumans()}}</span>
+                                    </a>
+                                </div>
+                            </div>
+                            @elseif ($blog->status == 'staged')
+                            <div class="col-md-6">
+                                <div class="blog-item position-relative overflow-hidden">
+                                    <p>No blogs posted</p>
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
+                @else
                     <div class="col-md-6">
                         <div class="blog-item position-relative overflow-hidden">
-                            <img class="img-fluid" src="img/blog-1.jpg" alt="">
-                            <a class="blog-overlay" href="">
-                                <h4 class="text-white">Lorem elitr magna stet eirmod labore amet</h4>
-                                <span class="text-white fw-bold">Jan 01, 2050</span>
-                            </a>
+                            <p>No blogs posted</p>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="blog-item position-relative overflow-hidden">
-                            <img class="img-fluid" src="img/blog-2.jpg" alt="">
-                            <a class="blog-overlay" href="">
-                                <h4 class="text-white">Lorem elitr magna stet eirmod labore amet</h4>
-                                <span class="text-white fw-bold">Jan 01, 2050</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="blog-item position-relative overflow-hidden">
-                            <img class="img-fluid" src="img/blog-3.jpg" alt="">
-                            <a class="blog-overlay" href="">
-                                <h4 class="text-white">Lorem elitr magna stet eirmod labore amet</h4>
-                                <span class="text-white fw-bold">Jan 01, 2050</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="blog-item position-relative overflow-hidden">
-                            <img class="img-fluid" src="img/blog-1.jpg" alt="">
-                            <a class="blog-overlay" href="">
-                                <h4 class="text-white">Lorem elitr magna stet eirmod labore amet</h4>
-                                <span class="text-white fw-bold">Jan 01, 2050</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="blog-item position-relative overflow-hidden">
-                            <img class="img-fluid" src="img/blog-2.jpg" alt="">
-                            <a class="blog-overlay" href="">
-                                <h4 class="text-white">Lorem elitr magna stet eirmod labore amet</h4>
-                                <span class="text-white fw-bold">Jan 01, 2050</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="blog-item position-relative overflow-hidden">
-                            <img class="img-fluid" src="img/blog-3.jpg" alt="">
-                            <a class="blog-overlay" href="">
-                                <h4 class="text-white">Lorem elitr magna stet eirmod labore amet</h4>
-                                <span class="text-white fw-bold">Jan 01, 2050</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="blog-item position-relative overflow-hidden">
-                            <img class="img-fluid" src="img/blog-1.jpg" alt="">
-                            <a class="blog-overlay" href="">
-                                <h4 class="text-white">Lorem elitr magna stet eirmod labore amet</h4>
-                                <span class="text-white fw-bold">Jan 01, 2050</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="blog-item position-relative overflow-hidden">
-                            <img class="img-fluid" src="img/blog-2.jpg" alt="">
-                            <a class="blog-overlay" href="">
-                                <h4 class="text-white">Lorem elitr magna stet eirmod labore amet</h4>
-                                <span class="text-white fw-bold">Jan 01, 2050</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="blog-item position-relative overflow-hidden">
-                            <img class="img-fluid" src="img/blog-3.jpg" alt="">
-                            <a class="blog-overlay" href="">
-                                <h4 class="text-white">Lorem elitr magna stet eirmod labore amet</h4>
-                                <span class="text-white fw-bold">Jan 01, 2050</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="blog-item position-relative overflow-hidden">
-                            <img class="img-fluid" src="img/blog-1.jpg" alt="">
-                            <a class="blog-overlay" href="">
-                                <h4 class="text-white">Lorem elitr magna stet eirmod labore amet</h4>
-                                <span class="text-white fw-bold">Jan 01, 2050</span>
-                            </a>
-                        </div>
-                    </div>
+                @endunless                
+
+
                     <div class="col-12">
                         <nav aria-label="Page navigation">
-                          <ul class="pagination pagination-lg justify-content-center m-0">
-                            <li class="page-item disabled">
-                              <a class="page-link rounded-0" href="#" aria-label="Previous">
-                                <span aria-hidden="true"><i class="bi bi-arrow-left"></i></span>
-                              </a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                              <a class="page-link rounded-0" href="#" aria-label="Next">
-                                <span aria-hidden="true"><i class="bi bi-arrow-right"></i></span>
-                              </a>
-                            </li>
-                          </ul>
+                            {{ $blogs->links('pagination.custom') }}
                         </nav>
                     </div>
+                    
+                    
                 </div>
             </div>
             <!-- Blog list End -->
@@ -148,11 +75,17 @@
                 <div class="mb-5">
                     <h2 class="mb-4">Categories</h2>
                     <div class="d-flex flex-column justify-content-start bg-primary p-4">
-                        <a class="fs-5 fw-bold text-white mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Web Design</a>
-                        <a class="fs-5 fw-bold text-white mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Web Development</a>
-                        <a class="fs-5 fw-bold text-white mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Web Development</a>
-                        <a class="fs-5 fw-bold text-white mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Keyword Research</a>
-                        <a class="fs-5 fw-bold text-white" href="#"><i class="bi bi-arrow-right me-2"></i>Email Marketing</a>
+                        @unless(count($popularCategories) == 0)
+                        @foreach ($popularCategories as $category)
+                            <a class="fs-5 fw-bold text-white mb-2" href="{{ route('blogs', ['category' => $category->category]) }}">
+                                <i class="bi bi-arrow-right me-2"></i>{{ $category->category }}
+                            </a>
+                        @endforeach
+
+                        @else
+                        <p>No Categories Yet</p>
+                        @endunless
+
                     </div>
                 </div>
                 <!-- Category End -->
@@ -161,69 +94,53 @@
                 <div class="mb-5">
                     <h2 class="mb-4">Recent Post</h2>
                     <div class="bg-primary p-4">
+                        @unless(count($latestblogs) == 0)
+                        @foreach($latestblogs as $latestblog)
                         <div class="d-flex overflow-hidden mb-3">
-                            <img class="img-fluid flex-shrink-0" src="img/blog-1.jpg" style="width: 75px;" alt="">
-                            <a href="" class="d-flex align-items-center bg-white text-dark fs-5 fw-bold px-3 mb-0">Lorem ipsum dolor sit amet elit
+                            <img class="img-fluid flex-shrink-0" src="{{$latestblog->image ? asset('storage/' . $latestblog->image) : asset('img/blog-1.jpg')}}" style="width: 75px;" alt="">
+                            <a href="{{ route('blog.detail', ['id' => $latestblog->id]) }}" class="d-flex align-items-center bg-white text-dark fs-5 fw-bold px-3 mb-0">{{$latestblog->title}}
                             </a>
                         </div>
+                        @endforeach
+                        @else
                         <div class="d-flex overflow-hidden mb-3">
-                            <img class="img-fluid flex-shrink-0" src="img/blog-2.jpg" style="width: 75px;" alt="">
-                            <a href="" class="d-flex align-items-center bg-white text-dark fs-5 fw-bold px-3 mb-0">Lorem ipsum dolor sit amet elit
-                            </a>
+                            <p>No Blogs Posted Yet</p>
                         </div>
-                        <div class="d-flex overflow-hidden mb-3">
-                            <img class="img-fluid flex-shrink-0" src="img/blog-3.jpg" style="width: 75px;" alt="">
-                            <a href="" class="d-flex align-items-center bg-white text-dark fs-5 fw-bold px-3 mb-0">Lorem ipsum dolor sit amet elit
-                            </a>
-                        </div>
-                        <div class="d-flex overflow-hidden mb-3">
-                            <img class="img-fluid flex-shrink-0" src="img/blog-1.jpg" style="width: 75px;" alt="">
-                            <a href="" class="d-flex align-items-center bg-white text-dark fs-5 fw-bold px-3 mb-0">Lorem ipsum dolor sit amet elit
-                            </a>
-                        </div>
-                        <div class="d-flex overflow-hidden">
-                            <img class="img-fluid flex-shrink-0" src="img/blog-2.jpg" style="width: 75px;" alt="">
-                            <a href="" class="d-flex align-items-center bg-white text-dark fs-5 fw-bold px-3 mb-0">Lorem ipsum dolor sit amet elit
-                            </a>
-                        </div>
+                        @endunless
+                       
                     </div>
                 </div>
                 <!-- Recent Post End -->
 
                 <!-- Image Start -->
-                <div class="mb-5">
-                    <img src="img/blog-1.jpg" alt="" class="img-fluid rounded">
-                </div>
+                
                 <!-- Image End -->
 
                 <!-- Tags Start -->
                 <div class="mb-5">
                     <h2 class="mb-4">Tag Cloud</h2>
                     <div class="d-flex flex-wrap m-n1">
-                        <a href="" class="btn btn-primary m-1">Design</a>
-                        <a href="" class="btn btn-primary m-1">Development</a>
-                        <a href="" class="btn btn-primary m-1">Marketing</a>
-                        <a href="" class="btn btn-primary m-1">SEO</a>
-                        <a href="" class="btn btn-primary m-1">Writing</a>
-                        <a href="" class="btn btn-primary m-1">Consulting</a>
-                        <a href="" class="btn btn-primary m-1">Design</a>
-                        <a href="" class="btn btn-primary m-1">Development</a>
-                        <a href="" class="btn btn-primary m-1">Marketing</a>
-                        <a href="" class="btn btn-primary m-1">SEO</a>
-                        <a href="" class="btn btn-primary m-1">Writing</a>
-                        <a href="" class="btn btn-primary m-1">Consulting</a>
+                        @unless(count($latestblogs) == 0)
+                            
+                      
+                        @foreach ($popularTags as $tag)
+                            @php
+                                $tagArray = explode(',', $tag->tags);
+                            @endphp
+                            @foreach ($tagArray as $singleTag)
+                                <a href="{{ route('blogs', ['tag' => $singleTag]) }}" class="btn btn-primary m-1">{{ $singleTag }}</a>
+                            @endforeach
+                        @endforeach
+                        @else
+                        <p>No tags yet</p>
+                        @endunless
                     </div>
                 </div>
+                
                 <!-- Tags End -->
 
                 <!-- Plain Text Start -->
-                <div>
-                    <h2 class="mb-4">Plain Text</h2>
-                    <div class="bg-primary text-center text-white" style="padding: 30px;">
-                        <p>Vero sea et accusam justo dolor accusam lorem consetetur, dolores sit amet sit dolor clita kasd justo, diam accusam no sea ut tempor magna takimata, amet sit et diam dolor ipsum amet diam</p>
-                        <a href="" class="btn btn-secondary py-2 px-4">Read More</a>
-                    </div>
-                </div>
+             
                 <!-- Plain Text End -->
             </div>
             <!-- Sidebar End -->

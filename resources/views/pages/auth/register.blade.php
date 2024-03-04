@@ -24,11 +24,13 @@
                   </div>
 
                   <!-- DOB-->
-                <div class="form-outline mb-4">
+                  <div class="form-outline mb-4">
                     <input type="date" id="form3Example3" class="form-control form-control-lg"
-                      placeholder="Date of Birth" name="dob" required/>
+                        placeholder="Date of Birth" name="dob" required
+                        max="{{ now()->format('Y-m-d') }}" />
                     <label class="form-label" for="form3Example3">Date of Birth</label>
-                  </div>
+                </div>
+                
 
                   
                  <!-- Select input -->
@@ -45,7 +47,7 @@
                  
                   <div class="form-outline mb-4">
                     <input type="number" id="form3Example3" class="form-control form-control-lg bfh-phone" 
-                           placeholder="254" name="phone" min="0" required /> 
+                           placeholder="07" name="phone" min="0" required /> 
                     <label class="form-label" for="form3Example3">Phone Number</label>
                   </div>
                   

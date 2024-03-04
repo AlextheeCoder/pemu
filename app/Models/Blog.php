@@ -22,4 +22,11 @@ class Blog extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+        // Blog.php model
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class); // Adjust Comment::class based on your actual Comment model
+    }
+
 }

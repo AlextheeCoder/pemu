@@ -24,9 +24,11 @@ Route::get('/', [BlogController::class, 'index']);
 Route::get('/about', function () {
     return view('pages.about');
 });
-Route::get('/blogs', function () {
-    return view('pages.blogs');
-});
+
+Route::get('/blogs', [BlogController::class, 'blogs'] )->name('blogs');
+
+Route::get('blog/{id}', [BlogController::class, 'blogdetail'])->name('blog.detail');
+
 Route::get('/contact', function () {
     return view('pages.contact');
 });
@@ -44,11 +46,18 @@ Route::post('/users', [UserController::class, 'store']);
 
 Route::get('/logout', function() {
     Auth::logout(); // Invalidate session
-    return redirect('/'); // Redirect to homepage
+    return redirect('/')->with('message', 'Logged Out.');; // Redirect to homepage
 })->name('logout'); 
 
 //Normal user auth
 Route::post('/authenticate', [UserController::class, 'authenticate']);
+
+
+//Store Comments
+Route::post('/blog/{blog}/comments', [BlogController::class, 'storeComment'])->name('comments.store');
+
+
+
 
 
 
@@ -67,8 +76,31 @@ Route::get('/pemu-admin',[AdminController::class,'index'])->middleware('checkRol
 //Create Blog Page
 Route::get('/pemu/create/blog',[AdminController::class,'create_blog'])->middleware('checkRole:admin');
 
+//See edit page
+Route::get('/pemu/blog/{id}/edit', [BlogController::class, 'edit'])->name('blog.edit')->middleware('checkRole:admin');
+
+
+///EDit Blog
+Route::put('/pemu/update/{blog}', [BlogController::class, 'update'])->name('blog.update')->middleware('checkRole:admin');
+
+// Delete Blog
+Route::delete('/pemu/delete/blog/{blog}', [BlogController::class, 'delete'])->name('blog.delete');
+
+
 //Store Blog
 Route::post('/pemu/blogs/store', [BlogController::class, 'store'])->middleware('checkRole:admin');
 
 
 Route::get('/pemu/admin/view/blogs',[AdminController::class,'viewblogs'])->middleware('checkRole:admin');
+
+//Store Categories
+Route::post('/pemu/category/store', [AdminController::class, 'create_category'])->middleware('checkRole:admin');
+
+
+Route::get('/pemu/category/create',[AdminController::class,'category'])->middleware('checkRole:admin');
+
+
+//Show farmers
+Route::get('/pemu/farmers/view',[AdminController::class,'showFarmers'])->middleware('checkRole:admin');
+//Show providers
+Route::get('/pemu/providers/view',[AdminController::class,'showProviders'])->middleware('checkRole:admin');

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('category');
             $table->longText('content');
             $table->string('status');
-            $table->string('views')->nullable();
+            $table->integer('views')->default(0)->unsigned();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

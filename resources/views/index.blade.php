@@ -9,7 +9,7 @@
                         <div class="text-start p-5" style="max-width: 900px;">
                             <h3 class="text-white">PEMU Agrifood</h3>
                             <h1 class="display-1 text-white mb-md-4">Growing Together, Regenerating the Future</h1>
-                            <a href="" class="btn btn-primary py-md-3 px-md-5 me-3">Explore</a>
+                            <a href="#mission" class="btn btn-primary py-md-3 px-md-5 me-3">Explore</a>
                             @auth
                                 @else
                                 <a href="/login" class="btn btn-secondary py-md-3 px-md-5">Join Us</a>
@@ -24,7 +24,7 @@
                         <div class="text-start p-5" style="max-width: 900px;">
                             <h3 class="text-white">PEMU Agrifood</h3>
                             <h1 class="display-1 text-white mb-md-4">Growing Together, Regenerating the Future</h1>
-                            <a href="" class="btn btn-primary py-md-3 px-md-5 me-3">Explore</a>
+                            <a href="#mission" class="btn btn-primary py-md-3 px-md-5 me-3">Explore</a>
                             @auth
                             @else
                             <a href="/login" class="btn btn-secondary py-md-3 px-md-5">Join Us</a>
@@ -50,20 +50,20 @@
 
     <!-- Banner Start -->
     <div class="container-fluid banner mb-5">
-        <div class="container">
+        <div class="container" id="mission">
             <div class="row gx-0">
                 <div class="col-md-6">
                     <div class="bg-primary bg-vegetable d-flex flex-column justify-content-center p-5" style="height: 300px;">
                         <h3 class="text-white mb-3">Vision</h3>
                         <p class="text-white">Envisioning a future where empowered farmers and agripreneurs lead the transformation towards sustainable and regenerative agriculture, nurturing the planet and thriving communities.</p>
-                        <a class="text-white fw-bold" href="/about">Read More<i class="bi bi-arrow-right ms-2"></i></a>
+                       
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="bg-secondary bg-fruit d-flex flex-column justify-content-center p-5" style="height: 300px;">
                         <h3 class="text-white mb-3">Mission </h3>
                         <p class="text-white">To build knowledge and skills among farmers and agripreneurs, enabling them to adopt regenerative solutions, access quality inputs, and connect with sustainable markets to grow their businesses sustainably.</p>
-                        <a class="text-white fw-bold" href="/about">Read More<i class="bi bi-arrow-right ms-2"></i></a>
+                       
                     </div>
                 </div>
             </div>
@@ -73,39 +73,32 @@
 
 
     <!-- About Start -->
-    <div class="container-fluid about pt-5">
-        <div class="container">
-            <div class="row gx-5">
-                <div class="col-lg-6 mb-5 mb-lg-0">
-                    <div class="d-flex h-100 border border-5 border-primary border-bottom-0 pt-4">
-                        <img class="img-fluid mt-auto mx-auto" src="img/pemulogo.jpg">
-                    </div>
+    <div class="container-fluid about pt-5" id="about">
+        <div class="row gx-5">
+            <!-- Remove the outer container -->
+            <!-- <div class="container"> -->
+    
+            <!-- Add mx-auto to center the content -->
+            <div class="col-lg-6 pb-5 mx-auto">
+                <div class="mb-3 pb-2">
+                    <h6 class="text-primary text-uppercase">About Us</h6>
+                    <h1 class="display-5">We Produce Organic Food For Your Family</h1>
                 </div>
-                <div class="col-lg-6 pb-5">
-                    <div class="mb-3 pb-2">
-                        <h6 class="text-primary text-uppercase">About Us</h6>
-                        <h1 class="display-5">We Produce Organic Food For Your Family</h1>
-                    </div>
-                    <p class="mb-4">At PEMU, we're right here with you, farmers, and agripreneurs, to help make your work better and kinder to the earth. We believe in farming that keeps the soil healthy and makes crops grow stronger. We're your neighbors, ready to work together to see what your farm or business needs to improve. Together, we'll make a good plan using farming methods that are good for the earth and your crops.
-                        We give you the best Inputs, new ways to farm that really work, and teach you everything you need to know. We also help you find the right people to work with you, making sure they know how to help your farm or business grow. And we connect you with people who want to buy your products. With PEMU, you get help that’s just right for you, using the right Inputs, knowledge, and connections to sell your crops and finding good people to work with.
-                        Join us to change farming for the better, for our land and for all of us. Let's grow together, making your farms and businesses thrive with care for our earth.
-                        </p>
-                    <div class="row gx-5 gy-4">
-                        <div class="col-sm-6">
-                            <i class="fa fa-award display-1 text-secondary"></i>
-                            <h4>Your Best Solution</h4>
-                            <p class="mb-0">Your BEST Partners in Sustainable Success</p>
-                        </div>
-                      
-                    </div>
-                </div>
+                <p class="mb-4">At PEMU AGRIFOOD ACADEMEY, we're right here with you, farmers, and agripreneurs, to help make your work better and kinder to the earth. We believe in farming that keeps the soil healthy and makes crops grow stronger. We're your neighbors, ready to work together to see what your farm or business needs to improve. Together, we'll make a good plan using farming methods that are good for the earth and your crops.
+                    We give you the best Inputs, new ways to farm that really work, and teach you everything you need to know. We also help you find the right people to work with you, making sure they know how to help your farm or business grow. And we connect you with people who want to buy your products. With PEMU AGRIFOOD ACADEMEY, you get help that’s just right for you, using the right Inputs, knowledge, and connections to sell your crops and finding good people to work with.
+                    Join us to change farming for the better, for our land and for all of us. Let's grow together, making your farms and businesses thrive with care for our earth.
+                </p>
+               
             </div>
+            <!-- </div> Remove the outer container -->
         </div>
     </div>
+    
     <!-- About End -->
 
 
-    <!-- Facts Start -->
+
+<!-- Facts Start -->
     <div class="container-fluid bg-primary facts py-5 mb-5">
         <div class="container py-5">
             
@@ -121,7 +114,7 @@
             <div class="row g-5">
                 <div class="col-lg-4 col-md-6">
                     <div class="mb-3">
-                        <h6 class="text-primary text-uppercase">Services</h6>
+                        <h6 class="text-primary text-uppercase" style="font-size: 1.8rem">Services</h6>
                         <h1 class="display-5">PEMU Agrifood Academy</h1>
                     </div>
                     <p class="mb-4">Got Questions? We've Got Answers!</p>
@@ -173,7 +166,7 @@
         <div class="container py-5 pb-lg-0">
             <div class="mx-auto text-center mb-3 pb-2" style="max-width: 500px;">
                 <h6 class="text-uppercase text-secondary">ENGAGEMENT PROCESS</h6>
-                <h1 class="display-5 text-white">Why Choose Us!!!</h1>
+                <h1 class="display-5 text-white">HOW TO ENGAGE WITH US</h1>
             </div>
             <div class="row g-5">
                 <div class="col-lg-3">
@@ -255,51 +248,7 @@
 
 
     <!-- Products Start -->
-    <div class="container-fluid py-5">
-        <div class="container">
-            <div class="mx-auto text-center mb-5" style="max-width: 500px;">
-                <h6 class="text-primary text-uppercase">Meet the Expert</h6>
-                <h1 class="display-5">Sharing Knowledge, Fostering a Community</h1>
-                <p>At PEMU Agrifood Academy, we believe in the power of sharing knowledge and fostering a community of learning. That's why we're excited to introduce "Meet the Expert," a special feature on our blog designed to connect you directly with industry experts.</p>
-            </div>
-           <div class="row"> 
-            <div class="col-md-4">
-                <div class="card bg-light"> 
-                    <div class="card-body">
-                 <h4 class="mb-3">Got Questions? We've Got Answers!</h4>
-                    <p>Whether you're a seasoned farmer, a budding agripreneur, or someone curious about regenerative agriculture, our experts are here to help. If you have questions about improving your farm's productivity, adopting sustainable practices, or anything related to agrifood business operations, we invite you to write to us. Our team will do their best to provide you with insightful, actionable answers.</p>
-                    <a href="#" class="btn btn-primary">Write to Us</a>
-                </div>
-              </div>
-           </div>
-                <div class="col-md-4">
-                    <div class="card bg-light"> 
-                        <div class="card-body ">
-                    <h4 class="mb-3">Free Resources Right at Your Fingertips</h4>
-                    <p>In addition to personalized advice, "Meet the Expert" will regularly feature free articles on a variety of topics crucial to your success. From the latest in regenerative agriculture techniques to innovative business strategies and beyond, our goal is to equip you with the knowledge and tools you need to thrive.</p>
-                    <p>Stay tuned for articles that could revolutionize your operations, and don't hesitate to reach out with your questions. Together, we can grow a sustainable future for all.</p>
-                    <a href="#" class="btn btn-primary">View Blog</a> 
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card bg-light"> 
-                <div class="card-body ">
-            <h4 class="mb-3">Join Our Community of Learners</h4>
-            <p>Becoming a member of PEMU Agrifood Academy not only connects you with our network of experts but also gives you access to a wealth of resources tailored to help your business flourish. If you're not already a member, consider joining today to take full advantage of "Meet the Expert" and many other benefits.</p>
-            <p>Let's embark on this journey of growth and learning together. Your success is our mission.</p>
-           
-            @auth
-                @else
-                <a href="/login" class="btn btn-primary">Join Us</a> 
-            @endauth
-           
-        </div>
-    </div>
-</div>
-            </div>
-        </div>
-    </div>
+   
     
     <!-- Products End -->
 
@@ -347,37 +296,38 @@
     <div class="container-fluid py-5">
         <div class="container">
             <div class="mx-auto text-center mb-5" style="max-width: 500px;">
-                <h6 class="text-primary text-uppercase">Our Blog</h6>
+                <h6 class="text-primary text-uppercase">The Blog</h6>
                 <h1 class="display-5">Latest Articles From Our Blog Post</h1>
             </div>
             <div class="row g-5">
+                @unless(count($latestblogs) == 0)
+                @foreach($latestblogs as $latestblog)
+                @if($latestblog->status == 'published')
                 <div class="col-lg-4">
                     <div class="blog-item position-relative overflow-hidden">
-                        <img class="img-fluid" src="img/blog-1.jpg" alt="">
-                        <a class="blog-overlay" href="">
-                            <h4 class="text-white">Lorem elitr magna stet eirmod labore amet</h4>
-                            <span class="text-white fw-bold">Jan 01, 2050</span>
+                        <img class="img-fluid" style="height: 400px;" src="{{$latestblog->image ? asset('storage/' . $latestblog->image) : asset('img/blog-1.jpg')}}" alt="">
+                        <a class="blog-overlay" href="{{ route('blog.detail', ['id' => $latestblog->id]) }}">
+                            <h4 class="text-white">{{$latestblog->title}}</h4>
+                            <span class="text-white fw-bold">{{$latestblog->created_at->diffForHumans()}}</span>
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                @elseif ($latestblog->status == 'staged')
+                <div class="col-md-6">
                     <div class="blog-item position-relative overflow-hidden">
-                        <img class="img-fluid" src="img/blog-2.jpg" alt="">
-                        <a class="blog-overlay" href="">
-                            <h4 class="text-white">Lorem elitr magna stet eirmod labore amet</h4>
-                            <span class="text-white fw-bold">Jan 01, 2050</span>
-                        </a>
+                        <p>No blogs posted</p>
                     </div>
                 </div>
+                @endif
+                @endforeach
+                @else
                 <div class="col-lg-4">
                     <div class="blog-item position-relative overflow-hidden">
-                        <img class="img-fluid" src="img/blog-3.jpg" alt="">
-                        <a class="blog-overlay" href="">
-                            <h4 class="text-white">Lorem elitr magna stet eirmod labore amet</h4>
-                            <span class="text-white fw-bold">Jan 01, 2050</span>
-                        </a>
+                        <p><p>No blogs Posted yet. Stay tuned!</p></p>
                     </div>
                 </div>
+                @endunless
+
             </div>
         </div>
     </div>

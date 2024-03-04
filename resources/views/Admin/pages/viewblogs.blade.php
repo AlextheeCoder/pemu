@@ -25,7 +25,7 @@
         <div class="row">
             <div class="col-xl-9 col-lg-12 col-md-6 col-sm-12 col-12">
                 <div class="card">
-                    <h5 class="card-header">Recent Blogs</h5>
+                    <h5 class="card-header">All Blogs</h5>
                     <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="table">
@@ -38,7 +38,9 @@
                                         <th class="border-0">Date Created</th>
                                         <th class="border-0">Author</th>
                                         <th class="border-0">Status</th>
-                                        <th class="border-0">Actions</th>
+                                        
+                                        <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -59,9 +61,14 @@
                                         <td><span class="badge-dot badge-brand mr-1"></span>{{$blog->status}} </td>
                                         @endif
                                         
-                                        <td> <a href="#" class="btn btn-danger">Delete</a> 
-                                            <a href="#" class="btn btn-success">Edit</a>
+                                        <td>
+                                            <form method="POST" action="{{ route('blog.delete', ['blog' => $blog->id]) }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-danger"> Delete</button>
+                                              </form>   
                                         </td>
+                                        <td><a href="{{ route('blog.edit', ['id' => $blog->id]) }}" class="btn btn-success">Edit</a></td>
                                     </tr>
                                     
                                     @endforeach

@@ -6,7 +6,9 @@ use Carbon\Carbon;
 use App\Models\Blog;
 use App\Models\User;
 use App\Models\Visit;
+use App\Models\Categorie;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
@@ -19,6 +21,7 @@ class AdminController extends Controller
         $providersCount = User::where('role', 'provider')->count();
        
         $blogs = Blog::latest('created_at')->limit(4)->get();
+        $mostviewdblogs = Blog::orderByDesc('views')->limit(5)->get();
 
         $currentMonthStart = Carbon::now()->startOfMonth();
         $currentMonthEnd = Carbon::now()->endOfMonth();
@@ -69,7 +72,7 @@ class AdminController extends Controller
         // Calculate percentage increase
         $farmersIncrease = ($farmersCountYesterday != 0) ? (($farmersCountToday - $farmersCountYesterday) / $farmersCountYesterday) * 100 : ($farmersCountToday != 0 ? 100 : 0);
         $providersIncrease = ($providersCountYesterday != 0) ? (($providersCountToday - $providersCountYesterday) / $providersCountYesterday) * 100 : ($providersCountToday != 0 ? 100 : 0);
-     
+
     
         return view("Admin.index", [
             'latestUsers' => $latestUsers,
@@ -81,10 +84,38 @@ class AdminController extends Controller
             'providersIncrease' => $providersIncrease,
             'blogs' =>$blogs,
             'userstoday'=>$userstoday,
+            'mostviewdblogs'=>$mostviewdblogs,
         ]);
 
         
     }
+
+    public function showFarmers(){
+    // Fetch users with the role "farmer"
+    $farmers = User::where('role', 'farmer')->get();
+
+    // Calculate age from date of birth
+    foreach ($farmers as $farmer) {
+        $farmer->age = Carbon::parse($farmer->dob)->age;
+    }
+
+    // Pass data to the view
+    return view('Admin.pages.view-farmers',['farmers' => $farmers]);
+}
+
+public function showProviders(){
+    // Fetch users with the role "farmer"
+    $providers = User::where('role', 'provider')->get();
+
+    // Calculate age from date of birth
+    foreach ($providers as $provider) {
+        $provider->age = Carbon::parse($provider->dob)->age;
+    }
+
+    // Pass data to the view
+    return view('Admin.pages.view-providers',['providers' => $providers]);
+    
+}
 
 
     public function create_blog(){
@@ -137,6 +168,30 @@ class AdminController extends Controller
         } else {
             return redirect('/pemu/admin/login')->with('error', 'Wrong credentials!!');
         }
+    }
+
+
+
+
+    public function category(){
+
+
+        return view('Admin.pages.category-create');
+    }
+
+
+
+    public function create_category(Request $request){
+
+        $formFields = $request->validate([
+            'name' => ['required' ],
+        ]);
+
+        Categorie::create($formFields);
+
+        return redirect('/pemu-admin')->with('message', 'Category created successfully!');
+
+
     }
 
 }

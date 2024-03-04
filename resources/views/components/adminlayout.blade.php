@@ -10,6 +10,7 @@
     <link rel="icon" type="image/x-icon" href="{{asset('img/plogo.png')}}">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="{{ asset('Admin/assets/vendor/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('Admin/assets/vendor/fonts/circular-std/style.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('Admin/assets/libs/css/style.css') }}">
@@ -126,10 +127,10 @@
                                 <div id="submenu-2" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="pages/cards.html">Farmers <span class="badge badge-secondary">New</span></a>
+                                            <a class="nav-link" href="/pemu/farmers/view">Farmers <span class="badge badge-secondary">New</span></a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="pages/general.html">Providers</a>
+                                            <a class="nav-link" href="/pemu/providers/view">Providers</a>
                                         </li>
                                     
                                     </ul>
@@ -143,9 +144,12 @@
                                             <a class="nav-link" href="/pemu/admin/view/blogs">View</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/pemu/create/blog">Create</a>
+                                            <a class="nav-link" href="/pemu/create/blog">Create Blog</a>
                                         </li>
-                                     
+                                        
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/pemu/category/create">Create Category</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </li>
@@ -204,6 +208,8 @@
             <!-- end footer -->
             <!-- ============================================================== -->
         </div>
+        <x-flash-message />
+        <x-flash-error />
         <!-- ============================================================== -->
         <!-- end main wrapper -->
         <!-- ============================================================== -->

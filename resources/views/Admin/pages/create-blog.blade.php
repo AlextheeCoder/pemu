@@ -63,16 +63,21 @@
                                                  <p class="text-red-500 text-xs mt-1">{{$message}}</p>
                                                 @enderror
                                             </div>
+                                           
+
                                             <div class="form-group">
                                                 <label for="input-select">Category</label>
-                                                <select class="form-control" id="input-select" name="category">
-                                                    <option>Crops</option>
-                                                    <option>Livestock</option>
+                                                <select class="form-control" id="input-select" name="category" required>
+                                                    @foreach(\App\Models\Categorie::all() as $category)
+                                                        <option value="{{ $category->name}}">{{ $category->name }}</option>
+                                                    @endforeach
                                                 </select>
                                                 @error('category')
-                                                    <p class="text-red-500 text-xs mt-1">{{$message}}</p>
+                                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                                 @enderror
                                             </div>
+                                            
+
                                             <div class="form-group">
                                                 <label for="inputText3" class="col-form-label">Blog Tags</label>
                                                 <input id="inputText3" type="text" class="form-control" name="tags"  placeholder="Example: Farming, Accounting, Marketing, etc">
@@ -114,12 +119,28 @@
  
  <script src="https://cdn.quilljs.com/1.1.3/quill.js"></script>
  <script>
+    const toolbarOptions = [
+                ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                ['link', 'image', 'video', 'formula'],
+
+                [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
+                [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+                [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+                [{ 'direction': 'rtl' }],                         // text direction
+
+                [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+                [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+                [{ 'font': [] }],
+                [{ 'align': [] }],
+
+                ['clean']                                         // remove formatting button
+                ];
      const quill = new Quill('#exampleFormControlTextarea1', {
        modules: {
-         toolbar: [
-           [{ header: [1, 2, false] }],
-           ['bold', 'italic', 'underline' , 'image']
-         ],
+        toolbar: toolbarOptions,
        },
        placeholder: 'Write your Blog here...',
        theme: 'snow'
