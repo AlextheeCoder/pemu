@@ -21,6 +21,9 @@ return new class extends Migration
             $table->longText('content');
             $table->string('status');
             $table->integer('views')->default(0)->unsigned();
+            $table->integer('likes')->default(0)->unsigned();
+            $table->integer('dislikes')->default(0)->unsigned();
+            $table->integer('shares')->default(0)->unsigned();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

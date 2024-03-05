@@ -27,7 +27,7 @@ Route::get('/about', function () {
 
 Route::get('/blogs', [BlogController::class, 'blogs'] )->name('blogs');
 
-Route::get('blog/{id}', [BlogController::class, 'blogdetail'])->name('blog.detail');
+Route::get('blog/post/{id}', [BlogController::class, 'blogdetail'])->name('blog.detail');
 
 Route::get('/contact', function () {
     return view('pages.contact');
@@ -55,6 +55,9 @@ Route::post('/authenticate', [UserController::class, 'authenticate']);
 
 //Store Comments
 Route::post('/blog/{blog}/comments', [BlogController::class, 'storeComment'])->name('comments.store');
+
+//Store Likes/dislikes
+Route::post('/like-dislike', [BlogController::class, 'handleLikeDislike'])->name('like-dislike');
 
 //Store Contacts
 Route::post('/pemu/contact/store', [UserController::class, 'store_contacts']);

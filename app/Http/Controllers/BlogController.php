@@ -287,6 +287,21 @@ public function popularCategories()
     
         return redirect()->back()->with('success', 'Comment added successfully!');
     }
+
+    public function handleLikeDislike(Request $request){
+            $action = $request->input('action');
+            $blogId = $request->input('blog_id'); // Assuming you have a blog_id parameter
+            $blog = Blog::findOrFail($blogId);
+            if ($action === 'like') {
+                $blog->increment('likes');
+            } elseif ($action === 'dislike') {
+                $blog->increment('dislikes');
+            }
+            elseif ($action === 'share') {
+                $blog->increment('shares');
+            }
+            return response()->json(['success' => true]);
+}
     
 }
 

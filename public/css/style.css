@@ -474,4 +474,26 @@ height: 100%;
   .message {
     animation: flash 1s ease-in-out;
   } 
+
+  
+  .likes button{
+    cursor: pointer;
+    outline: 0;
+    color: #AAA;
+  
+  }
+
+  
+  
+  .likes .btn:focus {
+    outline: none;
+  }
+  
+  .likes .green{
+    color: green;
+  }
+  
+  .likes .red{
+    color: red;
+  }
   

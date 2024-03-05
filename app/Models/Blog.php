@@ -16,6 +16,9 @@ class Blog extends Model
         'content',
         'image',
         'status',
+        'likes',
+        'dislikes',
+
     ];
 
     public function user()

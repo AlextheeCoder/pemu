@@ -40,6 +40,7 @@
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/modal.css') }}" rel="stylesheet">
     
   <script src="//unpkg.com/alpinejs" defer></script>
 

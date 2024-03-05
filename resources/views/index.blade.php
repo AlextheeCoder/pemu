@@ -165,7 +165,6 @@
     <div class="container-fluid bg-primary feature py-5 pb-lg-0 my-5">
         <div class="container py-5 pb-lg-0">
             <div class="mx-auto text-center mb-3 pb-2" style="max-width: 500px;">
-                <h6 class="text-uppercase text-secondary">ENGAGEMENT PROCESS</h6>
                 <h1 class="display-5 text-white">HOW TO ENGAGE WITH US</h1>
             </div>
             <div class="row g-5">

@@ -101,7 +101,7 @@
                         @foreach($latestblogs as $latestblog)
                         <div class="d-flex overflow-hidden mb-3">
                             <img class="img-fluid flex-shrink-0" src="{{$latestblog->image ? asset('storage/' . $latestblog->image) : asset('img/blog-1.jpg')}}" style="width: 75px;" alt="">
-                            <a href="{{ route('blog.detail', ['id' => $latestblog->id]) }}" class="d-flex align-items-center bg-white text-dark fs-5 fw-bold px-3 mb-0">{{$latestblog->title}}
+                            <a href="{{ route('blog.detail', ['id' => $latestblog->id]) }}" class="d-flex align-items-center bg-white text-dark fs-5 fw-bold px-3 mb-0"> {{ strtok($latestblog->title, ' ') }} {{ strtok(' ') }} ...
                             </a>
                         </div>
                         @endforeach
