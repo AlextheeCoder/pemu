@@ -20,33 +20,30 @@ class BlogController extends Controller
     //
 
     public function index(Request $request){
-
- /* 
-        $ip = $request->ip();
+        $ip = $request->getClientIp();
+    
         if ($ip == '127.0.0.1' || $ip == '::1') {
-            
             $ip = 'localhost';
         }
-
-       
-        $location=Location::get($ip);
-        $city=$location->cityName;
-        $country=$location->countryName;
-        $countrycode=$location->countryCode;
-        
+    
+        $location = Location::get($ip);
+        $city = $location->cityName;
+        $country = $location->countryName;
+        $countrycode = $location->countryCode;
+    
         Visit::create([
             'visited_on' => Carbon::today(),
             'ip_address' => $ip,
             'country_name' => $country, 
             'city' => $city,
             'country_code' => $countrycode
-
         ]);
-        */
+    
         $latestblogs = Blog::latest('created_at')->limit(3)->get();
        
-        return view('index', ['latestblogs'=>$latestblogs]); 
+        return view('index', ['latestblogs' => $latestblogs]); 
     }
+    
 
 
 
@@ -171,6 +168,13 @@ public function popularCategories()
         elseif ($request->has('category')) {
             $category = $request->input('category');
             $blogs = Blog::where('category', $category)->paginate(10);
+        } 
+        elseif ($request->has('search')) {
+            $search = $request->input('search');
+            $blogs = Blog::where('title', 'like', '%' . $search . '%')
+                                ->orWhere('content', 'like', '%' . $search . '%')
+                                ->orWhere('category', 'like', '%' . $search . '%')
+                                ->paginate(10);
         } 
         else {
             $blogs = Blog::paginate(10);

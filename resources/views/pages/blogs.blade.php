@@ -64,11 +64,14 @@
             <div class="col-lg-4">
                 <!-- Search Form Start -->
                 <div class="mb-5">
-                    <div class="input-group">
-                        <input type="text" class="form-control p-3" placeholder="Keyword">
-                        <button class="btn btn-primary px-4"><i class="bi bi-search"></i></button>
-                    </div>
+                    <form action="/blogs" method="GET">
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control p-3" placeholder="Keyword" value="{{ request('search') }}">
+                            <button type="submit" class="btn btn-primary px-4"><i class="bi bi-search"></i></button>
+                        </div>
+                    </form>
                 </div>
+                
                 <!-- Search Form End -->
 
                 <!-- Category Start -->

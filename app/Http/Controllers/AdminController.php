@@ -6,11 +6,12 @@ use Carbon\Carbon;
 use App\Models\Blog;
 use App\Models\User;
 use App\Models\Visit;
-use App\Models\Categorie;
 use App\Models\Contact;
+use App\Models\Categorie;
 use App\Models\Newsletter;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
@@ -51,6 +52,73 @@ class AdminController extends Controller
         }
 
 
+        //visits by country
+        $totalVisits = Visit::count();
+
+        $topLocations = Visit::select('country_name', 'country_code', 'city', DB::raw('count(*) as visits_count'))
+            ->groupBy('country_name', 'city', 'country_code')
+            ->orderByDesc('visits_count')
+            ->limit(5)
+            ->get();
+        
+        $topLocationsWithPercentage = $topLocations->map(function ($location) use ($totalVisits) {
+            $percentage = ($location->visits_count / $totalVisits) * 100;
+            $location->percentage = round($percentage, 2);
+            return $location;
+        });
+
+        //Views Trends
+        $totalViewsLastSixMonths = Blog::where('created_at', '>=', now()->subMonths(6))
+        ->sum('views');
+        $viewsTrendData = DB::table('blogs')
+            ->select(DB::raw('SUM(views) as total_views'), 'created_at')
+            ->where('created_at', '>=', now()->subDays(7))
+            ->groupBy('created_at')
+            ->orderBy('created_at')
+            ->get();
+
+        $viewsTrendData = $viewsTrendData->pluck('total_views');
+
+        //Farmer Trends
+                $farmersTrendData = DB::table('users')
+                ->select(DB::raw('COUNT(id) as new_farmers_count'), 'created_at')
+                ->where('role', 'farmer')
+                ->where('created_at', '>=', now()->subDays(7))
+                ->groupBy('created_at')
+                ->orderBy('created_at')
+                ->get();
+
+        $farmersTrendData = $farmersTrendData->pluck('new_farmers_count');
+        //Provider Trends
+        $ProvidersTrendData = DB::table('users')
+        ->select(DB::raw('COUNT(id) as new_providers_count'), 'created_at')
+        ->where('role', 'provider')
+        ->where('created_at', '>=', now()->subDays(7))
+        ->groupBy('created_at')
+        ->orderBy('created_at')
+        ->get();
+
+        $ProvidersTrendData = $ProvidersTrendData->pluck('new_providers_count');
+
+        //Visits Trends
+        $visitsTrendData = DB::table('visits')
+            ->select(DB::raw('COUNT(id) as total_visits'), 'visited_on')
+            ->where('visited_on', '>=', now()->subDays(7))
+            ->groupBy('visited_on')
+            ->orderBy('visited_on')
+            ->get();
+
+        $visitsTrendData = $visitsTrendData->pluck('total_visits');
+
+
+        //Blog view calaculate
+        $viewsYesterday = Blog::whereDate('created_at', Carbon::yesterday())->sum('views');
+
+        // Get blog views for today
+        $viewsToday = Blog::whereDate('created_at', Carbon::today())->sum('views');
+    
+        // Calculate percentage change
+        $BlogpercentageChange =($viewsYesterday != 0) ? (($viewsToday - $viewsYesterday) / $viewsYesterday) * 100 : ($viewsToday != 0 ? 100 : 0);
         
 
         //Latest users
@@ -87,6 +155,13 @@ class AdminController extends Controller
             'blogs' =>$blogs,
             'userstoday'=>$userstoday,
             'mostviewdblogs'=>$mostviewdblogs,
+            'topLocationsWithPercentage' => $topLocationsWithPercentage,
+            'totalViewsLastSixMonths' => $totalViewsLastSixMonths,
+            'viewsTrendData' => $viewsTrendData,
+            'farmersTrendData'=>$farmersTrendData,
+            'ProvidersTrendData'=>$ProvidersTrendData,
+            'visitsTrendData'=>$visitsTrendData,
+            'BlogpercentageChange'=>$BlogpercentageChange,
         ]);
 
         
