@@ -50,32 +50,26 @@
 
    
    <!-- Topbar Start -->
-<div class="container-fluid px-5 d-none d-lg-block">
+   <div class="container-fluid px-0 d-none d-lg-block">
     <div class="row gx-5 py-3 align-items-center">
-        <div class="col-lg-3">
-            <div class="d-flex align-items-center justify-content-start">
-                <i class="bi bi-envelope-open-fill fs-1 text-primary me-2"></i>
-                <h2 class="mb-0">info@pemuagrifood.com</h2>
-            </div>
+        <div class="col-lg-3 d-flex align-items-center justify-content-start">
+            <a href="/" class="navbar-brand ms-lg-5">
+                <img src="{{asset('img/plogo.png')}}" alt="Your Logo" height="180">
+            </a>
         </div>
         <div class="col-lg-6">
             <div class="d-flex align-items-center justify-content-center">
-                <!-- Add your logo image here -->
-                <a href="/" class="navbar-brand ms-lg-5">
-                    <img src="{{asset('img/plogo.png')}}" alt="Your Logo" height="50">
-            
-                </a>
+               <h2>Growing Together, Regenerating the Future</h2>
             </div>
         </div>
-        <div class="col-lg-3">
-            <div class="d-flex align-items-center justify-content-end">
-                <a class="btn btn-primary btn-square rounded-circle me-2" href="https://twitter.com/"><i class="fab fa-twitter"></i></a>
-                <a class="btn btn-primary btn-square rounded-circle me-2" href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
-                <a class="btn btn-primary btn-square rounded-circle me-2" href="https://www.linkedin.com/"><i class="fab fa-linkedin-in"></i></a>
-            </div>
+        <div class="col-lg-3 d-flex align-items-center justify-content-end">
+            <a class="btn btn-primary btn-square rounded-circle me-2" href="https://twitter.com/"><i class="fab fa-twitter"></i></a>
+            <a class="btn btn-primary btn-square rounded-circle me-2" href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
+            <a class="btn btn-primary btn-square rounded-circle me-2" href="https://www.linkedin.com/"><i class="fab fa-linkedin-in"></i></a>
         </div>
     </div>
 </div>
+
 <!-- Topbar End -->
 
 
