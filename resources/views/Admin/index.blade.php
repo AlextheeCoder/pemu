@@ -147,7 +147,7 @@
                                                         <td>
                                                             <div class="m-r-10"><img src="{{$blog->image ? asset('storage/' . $blog->image) : asset('Admin/assets/images/product-pic.jpg')}}" alt="user" class="rounded" width="45"></div>
                                                         </td>
-                                                        <td>{{$blog->title}} </td>
+                                                        <td>{{ strtok($blog->title, ' ') }} {{ strtok(' ') }} ...</td>
                                                         <td>{{$blog->views}}</td>
                                                         <td>{{$blog->created_at}}</td>
                                                         <td>{{$blog->user->firstname}}</td>

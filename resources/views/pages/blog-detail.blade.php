@@ -24,13 +24,14 @@
                     
                     <div class="row g-5 mb-5">
                         <div class="col-md-12">
+                            <h6 class="mb-4">{{$blog->category}}</h6>
                             <img class="img-fluid w-100" src="{{$blog->image ? asset('storage/' . $blog->image) : asset('img/blog-1.jpg')}}" alt="" style="max-height: 500px">
                         </div>
                     </div>
                     
                     
                     <h1 class="mb-4">{{$blog->title}}</h1>
-                    <h5 class="mb-4">{{$blog->category}}</h5>
+                    
                     <p> {!! $updatedBlogContent !!}</p>
                 </div>
                 <!-- Blog Detail End -->

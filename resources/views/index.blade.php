@@ -269,7 +269,7 @@
                     <div class="row g-0">
                         <div class="col-10">
                             <div class="position-relative">
-                                <img class="img-fluid w-100" src="{{asset ('img/founder.jpg')}}" alt="">
+                                <img class="img-fluid w-100 h-100" src="{{asset ('img/founder.jpg')}}" alt="">
                                 <div class="position-absolute start-0 bottom-0 w-100 py-3 px-4" style="background: rgba(5,106,59);">
                                     <h4 class="text-white">Peter Muthee</h4>
                                     <span class="text-white">Founder</span>
