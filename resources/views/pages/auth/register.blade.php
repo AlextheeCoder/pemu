@@ -34,11 +34,18 @@
 
                   
                  <!-- Select input -->
+       
                  <div class="form-outline mb-4">
                     <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="role" required>
                         <option selected>I am a ...</option>
                         <option value="farmer">Farmer</option>
-                        <option value="provider">Provider</option>
+                        <option value="provider">Input & services Supplier</option>
+                        <option value="food_company">Food company </option>
+                        <option value="education_institution"> Education institution</option>
+                        <option value="gov_agency">Government agency </option>
+                        <option value="development_organization">Development organization</option>
+                        <option value="other">Other</option>
+
                       </select>
                     <label class="form-label" for="form3Example3">I am a:</label>
                   </div>

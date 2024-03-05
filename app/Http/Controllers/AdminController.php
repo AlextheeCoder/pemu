@@ -18,11 +18,6 @@ class AdminController extends Controller
 {
     //
     public function index(){
-        
-        //Count
-        $farmersCount = User::where('role', 'farmer')->count();
-        $providersCount = User::where('role', 'provider')->count();
-       
         $blogs = Blog::latest('created_at')->limit(4)->get();
         $mostviewdblogs = Blog::orderByDesc('views')->limit(5)->get();
 
@@ -79,26 +74,18 @@ class AdminController extends Controller
 
         $viewsTrendData = $viewsTrendData->pluck('total_views');
 
-        //Farmer Trends
-                $farmersTrendData = DB::table('users')
-                ->select(DB::raw('COUNT(id) as new_farmers_count'), 'created_at')
-                ->where('role', 'farmer')
-                ->where('created_at', '>=', now()->subDays(7))
-                ->groupBy('created_at')
-                ->orderBy('created_at')
-                ->get();
-
-        $farmersTrendData = $farmersTrendData->pluck('new_farmers_count');
-        //Provider Trends
-        $ProvidersTrendData = DB::table('users')
-        ->select(DB::raw('COUNT(id) as new_providers_count'), 'created_at')
-        ->where('role', 'provider')
-        ->where('created_at', '>=', now()->subDays(7))
+         // Get the user creation data for the last week
+        $userCreationTrendData = DB::table('users')
+        ->select(DB::raw('COUNT(*) as total_users'), 'created_at')
+        ->where('created_at', '>=', now()->subWeek())
         ->groupBy('created_at')
         ->orderBy('created_at')
         ->get();
 
-        $ProvidersTrendData = $ProvidersTrendData->pluck('new_providers_count');
+         // Pluck the total users from the result
+         $userCreationTrendData = $userCreationTrendData->pluck('total_users');
+
+        
 
         //Visits Trends
         $visitsTrendData = DB::table('visits')
@@ -119,49 +106,35 @@ class AdminController extends Controller
     
         // Calculate percentage change
         $BlogpercentageChange =($viewsYesterday != 0) ? (($viewsToday - $viewsYesterday) / $viewsYesterday) * 100 : ($viewsToday != 0 ? 100 : 0);
-        
 
-        //Latest users
-        $latestUsers = User::orderBy('created_at', 'desc')->take(8)->get();
-        // Get today's date and yesterday's date
-        $today = Carbon::now()->toDateString();
+        $totalUsers = DB::table('users')->count();
+
+        // Get yesterday's date
         $yesterday = Carbon::yesterday()->toDateString();
-    
 
-        // Get counts for today
-        $userstoday = User::whereDate('created_at', $today)->count();
-        $farmersCountToday = User::where('role', 'farmer')->whereDate('created_at', $today)->count();
-        $providersCountToday = User::where('role', 'provider')->whereDate('created_at', $today)->count();
-     
-    
-        // Get counts for yesterday
-        $farmersCountYesterday = User::where('role', 'farmer')->whereDate('created_at', $yesterday)->count();
-        $providersCountYesterday = User::where('role', 'provider')->whereDate('created_at', $yesterday)->count();
-    
-    
-        // Calculate percentage increase
-        $farmersIncrease = ($farmersCountYesterday != 0) ? (($farmersCountToday - $farmersCountYesterday) / $farmersCountYesterday) * 100 : ($farmersCountToday != 0 ? 100 : 0);
-        $providersIncrease = ($providersCountYesterday != 0) ? (($providersCountToday - $providersCountYesterday) / $providersCountYesterday) * 100 : ($providersCountToday != 0 ? 100 : 0);
+        // Get the number of users from yesterday
+        $usersYesterday = DB::table('users')
+            ->whereDate('created_at', $yesterday)
+            ->count();
 
+        // Calculate the percentage increase
+        $percentageIncrease = ($usersYesterday > 0) ? (($totalUsers - $usersYesterday) / $usersYesterday) * 100 : 0;
+
+       
     
         return view("Admin.index", [
-            'latestUsers' => $latestUsers,
-            'farmersCount' => $farmersCount,
-            'providersCount' => $providersCount,
             'numberOfVisitors' =>$numberOfVisitors,
-            'farmersIncrease' => $farmersIncrease,
             'percentageChange'=>$percentageChange,
-            'providersIncrease' => $providersIncrease,
             'blogs' =>$blogs,
-            'userstoday'=>$userstoday,
             'mostviewdblogs'=>$mostviewdblogs,
             'topLocationsWithPercentage' => $topLocationsWithPercentage,
             'totalViewsLastSixMonths' => $totalViewsLastSixMonths,
             'viewsTrendData' => $viewsTrendData,
-            'farmersTrendData'=>$farmersTrendData,
-            'ProvidersTrendData'=>$ProvidersTrendData,
             'visitsTrendData'=>$visitsTrendData,
             'BlogpercentageChange'=>$BlogpercentageChange,
+            'totalUsers' => $totalUsers,
+            'percentageIncrease' => $percentageIncrease,
+            'userCreationTrendData'=>$userCreationTrendData,
         ]);
 
         

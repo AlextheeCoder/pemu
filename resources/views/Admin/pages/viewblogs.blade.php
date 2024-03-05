@@ -35,6 +35,9 @@
                                         <th class="border-0">Image</th>
                                         <th class="border-0">Blog Title</th>
                                         <th class="border-0">Views</th>
+                                        <th class="border-0">Likes</th>
+                                        <th class="border-0">Dislikes</th>
+                                        <th class="border-0">Shares</th>
                                         <th class="border-0">Date Created</th>
                                         <th class="border-0">Author</th>
                                         <th class="border-0">Status</th>
@@ -53,6 +56,9 @@
                                         </td>
                                         <td>{{$blog->title}} </td>
                                         <td>{{$blog->views}}</td>
+                                        <td>{{$blog->likes}}</td>
+                                        <td>{{$blog->dislikes}}</td>
+                                        <td>{{$blog->shares}}</td>
                                         <td>{{$blog->created_at}}</td>
                                         <td>{{$blog->user->firstname}}</td>
                                         @if ($blog->status == "published")

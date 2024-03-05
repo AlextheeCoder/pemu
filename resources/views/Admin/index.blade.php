@@ -52,18 +52,18 @@
                             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h5 class="text-muted">All Farmers</h5>
+                                        <h5 class="text-muted">Registerd Users</h5>
                                         <div class="metric-value d-inline-block">
-                                            <h1 class="mb-1">{{$farmersCount}}</h1>
+                                            <h1 class="mb-1">{{$totalUsers}}</h1>
                                         </div>
                                         <div class="metric-label d-inline-block float-right text-success font-weight-bold">
 
-                                            @if ( $farmersIncrease > 0)
-                                            <span><i class="fa fa-fw fa-arrow-up"></i></span><span>{{$farmersIncrease}}%</span>
-                                            @elseif ($farmersIncrease == 0)
+                                            @if ( $percentageIncrease > 0)
+                                            <span><i class="fa fa-fw fa-arrow-up"></i></span><span>{{$percentageIncrease}}%</span>
+                                            @elseif ($percentageIncrease == 0)
                                             <span>N/A</span>
                                             @else
-                                            <span><i style="color: red" class="fa fa-fw fa-arrow-down"></i></span><span style="color: red;">{{$farmersIncrease}}%</span>
+                                            <span><i style="color: red" class="fa fa-fw fa-arrow-down"></i></span><span style="color: red;">{{$percentageIncrease}}%</span>
                                             @endif
 
                                             
@@ -72,26 +72,7 @@
                                     <div id="sparkline-revenue2"></div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="text-muted">All Providers</h5>
-                                        <div class="metric-value d-inline-block">
-                                            <h1 class="mb-1">{{$providersCount}}</h1>
-                                        </div>
-                                        <div class="metric-label d-inline-block float-right text-primary font-weight-bold">
-                                            @if ( $providersIncrease > 0)
-                                            <span><i class="fa fa-fw fa-arrow-up"></i></span><span>{{$providersIncrease}}%</span>
-                                            @elseif ($providersIncrease == 0)
-                                            <span>N/A</span>
-                                            @else
-                                            <span><i style="color: red" class="fa fa-fw fa-arrow-down"></i></span><span style="color: red;">{{$providersIncrease}}%</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div id="sparkline-revenue3"></div>
-                                </div>
-                            </div>
+                        
                             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
                                 <div class="card">
                                     <div class="card-body">
@@ -101,7 +82,7 @@
                                         </div>
                                         <div class="metric-label d-inline-block float-right text-secondary font-weight-bold">
                                             @if ( $BlogpercentageChange > 0)
-                                            <span><i class="fa fa-fw fa-arrow-up"></i></span><span>{{$BlogpercentageChange}}%</span>
+                                            <span><i class="fa fa-fw fa-arrow-up" style="color: green"></i></span><span  style="color: green">{{$BlogpercentageChange}}%</span>
                                             @elseif ($BlogpercentageChange == 0)
                                             <span>N/A</span>
                                             @else
@@ -315,9 +296,9 @@ titleElements.forEach(element => {
 <script>
     $(document).ready(function() {
     var viewsTrendData = @json($viewsTrendData);
-    var farmersTrendData = @json($farmersTrendData);
+    var userCreationTrendData = @json($userCreationTrendData);
     console.log(viewsTrendData);
-    console.log(farmersTrendData);
+    console.log(userCreationTrendData);
 
     $("#sparkline-revenue4").sparkline(viewsTrendData, {
             type: 'line',
@@ -341,9 +322,9 @@ titleElements.forEach(element => {
 
 <script>
      $(document).ready(function() {
-    var farmersTrendData = @json($farmersTrendData);
-    console.log(farmersTrendData);
-    $("#sparkline-revenue2").sparkline(farmersTrendData, {
+    var userCreationTrendData = @json($userCreationTrendData);
+    console.log(userCreationTrendData);
+    $("#sparkline-revenue2").sparkline(userCreationTrendData, {
     type: 'line',
     width: '99.5%',
     height: '100',
@@ -364,28 +345,7 @@ titleElements.forEach(element => {
 
 </script>
 
-<script>
-    $(document).ready(function() {
-   var ProvidersTrendData = @json($ProvidersTrendData);
-   console.log(ProvidersTrendData);
-   $("#sparkline-revenue3").sparkline(ProvidersTrendData, {
-        type: 'line',
-        width: '99.5%',
-        height: '100',
-        lineColor: '#25d5f2',
-        fillColor: '#dffaff',
-        lineWidth: 2,
-        spotColor: undefined,
-        minSpotColor: undefined,
-        maxSpotColor: undefined,
-        highlightSpotColor: undefined,
-        highlightLineColor: undefined,
-        resize: true
-    });
 
-});
-
-</script>
 
 <script>
     $(document).ready(function() {

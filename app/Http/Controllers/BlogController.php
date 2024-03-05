@@ -209,6 +209,7 @@ public function popularCategories()
 
 
         $latestblogs = Blog::latest('created_at')->limit(4)->get();
+        $bloggers=Blog::latest('created_at')->limit(3)->get();
         $blog = Blog::find($id);
         $comments = $blog->comments()->whereNull('parent_id')->latest()->get();
     
@@ -251,6 +252,7 @@ public function popularCategories()
         return view('pages.blog-detail', [
             'blog' => $blog, 
             'latestblogs'=>$latestblogs, 
+            'bloggers'=>$bloggers,
             'updatedBlogContent'=>$updatedBlogContent,
             'popularTags'=>$popularTags,
             'comments' => $comments,

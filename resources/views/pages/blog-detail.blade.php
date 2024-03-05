@@ -103,44 +103,7 @@
                     
                 </div>
               
-              <!-- Similar Blogs Section Start -->
-                <div class="container-fluid py-5">
-                    <div class="container">
-                        <div class="mx-auto text-center mb-5" style="max-width: 500px;">
-                            <h6 class="text-primary text-uppercase">Similar Blogs</h6>
-                            <h5 class="display-5" style="font-style: underline;">Explore More Articles</h5>
-                        </div>
-                        <div class="row g-5">
-                            @php
-                                $similarBlogs = $latestblogs->reject(function ($latestblog) use ($blog) {
-                                    return $blog->id == $latestblog->id;
-                                });
-                            @endphp
-                        
-                            @if ($similarBlogs->count() > 0)
-                                @foreach ($similarBlogs as $latestblog)
-                                    <div class="col-lg-6">
-                                        <div class="blog-item position-relative overflow-hidden">
-                                            <img class="img-fluid" style="height: 300px" src="{{ $latestblog->image ? asset('storage/' . $latestblog->image) : asset('img/blog-1.jpg') }}" alt="">
-                                            <a class="blog-overlay" href="{{ route('blog.detail', ['id' => $latestblog->id]) }}">
-                                                <h4 class="text-white">{{ $latestblog->title }}</h4>
-                                                <span class="text-white fw-bold">{{ $latestblog->created_at->diffForHumans() }}</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            @else
-                                <div class="col-lg-6">
-                                    <div class="blog-item position-relative overflow-hidden">
-                                        <p>No similar blogs found.</p>
-                                    </div>
-                                </div>
-                            @endif
-                        </div>
-                        
-                    </div>
-                </div>
-                <!-- Similar Blogs Section End -->
+              
 
 
                 
@@ -254,6 +217,44 @@
                 </div>
                
                 <!-- Comment Form End -->
+               <!-- Similar Blogs Section Start -->
+<div class="container-fluid py-5">
+    <div class="container">
+        <div class="mx-auto text-center mb-5" style="max-width: 500px;">
+            <h6 class="text-primary text-uppercase">Similar Blogs</h6>
+            <h5 class="display-5" style="font-style: underline;">Explore More Articles</h5>
+        </div>
+        <div class="row g-5">
+            @php
+                $similarBlogs = $bloggers->reject(function ($blogger) use ($blog) {
+                    return $blog->id == $blogger->id;
+                });
+            @endphp
+        
+            @if ($similarBlogs->count() > 0)
+                @foreach ($similarBlogs as $blogger)
+                    <div class="col-lg-4">
+                        <div class="blog-item position-relative overflow-hidden">
+                            <img class="img-fluid" style="width: 400px; height:300px;" src="{{ $blogger->image ? asset('storage/' . $blogger->image) : asset('img/blog-1.jpg') }}" alt="">
+                            <a class="blog-overlay" href="{{ route('blog.detail', ['id' => $blogger->id]) }}">
+                                <h4 class="text-white">{{ strtok($blogger->title, ' ') }} {{ strtok(' ') }} ...</h4>
+                                <span class="text-white fw-bold">{{ $blogger->created_at->diffForHumans() }}</span>
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <div class="col-lg-4">
+                    <div class="blog-item position-relative overflow-hidden">
+                        <p>No similar blogs found.</p>
+                    </div>
+                </div>
+            @endif
+        </div>
+    </div>
+</div>
+<!-- Similar Blogs Section End -->
+
             </div>
 
             <!-- Sidebar Start -->
