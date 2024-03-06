@@ -16,13 +16,13 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
 
          \App\Models\User::factory()->create([
-            'firstname' => 'Admin',
-            'lastname' => 'Admin',
+            'firstname' => 'Peter',
+            'lastname' => 'Muthee',
             'dob' => 2001-03-01,
             'role' => 'admin',
-            'phone' => '07123456',
-            'password' => Hash::make('admin'),
-            'email' => 'admin@pemu.com',
+            'phone' => '0722203396',
+            'password' => Hash::make('@Pemu24agrifood#'),
+            'email' => 'admin@pemuagrifood.com',
 
          ]);
     }
