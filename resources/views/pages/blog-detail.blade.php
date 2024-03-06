@@ -24,7 +24,12 @@
                     
                     <div class="row g-5 mb-5">
                         <div class="col-md-12">
-                            <h6 class="mb-4">{{ ucfirst($blog->category) }}</h6>
+                            <div>
+                                <p class="no-bottom-margin" style="font-style: italic">{{$blog->created_at->diffForHumans()}}</p>
+                                <h6 class="mb-4 close-spacing">{{ ucfirst($blog->category) }}</h6>
+                            </div>
+                           
+                           
                             <img class="img-fluid w-100" src="{{$blog->image ? asset('storage/' . $blog->image) : asset('img/blog-1.jpg')}}" alt="" style="max-height: 500px">
                         </div>
                     </div>
