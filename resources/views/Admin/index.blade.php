@@ -9,7 +9,7 @@
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="page-header">
-                                <h2 class="pageheader-title">PEMU Dashboard</h2>
+                                <h2 class="pageheader-title">PEMU ADMIN Dashboard</h2>
                                 <div class="page-breadcrumb">
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb">
@@ -189,7 +189,7 @@
                                                     @unless(count($mostviewdblogs) == 0)
                                                     @foreach ($mostviewdblogs as $mostviewdblog)
                                                         <tr>
-                                                            <td class="truncate-title"><a href="{{ route('blog.detail', ['id' => $mostviewdblog->id]) }}">{{ $mostviewdblog->title }}</a></td>
+                                                            <td class="truncate-title"><a href="{{ route('blog.detail', ['slug' => $mostviewdblog->slug]) }}">{{ $mostviewdblog->title }}</a></td>
                                                             <td>{{ $mostviewdblog->views }}</td>
                                                         </tr>
                                                     @endforeach

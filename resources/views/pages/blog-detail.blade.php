@@ -89,7 +89,7 @@
                                         <div class="field d-flex align-items-center justify-content-between" target="_blank">
                                             <span class="fas fa-link text-center"></span>
                                             <!-- Display the current blog URL -->
-                                            <input type="text" value="{{ route('blog.detail', ['slug' => $blog->slug]) }}" readonly>
+                                            <input type="text" id="blogUrl" value="{{ route('blog.detail', ['slug' => $blog->slug]) }}" readonly>
                                             <button id="copyButton">Copy</button>
                                         </div>
                                     </div>
@@ -386,25 +386,27 @@
         });
       </script>
 
-      <script>
-        document.addEventListener('DOMContentLoaded',function(e){
-            let field = document.querySelector('.field');
-            let input = document.querySelector('input');
-            let copyBtn = document.querySelector('.field button');
-
-            copyBtn.onclick = () =>{
-                input.select();
-                if(document.execCommand("copy")){
-                    field.classList.add('active');
-                    copyBtn.innerText = 'Copied';
-                    setTimeout(()=>{
-                        field.classList.remove('active');
-                        copyBtn.innerText = 'Copy';
-                    },3500)
-                }
-            }
-        })
-      </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function (e) {
+                let field = document.querySelector('.field');
+                let input = document.getElementById('blogUrl'); // Use the ID to select the input element
+                let copyBtn = document.querySelector('.field button');
+                copyBtn.addEventListener('click', async () => {
+                    console.log("Input value:", input.value);
+                    try {
+                        await navigator.clipboard.writeText(input.value);
+                        field.classList.add('active');
+                        copyBtn.innerText = 'Copied';
+                        setTimeout(() => {
+                            field.classList.remove('active');
+                            copyBtn.innerText = 'Copy';
+                        }, 3500)
+                    } catch (err) {
+                        console.error('Failed to copy: ', err);
+                    }
+                });
+            })
+        </script>
 
       <!-- Include the Clipboard.js library for copying to clipboard -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
