@@ -86,10 +86,10 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav mx-auto py-0" style="display: flex; justify-content: space-between;">
                 <a href="/" class="nav-item nav-link {{ request()->is('/') ? 'active' : '' }}">Home</a>
-                <a href="/about" class="nav-item nav-link {{ request()->is('about') ? 'active' : '' }}">About</a>
-                <a href="/services" class="nav-item nav-link {{ request()->is('services') ? 'active' : '' }}">Services</a>
-                <a href="/blogs" class="nav-item nav-link {{ request()->is('blogs') ? 'active' : '' }}">Blogs</a>
-                <a href="/contact" class="nav-item nav-link {{ request()->is('contact') ? 'active' : '' }}">Contact</a>
+                <a href="{{ route('about') }}" class="nav-item nav-link {{ request()->is('about') ? 'active' : '' }}">About</a>
+                <a href="{{ route('services') }}" class="nav-item nav-link {{ request()->is('services') ? 'active' : '' }}">Services</a>
+                <a href="{{ route('blogs') }}" class="nav-item nav-link {{ request()->is('blogs') ? 'active' : '' }}">Farming Insights</a>
+                <a href="{{ route('contact') }}" class="nav-item nav-link {{ request()->is('contact') ? 'active' : '' }}">Contact</a>
                 @auth
                 <a href="{{ route('logout') }}" class="nav-item nav-link" style="color:rgb(248, 5, 5);">Logout</a>
                 @else

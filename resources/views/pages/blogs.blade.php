@@ -23,29 +23,29 @@
                     @unless(count($blogs) == 0)
                     @foreach($blogs as $blog)
                         @if($blog->status == 'published')
-                            <div class="col-md-6">
+                            <article class="col-md-6">
                                 <div class="blog-item position-relative overflow-hidden">
                                     <img class="img-fluid" style="height: 400px;" src="{{$blog->image ? asset('storage/' . $blog->image) : asset('img/blog-1.jpg')}}" alt="">
-                                    <a class="blog-overlay" href="{{ route('blog.detail', ['id' => $blog->id]) }}">
+                                    <a class="blog-overlay" href="{{ route('blog.detail', ['slug' => $blog->slug]) }}">
                                         <h4 class="text-white">{{ $blog->title}}</h4>
                                         <span class="text-white fw-bold">{{$blog->created_at->diffForHumans()}}</span>
                                     </a>
                                 </div>
-                            </div>
+                            </article>
                             @elseif ($blog->status == 'staged')
-                            <div class="col-md-6">
+                            <article class="col-md-6">
                                 <div class="blog-item position-relative overflow-hidden">
                                     <p>No blogs posted</p>
                                 </div>
-                            </div>
+                            </article>
                         @endif
                     @endforeach
                 @else
-                    <div class="col-md-6">
+                    <article class="col-md-6">
                         <div class="blog-item position-relative overflow-hidden">
                             <p>No blogs posted</p>
                         </div>
-                    </div>
+                    </article>
                 @endunless                
 
 
@@ -99,16 +99,16 @@
                     <div class="bg-primary p-4">
                         @unless(count($latestblogs) == 0)
                         @foreach($latestblogs as $latestblog)
-                        <div class="d-flex overflow-hidden mb-3">
+                        <article class="d-flex overflow-hidden mb-3">
                             <img class="img-fluid flex-shrink-0" src="{{$latestblog->image ? asset('storage/' . $latestblog->image) : asset('img/blog-1.jpg')}}" style="width: 75px;" alt="">
-                            <a href="{{ route('blog.detail', ['id' => $latestblog->id]) }}" class="d-flex align-items-center bg-white text-dark fs-5 fw-bold px-3 mb-0"> {{ strtok($latestblog->title, ' ') }} {{ strtok(' ') }} ...
+                            <a href="{{ route('blog.detail', ['slug' => $latestblog->slug]) }}" class="d-flex align-items-center bg-white text-dark fs-5 fw-bold px-3 mb-0"> {{ strtok($latestblog->title, ' ') }} {{ strtok(' ') }} ...
                             </a>
-                        </div>
+                        </article>
                         @endforeach
                         @else
-                        <div class="d-flex overflow-hidden mb-3">
+                        <article class="d-flex overflow-hidden mb-3">
                             <p>No Blogs Posted Yet</p>
-                        </div>
+                        </article>
                         @endunless
                        
                     </div>

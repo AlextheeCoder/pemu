@@ -203,14 +203,14 @@ public function popularCategories()
 
 
     /////////////////////
-    public function blogdetail(Request $request, $id){
+    public function blogdetail(Request $request, $slug){
         // Load comments for the campaign
         
 
 
         $latestblogs = Blog::latest('created_at')->limit(4)->get();
         $bloggers=Blog::latest('created_at')->limit(3)->get();
-        $blog = Blog::find($id);
+        $blog = Blog::where('slug', $slug)->firstOrFail();
         $comments = $blog->comments()->whereNull('parent_id')->latest()->get();
     
         $dom = new DOMDocument();

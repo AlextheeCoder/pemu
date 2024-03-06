@@ -60,12 +60,12 @@
                                         <p>Share this link via</p>
                                         <div class="d-flex align-items-center icons">                
                                             <!-- Add href attribute with dynamic link -->
-                                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ route('blog.detail', ['id' => $blog->id]) }}" 
+                                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ route('blog.detail', ['slug' => $blog->slug]) }}" 
                                                class="fs-5 d-flex align-items-center justify-content-center" target="_blank">
                                                 <span class="fab fa-facebook-f"></span>
                                             </a>                
                                             <!-- Add href attribute with dynamic link -->
-                                            <a href="https://twitter.com/intent/tweet?url={{ route('blog.detail', ['id' => $blog->id]) }}" 
+                                            <a href="https://twitter.com/intent/tweet?url={{ route('blog.detail', ['slug' => $blog->slug]) }}" 
                                                class="fs-5 d-flex align-items-center justify-content-center" target="_blank">
                                                 <span class="fab fa-twitter"></span>
                                             </a>                
@@ -75,12 +75,12 @@
                                                 <span class="fab fa-instagram"></span>
                                             </a>                
                                             <!-- Add href attribute with dynamic link -->
-                                            <a href="https://wa.me/?text={{ route('blog.detail', ['id' => $blog->id]) }}" 
+                                            <a href="https://wa.me/?text={{ route('blog.detail', ['slug' => $blog->slug]) }}" 
                                                class="fs-5 d-flex align-items-center justify-content-center" target="_blank">
                                                 <span class="fab fa-whatsapp"></span>
                                             </a>                
                                             <!-- Add href attribute with dynamic link -->
-                                            <a href="https://t.me/share/url?url={{ route('blog.detail', ['id' => $blog->id]) }}" 
+                                            <a href="https://t.me/share/url?url={{ route('blog.detail', ['slug' => $blog->slug]) }}" 
                                                class="fs-5 d-flex align-items-center justify-content-center" target="_blank">
                                                 <span class="fab fa-telegram-plane"></span>
                                             </a>
@@ -89,7 +89,7 @@
                                         <div class="field d-flex align-items-center justify-content-between" target="_blank">
                                             <span class="fas fa-link text-center"></span>
                                             <!-- Display the current blog URL -->
-                                            <input type="text" value="{{ route('blog.detail', ['id' => $blog->id]) }}" readonly>
+                                            <input type="text" value="{{ route('blog.detail', ['slug' => $blog->slug]) }}" readonly>
                                             <button id="copyButton">Copy</button>
                                         </div>
                                     </div>
@@ -236,7 +236,7 @@
                     <div class="col-lg-4">
                         <div class="blog-item position-relative overflow-hidden">
                             <img class="img-fluid" style="width: 400px; height:300px;" src="{{ $blogger->image ? asset('storage/' . $blogger->image) : asset('img/blog-1.jpg') }}" alt="">
-                            <a class="blog-overlay" href="{{ route('blog.detail', ['id' => $blogger->id]) }}">
+                            <a class="blog-overlay" href="{{ route('blog.detail', ['slug' => $blogger->slug]) }}">
                                 <h4 class="text-white">{{ strtok($blogger->title, ' ') }} {{ strtok(' ') }} ...</h4>
                                 <span class="text-white fw-bold">{{ $blogger->created_at->diffForHumans() }}</span>
                             </a>
@@ -290,7 +290,7 @@
                         @foreach($latestblogs as $latestblog)
                         <div class="d-flex overflow-hidden mb-3">
                             <img class="img-fluid flex-shrink-0" src="{{$latestblog->image ? asset('storage/' . $latestblog->image) : asset('img/blog-1.jpg')}}" style="width: 75px;" alt="">
-                            <a href="{{ route('blog.detail', ['id' => $latestblog->id]) }}" class="d-flex align-items-center bg-white text-dark fs-5 fw-bold px-3 mb-0"> {{ strtok($latestblog->title, ' ') }} {{ strtok(' ') }} ...
+                            <a href="{{ route('blog.detail', ['slug' => $latestblog->slug]) }}" class="d-flex align-items-center bg-white text-dark fs-5 fw-bold px-3 mb-0"> {{ strtok($latestblog->title, ' ') }} {{ strtok(' ') }} ...
                             </a>
                         </div>
                         @endforeach

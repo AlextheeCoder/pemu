@@ -21,20 +21,26 @@ use App\Http\Controllers\Controller;
 
 Route::get('/', [BlogController::class, 'index']);
 
-Route::get('/about', function () {
+//About Us
+Route::get('/about-us', function () {
     return view('pages.about');
-});
+})->name('about'); 
 
+//Blogs Page
 Route::get('/blogs', [BlogController::class, 'blogs'] )->name('blogs');
 
-Route::get('blog/post/{id}', [BlogController::class, 'blogdetail'])->name('blog.detail');
+//Single Blog
+Route::get('/blog/post/{slug}', [BlogController::class, 'blogdetail'])->name('blog.detail');
 
-Route::get('/contact', function () {
+// Contact Page
+Route::get('/contact-us', function () {
     return view('pages.contact');
-});
-Route::get('/services', function () {
+})->name('contact'); 
+
+// Services Page
+Route::get('/regenerative-farming-services', function () {
     return view('pages.service');
-});
+})->name('services'); 
 
 
 Route::get('/login', [UserController::class, 'login']);

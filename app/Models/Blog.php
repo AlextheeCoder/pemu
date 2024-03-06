@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Blog extends Model
 {
     use HasFactory;
+    use Sluggable;
     protected $fillable = [
         'user_id',
         'title',
@@ -31,5 +33,13 @@ class Blog extends Model
     {
         return $this->hasMany(Comment::class); // Adjust Comment::class based on your actual Comment model
     }
+
+    public function sluggable(): array{
+    return [
+        'slug' => [
+            'source' => 'title' 
+        ]
+    ];
+}
 
 }
