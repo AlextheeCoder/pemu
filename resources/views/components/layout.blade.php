@@ -55,12 +55,12 @@
     <div class="row gx-5 py-3 align-items-center">
         <div class="col-lg-3 d-flex align-items-center justify-content-start">
             <a href="/" class="navbar-brand ms-lg-5">
-                <img src="{{asset('img/plogo.png')}}" alt="Your Logo" height="180">
+                <img src="{{asset('img/plogo.png')}}" alt="Your Logo" height="200">
             </a>
         </div>
         <div class="col-lg-6">
             <div class="d-flex align-items-center justify-content-center">
-               <h2>Growing Together, Regenerating the Future</h2>
+               <h2 style="text-align: center">Growing Together, Regenerating the Future</h2>
             </div>
         </div>
         <div class="col-lg-3 d-flex align-items-center justify-content-end">
