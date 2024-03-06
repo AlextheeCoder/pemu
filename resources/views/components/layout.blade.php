@@ -50,11 +50,11 @@
 <body>
 
    
-   <!-- Topbar Start -->
-   <div class="container-fluid px-0 d-none d-lg-block">
+ <!-- Topbar Start -->
+<div class="container-fluid px-0 d-none d-lg-block">
     <div class="row gx-5 py-3 align-items-center">
-        <div class="col-lg-3 d-flex align-items-center justify-content-start">
-            <a href="/" class="navbar-brand ms-lg-5">
+        <div class="col-lg-3 d-flex align-items-center justify-content-start ms-0">
+            <a href="/" class="navbar-brand">
                 <img src="{{asset('img/plogo.png')}}" alt="Your Logo" height="200">
             </a>
         </div>
@@ -70,8 +70,8 @@
         </div>
     </div>
 </div>
-
 <!-- Topbar End -->
+
 
 
 
@@ -140,18 +140,18 @@
                             <h4 class="text-white mb-4">Quick Links</h4>
                             <div class="d-flex flex-column justify-content-start">
                                 <a class="text-white mb-2" href="/"><i class="bi bi-arrow-right text-white me-2"></i>Home</a>
-                                <a class="text-white mb-2" href="/blogs"><i class="bi bi-arrow-right text-white me-2"></i>Latest Blog</a>
-                                <a class="text-white" href="/contact"><i class="bi bi-arrow-right text-white me-2"></i>Contact Us</a>
+                                <a class="text-white mb-2" href="{{ route('blogs') }}"><i class="bi bi-arrow-right text-white me-2"></i>Latest Blog</a>
+                                <a class="text-white" href="{{ route('contact') }}"><i class="bi bi-arrow-right text-white me-2"></i>Contact Us</a>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-12 pt-0 pt-lg-5 mb-5">
                             <h4 class="text-white mb-4">Popular Links</h4>
                             <div class="d-flex flex-column justify-content-start">
                                 <a class="text-white mb-2" href="/"><i class="bi bi-arrow-right text-white me-2"></i>Home</a>
-                                <a class="text-white mb-2" href="/about"><i class="bi bi-arrow-right text-white me-2"></i>About Us</a>
-                                <a class="text-white mb-2" href="/services"><i class="bi bi-arrow-right text-white me-2"></i>Our Services</a>
-                                <a class="text-white mb-2" href="/blogs"><i class="bi bi-arrow-right text-white me-2"></i>Latest Blog</a>
-                                <a class="text-white" href="/contact"><i class="bi bi-arrow-right text-white me-2"></i>Contact Us</a>
+                                <a class="text-white mb-2" href="{{ route('about') }}"><i class="bi bi-arrow-right text-white me-2"></i>About Us</a>
+                                <a class="text-white mb-2" href="{{ route('services') }}"><i class="bi bi-arrow-right text-white me-2"></i>Our Services</a>
+                                <a class="text-white mb-2" href="{{ route('blogs') }}"><i class="bi bi-arrow-right text-white me-2"></i>Latest Blog</a>
+                                <a class="text-white" href="{{ route('contact') }}"><i class="bi bi-arrow-right text-white me-2"></i>Contact Us</a>
                             </div>
                         </div>
                     </div>
