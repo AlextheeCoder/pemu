@@ -233,6 +233,10 @@ public function popularCategories()
         foreach ($texts as $text) {
             $text->setAttribute('class', 'custom-text');
         }
+        $lists =$dom->getElementsByTagName('li');
+        foreach ($lists as $list) {
+            $list->setAttribute('class', 'custom-text');
+        }
     
         $updatedBlogContent = $dom->saveHTML();
         if ($request->has('tag')) {

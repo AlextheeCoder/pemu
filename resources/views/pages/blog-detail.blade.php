@@ -30,7 +30,7 @@
                             </div>
                            
                            
-                            <img class="img-fluid w-100" src="{{$blog->image ? asset('storage/' . $blog->image) : asset('img/blog-1.jpg')}}" alt="" style="max-height: 500px">
+                            <img class="img-fluid w-100" src="{{$blog->image ? asset('storage/' . $blog->image) : asset('img/blog-1.jpg')}}" alt="" style="max-height: 500px; max-width:600px;">
                         </div>
                     </div>
                     

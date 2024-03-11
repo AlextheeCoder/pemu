@@ -42,7 +42,7 @@
             <div class="row gx-5">
                 <div class="col-lg-6 mb-5 mb-lg-0">
                     <div class="d-flex h-100 border border-5 border-primary border-bottom-0 pt-4">
-                        <img class="img-fluid mt-auto mx-auto" src="img/pemulogo.jpg">
+                        <img class="img-fluid mt-auto mx-auto" src="img/lgo.jpeg">
                     </div>
                 </div>
                 <div class="col-lg-6 pb-5">

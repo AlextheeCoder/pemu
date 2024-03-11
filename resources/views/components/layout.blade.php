@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>PEMU</title>
+    <title>PEMU AGRIFOOD ACADEMY</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="PEMU" name="keywords">
     <meta content="PEMU" name="description">
@@ -19,21 +19,35 @@
     <link rel="stylesheet" href="{{ asset('Admin/assets/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('Admin/assets/vendor/charts/c3charts/c3.css') }}">
     <link rel="stylesheet" href="{{ asset('Admin/assets/vendor/fonts/flag-icon-css/flag-icon.min.css') }}">
+    
+
+    
+
 
     
     <!-- Admin css -->
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{asset('img/plogo.png')}}">
+    <link rel="icon" type="image/x-icon" href="{{asset('img/pemufavicon.png')}}">
     
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap" rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Include jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.7/jquery.inputmask.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+
+
+
+<!------ Include the above in your HEAD tag ---------->
 
     <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
 
@@ -41,7 +55,7 @@
     
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/modal.css') }}" rel="stylesheet">
-    
+    <link href="{{ asset('css/profile.css') }}" rel="stylesheet">
   <script src="//unpkg.com/alpinejs" defer></script>
 
     
@@ -55,7 +69,7 @@
     <div class="row gx-5 py-3 align-items-center">
         <div class="col-lg-3 d-flex align-items-center justify-content-start ms-0">
             <a href="/" class="navbar-brand">
-                <img src="{{asset('img/plogo.png')}}" alt="Your Logo" height="200">
+                <img src="{{asset('img/lgo.jpeg')}}" alt="Your Logo" height="200">
             </a>
         </div>
         <div class="col-lg-6">
@@ -74,35 +88,42 @@
 
 
 
-
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-primary navbar-dark shadow-sm py-3 py-lg-0 px-3 px-lg-5">
-        <a href="index.html" class="navbar-brand d-flex d-lg-none">
-            <h1 class="m-0 display-4 text-secondary"><span class="text-white">PE</span>MU</h1>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav mx-auto py-0" style="display: flex; justify-content: space-between;">
-                <a href="/" class="nav-item nav-link {{ request()->is('/') ? 'active' : '' }}">Home</a>
-                <a href="{{ route('about') }}" class="nav-item nav-link {{ request()->is('about') ? 'active' : '' }}">About</a>
-                <a href="{{ route('services') }}" class="nav-item nav-link {{ request()->is('services') ? 'active' : '' }}">Services</a>
-                <a href="{{ route('blogs') }}" class="nav-item nav-link {{ request()->is('blogs') ? 'active' : '' }}">Farming Insights</a>
-                <a href="{{ route('contact') }}" class="nav-item nav-link {{ request()->is('contact') ? 'active' : '' }}">Contact</a>
-                @auth
-                <a href="{{ route('logout') }}" class="nav-item nav-link" style="color:rgb(248, 5, 5);">Logout</a>
+<nav class="navbar navbar-expand-lg bg-primary navbar-dark shadow-sm py-3 py-lg-0 px-3 px-lg-5">
+    <a href="index.html" class="navbar-brand d-flex d-lg-none">
+        <h1 class="m-0 display-4 text-secondary"><span class="text-white">PEMU</span>AGRIFOOD</h1>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav mx-auto py-0" style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="/" class="nav-item nav-link {{ request()->is('/') ? 'active' : '' }}">Home</a>
+            <a href="{{ route('about') }}" class="nav-item nav-link {{ request()->is('about-us') ? 'active' : '' }}">About</a>
+            <a href="{{ route('services') }}" class="nav-item nav-link {{ request()->is('regenerative-farming-services') ? 'active' : '' }}">Services</a>
+            <a href="{{ route('blogs') }}" class="nav-item nav-link {{ request()->is('blogs') ? 'active' : '' }}">Farming Insights</a>
+            <a href="{{ route('contact') }}" class="nav-item nav-link {{ request()->is('contact-us') ? 'active' : '' }}">Contact</a>
+            @auth
                 @else
-                <a href="/login" class="nav-item nav-link">Join Us</a>
-                @endauth
-               
-                
-                
-            </div>
+                <a href="/login" class="nav-item nav-link {{ request()->is('login') ? 'active' : '' }}">Join Us</a>
+            @endauth
         </div>
-        
-    </nav>
-    <!-- Navbar End -->
+        <div class="ms-auto">
+            @auth
+            <a href="{{ route('profile') }}" class="btn btn-warning"><i class="fa fa-user" aria-hidden="true"></i> View Profile</a>
+            <a href="{{ route('logout') }}" class="btn btn-danger">
+                <i class="fa fa-sign-out" aria-hidden="true"></i> Log Out
+            </a>
+            
+            @endauth
+        </div>
+    </div>
+</nav>
+<!-- Navbar End -->
+
+
+
+
 
 
     {{$slot}}

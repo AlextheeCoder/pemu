@@ -4,40 +4,83 @@
         <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="w-100" src="{{ asset('img/carousel-1.jpg') }}" alt="Image" style="max-height: 900px">
+                    <img class="w-100" src="{{ asset('img/1.jpeg') }}" alt="Image 1" style="max-height: 900px">
                     <div class="carousel-caption top-0 bottom-0 start-0 end-0 d-flex flex-column align-items-center justify-content-center">
                         <div class="text-start p-5" style="max-width: 900px;">
-                            
                             <a href="#mission" class="btn btn-primary py-md-3 px-md-5 me-3">Explore</a>
-                            @auth
+                                @auth 
                                 @else
                                 <a href="/login" class="btn btn-secondary py-md-3 px-md-5">Join Us</a>
-                            @endauth
-                           
+                                @endauth
                         </div>
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img class="w-100" src="{{ asset('img/carousel-2.jpg')}}" alt="Image" style="max-height: 900px">
+                    <img class="w-100" src="{{ asset('img/2.jpeg') }}" alt="Image 2" style="max-height: 900px">
                     <div class="carousel-caption top-0 bottom-0 start-0 end-0 d-flex flex-column align-items-center justify-content-center">
                         <div class="text-start p-5" style="max-width: 900px;">
-                            
                             <a href="#mission" class="btn btn-primary py-md-3 px-md-5 me-3">Explore</a>
-                            @auth
-                            @else
-                            <a href="/login" class="btn btn-secondary py-md-3 px-md-5">Join Us</a>
-                        @endauth
+                                @auth 
+                                @else
+                                <a href="/login" class="btn btn-secondary py-md-3 px-md-5">Join Us</a>
+                                @endauth
                         </div>
                     </div>
-                </div>
+                    </div>
+                <div class="carousel-item">
+                    <img class="w-100" src="{{ asset('img/3.jpeg') }}" alt="Image 3" style="max-height: 900px">
+                    <div class="carousel-caption top-0 bottom-0 start-0 end-0 d-flex flex-column align-items-center justify-content-center">
+                        <div class="text-start p-5" style="max-width: 900px;">
+                            <a href="#mission" class="btn btn-primary py-md-3 px-md-5 me-3">Explore</a>
+                                @auth 
+                                @else
+                                <a href="/login" class="btn btn-secondary py-md-3 px-md-5">Join Us</a>
+                                @endauth
+                        </div>
+                    </div>
+                    </div>
+                <div class="carousel-item">
+                    <img class="w-100" src="{{ asset('img/4.jpeg') }}" alt="Image 4" style="max-height: 900px">
+                    <div class="carousel-caption top-0 bottom-0 start-0 end-0 d-flex flex-column align-items-center justify-content-center">
+                        <div class="text-start p-5" style="max-width: 900px;">
+                            <a href="#mission" class="btn btn-primary py-md-3 px-md-5 me-3">Explore</a>
+                                @auth 
+                                @else
+                                <a href="/login" class="btn btn-secondary py-md-3 px-md-5">Join Us</a>
+                                @endauth
+                        </div>
+                    </div>
+                    </div>
+                <div class="carousel-item">
+                    <img class="w-100" src="{{ asset('img/5.jpeg') }}" alt="Image 5" style="max-height: 900px">
+                    <div class="carousel-caption top-0 bottom-0 start-0 end-0 d-flex flex-column align-items-center justify-content-center">
+                        <div class="text-start p-5" style="max-width: 900px;">
+                            <a href="#mission" class="btn btn-primary py-md-3 px-md-5 me-3">Explore</a>
+                                @auth 
+                                @else
+                                <a href="/login" class="btn btn-secondary py-md-3 px-md-5">Join Us</a>
+                                @endauth
+                        </div>
+                    </div>
+                    </div>
+                <div class="carousel-item">
+                    <img class="w-100" src="{{ asset('img/6.jpeg') }}" alt="Image 6" style="max-height: 900px">
+                    <div class="carousel-caption top-0 bottom-0 start-0 end-0 d-flex flex-column align-items-center justify-content-center">
+                        <div class="text-start p-5" style="max-width: 900px;">
+                            <a href="#mission" class="btn btn-primary py-md-3 px-md-5 me-3">Explore</a>
+                                @auth 
+                                @else
+                                <a href="/login" class="btn btn-secondary py-md-3 px-md-5">Join Us</a>
+                                @endauth
+                        </div>
+                    </div>
+                    </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel"
-                data-bs-slide="prev">
+            <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#header-carousel"
-                data-bs-slide="next">
+            <button class="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
@@ -70,28 +113,30 @@
     <!-- Banner Start -->
 
 
+
     <!-- About Start -->
-    <div class="container-fluid about pt-5" id="about">
-        <div class="row gx-5">
-            <!-- Remove the outer container -->
-            <!-- <div class="container"> -->
-    
-            <!-- Add mx-auto to center the content -->
-            <div class="col-lg-6 pb-5 mx-auto">
-                <div class="mb-3 pb-2">
-                    <h1 class="text-primary text-uppercase">About Us</h1>
-                    <h2 class="display-5">Welcome to PEMU AGRIFOOD ACADEMY</h2>
-                </div>
-                <p class="mb-4">At PEMU AGRIFOOD ACADEMY, we're passionate about empowering farmers and agripreneurs like you with sustainable solutions.  We believe in regenerative agriculture – practices that build soil health, boost crop resilience, and protect the environment. We're your partners, dedicated to understanding your farm or agribusiness's unique needs and creating a customized plan for success. </p>
-                <p class="mb-4">We provide premium regenerative inputs, teach proven sustainable farming methods, and offer the knowledge you need to thrive.  Plus, we'll help you find skilled labor committed to regenerative practices and connect you with buyers seeking responsibly-grown products. With PEMU AGRIFOOD ACADEMY, you'll gain the tools, resources, and network to build a profitable, earth-friendly agricultural venture. </p>
-                <p class="mb-4">Join us in transforming the future of farming. Let's cultivate a better world together, where your farm or business flourishes in harmony with the environment. </p>
-               
+<div class="container-fluid about pt-5" id="about">
+    <div class="row gx-5">
+        <!-- Remove the outer container -->
+        <!-- <div class="container"> -->
+
+        <!-- Use col-12 to take the entire width of the screen -->
+        <div class="col-12 pb-5">
+            <div class="mb-3 pb-2 text-center">
+                <!-- Apply text-center to center the heading -->
+                <h1 class="text-primary text-uppercase">About Us</h1>
+                <h2 class="display-5">Welcome to PEMU AGRIFOOD ACADEMY</h2>
             </div>
-            <!-- </div> Remove the outer container -->
+            <p class="mb-4">At PEMU AGRIFOOD ACADEMY, we're passionate about empowering farmers and agripreneurs like you with sustainable solutions.  We believe in regenerative agriculture – practices that build soil health, boost crop resilience, and protect the environment. We're your partners, dedicated to understanding your farm or agribusiness's unique needs and creating a customized plan for success. </p>
+            <p class="mb-4">We provide premium regenerative inputs, teach proven sustainable farming methods, and offer the knowledge you need to thrive.  Plus, we'll help you find skilled labor committed to regenerative practices and connect you with buyers seeking responsibly-grown products. With PEMU AGRIFOOD ACADEMY, you'll gain the tools, resources, and network to build a profitable, earth-friendly agricultural venture. </p>
+            <p class="mb-4">Join us in transforming the future of farming. Let's cultivate a better world together, where your farm or business flourishes in harmony with the environment. </p>
         </div>
+        <!-- </div> Remove the outer container -->
     </div>
-    
-    <!-- About End -->
+</div>
+<!-- About End -->
+
+
 
 
 
@@ -140,7 +185,8 @@
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="service-item bg-light text-center p-5">
-                        <i class="fa fa-plug display-1 text-primary mb-3"></i>
+                       
+                        <i class="fa fa-money display-1 text-primary mb-3"></i>
                         <h2>Connecting You</h2>
                         <p class="mb-0" style="text-align: left">At PEMU, we’re all about helping our farmers and food producers find people who want to buy what they grow and make. We know how important it is to grow food in a way that’s good for the earth – we call this regenerative farming. And we’re finding buyers who love this kind of food just as much as we do.</p>
                     </div>

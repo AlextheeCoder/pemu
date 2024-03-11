@@ -55,6 +55,14 @@ Route::get('/logout', function() {
     return redirect('/')->with('message', 'Logged Out.');; // Redirect to homepage
 })->name('logout'); 
 
+
+
+// User Profile
+Route::get('/user/profile/view', function () {
+    return view('pages.profile-view');
+})->name('profile'); 
+
+
 //Normal user auth
 Route::post('/authenticate', [UserController::class, 'authenticate']);
 
@@ -136,3 +144,29 @@ Route::get('/pemu/view/contact/{id}', [AdminController::class, 'specific_contact
 
 //View Newsletter
 Route::get('/pemu/newsletters/view',[AdminController::class,'view_newsletters'])->middleware('checkRole:admin');
+
+
+
+
+
+
+
+
+
+Route::get('/sitemap.xml', function () {
+    return response()->file(public_path('pemu.xml'), [
+        'Content-Type' => 'text/xml'
+    ]);
+});
+
+Route::get('/pemu/sitemap.xml', function () {
+    return response()->file(public_path('sitemap.xml'), [
+        'Content-Type' => 'text/xml'
+    ]);
+});
+
+Route::get('/a02b505c3b8b4cc4a7f9caf5c6d6bf07.txt', function () {
+    return response()->file(public_path('a02b505c3b8b4cc4a7f9caf5c6d6bf07.txt'), [
+        'Content-Type' => 'text/xml'
+    ]);
+});

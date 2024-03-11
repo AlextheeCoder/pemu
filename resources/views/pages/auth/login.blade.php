@@ -1,9 +1,9 @@
 <x-layout>
-    <section class="vh-100" style="margin-top:60px; margin-bottom:60px;" >
+    <section style="margin-top:60px; margin-bottom:60px;" >
         <div class="container-fluid h-custom">
           <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-md-9 col-lg-6 col-xl-5">
-              <img src="{{asset('img/plogo.png')}}"
+              <img src="{{asset('img/lgo.jpeg')}}"
                 class="img-fluid" alt="Sample image">
             </div>
             <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
@@ -18,11 +18,15 @@
                 </div>
       
                 <!-- Password input -->
-                <div class="form-outline mb-3">
-                  <input type="password" id="form3Example4" class="form-control form-control-lg"
-                    placeholder="Enter password" name="password" required/>
+                <div class="form-outline mb-3 position-relative">
+                  <input type="password" id="password" class="form-control form-control-lg" placeholder="Enter password" name="password" />
+                  <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility('password', 'toggle-password')"></i>
                   <label class="form-label" for="form3Example4">Password</label>
-                </div>
+                  @error('password')
+                      <p style="font-size: 12px; color: red; margin-top: 8px; align-self:center;">{{ $message }}</p>
+                  @enderror
+              </div>
+            
       
                 <div class="d-flex justify-content-between align-items-center">
                   <!-- Checkbox -->
@@ -48,4 +52,24 @@
         </div>
      
       </section>
+
+
+      <script>
+        function togglePasswordVisibility(passwordFieldId, toggleIconId) {
+            var passwordField = document.getElementById(passwordFieldId);
+            var toggleIcon = document.querySelector('.' + toggleIconId);
+    
+            if (passwordField && toggleIcon) {
+                if (passwordField.type === "password") {
+                    passwordField.type = "text";
+                    toggleIcon.classList.remove("fa-eye");
+                    toggleIcon.classList.add("fa-eye-slash");
+                } else {
+                    passwordField.type = "password";
+                    toggleIcon.classList.remove("fa-eye-slash");
+                    toggleIcon.classList.add("fa-eye");
+                }
+            }
+        }
+    </script>
 </x-layout>

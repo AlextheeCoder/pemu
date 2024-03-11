@@ -1,2 +1,4 @@
 User-agent: *
 Disallow:
+
+Sitemap: https://pemuagrifood.com/sitemap.xml
