@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="profile-img">
-                        <img class="rounded-circle mr-3" style="max-width: 100px; max-height: 100px;" src="{{ asset('Admin/assets/images/avatar-1.jpg') }}" alt=""/>
+                        <img class="rounded-circle mr-3" style="max-width: 100px; max-height: 100px;" src="{{asset('img/lgo.jpeg')}}" alt=""/>
 
                     </div>
                 </div>
@@ -14,16 +14,18 @@
                             {{auth()->user()->firstname}} {{auth()->user()->lastname}}
                         </h5>
                         <h6>
-                            {{auth()->user()->role}}
+                            {{ ucfirst(auth()->user()->role) }}
                         </h6>
                         <p class="proile-rating">Date Joined : <span>{{auth()->user()->created_at->diffForHumans()}}</span></p>
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
                             </li>
+                            @if (auth()->user()->role == "admin")
                             <li class="nav-item">
                                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Survey Report</a>
                             </li>
+                            @endif
                         </ul>
                     </div>
                 </div>
@@ -32,9 +34,23 @@
                         <div class="col-md-12" style="margin-bottom: 30px">
                             <a href="" class="btn btn-rounded btn-warning"><i class="fa fa-user" aria-hidden="true"></i> Edit Profile</a>
                         </div>
-                        <div class="col-md-6">
-                            <a href="" class="btn btn-rounded btn-success"><i class="fa fa-file-text" aria-hidden="true"></i> Take Our Survey</a>
-                        </div>
+                        @php
+                                 $userFilledSurvey = \App\Models\Survey::where('user_id', auth()->id())->exists();
+                        @endphp
+
+                        @if (auth()->user()->role == "farmer")
+                            <div class="col-md-6">
+                                @if(!$userFilledSurvey)
+                                    <a href="{{ route('survey') }}" class="btn btn-rounded btn-success">
+                                        <i class="fa fa-file-text" aria-hidden="true"></i> Take Our Survey
+                                    </a>
+                                @endif
+                            </div>
+                        @endif
+                  
+                    
+                        
+                        
                     </div>
                 </div>
             </div>
@@ -85,15 +101,21 @@
                                 </div>
                             </div>
                         </div>
+                       
                         <div class="tab-pane fade" id="profile" role="tabpane2" aria-labelledby="profile-tab">
                            
                             <div class="row">
                                 <div class="col-md-12">
-                                    <p>Please Take the survey to view report</p>
-                                    <a href="" class="btn btn-rounded btn-success"><i class="fa fa-file-text" aria-hidden="true"></i> Take Our Survey</a>
+                                    @if(!$userFilledSurvey)
+                                        <p>Please Take the survey to view report</p>
+                                        <a href="{{ route('survey') }}" class="btn btn-rounded btn-success"><i class="fa fa-file-text" aria-hidden="true"></i> Take Our Survey</a>
+                                        @else
+                                       
+                                    @endif
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>

@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\SurveyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,7 +44,7 @@ Route::get('/regenerative-farming-services', function () {
 })->name('services'); 
 
 
-Route::get('/login', [UserController::class, 'login']);
+Route::get('/login', [UserController::class, 'login'])->name('login');
 
 Route::get('/register', [UserController::class, 'register']);
 
@@ -58,9 +59,23 @@ Route::get('/logout', function() {
 
 
 // User Profile
-Route::get('/user/profile/view', function () {
-    return view('pages.profile-view');
-})->name('profile'); 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/user/profile/view', function () {
+        return view('pages.profile-view');
+    })->name('profile');
+});
+
+// User Survey
+Route::middleware(['auth'])->group(function () {
+    Route::get('/user/survey/create', function () {
+        return view('pages.survey-form.survey-create');
+    })->name('survey');
+});
+ 
+
+
+//Store Survey
+Route::post('/survey/store', [SurveyController::class, 'store']);
 
 
 //Normal user auth

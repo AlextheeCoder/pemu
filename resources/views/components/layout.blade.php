@@ -56,6 +56,7 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/modal.css') }}" rel="stylesheet">
     <link href="{{ asset('css/profile.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/survey.css') }}" rel="stylesheet">
   <script src="//unpkg.com/alpinejs" defer></script>
 
     
