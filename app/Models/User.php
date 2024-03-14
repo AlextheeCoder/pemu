@@ -24,6 +24,9 @@ class User extends Authenticatable
         'role',
         'phone',
         'email',
+        'county',
+        'subcounty',
+        'ward',
         'password',
     ];
 
@@ -46,4 +49,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function surveys(){
+    return $this->hasMany(Survey::class); 
+}
+
 }

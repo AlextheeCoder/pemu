@@ -20,6 +20,7 @@ class AdminController extends Controller
     public function index(){
         $blogs = Blog::latest('created_at')->limit(4)->get();
         $mostviewdblogs = Blog::orderByDesc('views')->limit(5)->get();
+       
 
         $currentMonthStart = Carbon::now()->startOfMonth();
         $currentMonthEnd = Carbon::now()->endOfMonth();
@@ -140,32 +141,19 @@ class AdminController extends Controller
         
     }
 
-    public function showFarmers(){
+    public function showUsers(){
     // Fetch users with the role "farmer"
-    $farmers = User::where('role', 'farmer')->get();
+    $allusers=User::all();
 
     // Calculate age from date of birth
-    foreach ($farmers as $farmer) {
-        $farmer->age = Carbon::parse($farmer->dob)->age;
+    foreach ($allusers as $alluser) {
+        $alluser->age = Carbon::parse($alluser->dob)->age;
     }
 
     // Pass data to the view
-    return view('Admin.pages.view-farmers',['farmers' => $farmers]);
+    return view('Admin.pages.view-users',['allusers' => $allusers]);
 }
 
-public function showProviders(){
-    // Fetch users with the role "farmer"
-    $providers = User::where('role', 'provider')->get();
-
-    // Calculate age from date of birth
-    foreach ($providers as $provider) {
-        $provider->age = Carbon::parse($provider->dob)->age;
-    }
-
-    // Pass data to the view
-    return view('Admin.pages.view-providers',['providers' => $providers]);
-    
-}
 
 
     public function create_blog(){
@@ -263,12 +251,26 @@ public function showProviders(){
         return redirect('/pemu-admin')->with('message', 'Contact deleted successfully');
 
     }
+    public function delete_user(User $user){
+        $user->delete();
+        return redirect('/pemu-admin')->with('message', 'User deleted successfully');
+
+    }
+
 
     public function view_newsletters(){
 
         $newsletters=Newsletter::all();
 
         return view('Admin.pages.view-newsletters', compact('newsletters'));
+    }
+
+    public function view_user($id){
+       
+        $user = User::with('surveys')->find($id);
+
+
+        return view('Admin.pages.single-user', compact('user'));
     }
 
 

@@ -48,7 +48,24 @@
                             placeholder="07" name="phone" required value="{{old('phone')}}" inputmode="numeric" /> 
                         <label class="form-label" for="form3Example3">Phone Number</label>
                     </div>
-                                     
+                                   
+                    <div class="form-outline mb-4">
+                        <input type="text" id="county" class="form-control form-control-lg"
+                        placeholder="County" name="county" required value="{{old('county')}}"  />
+                        <label class="form-label" for="form3Example3">County</label>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        <input type="text" id="subcounty" class="form-control form-control-lg"
+                        placeholder="Sub County" name="subcounty" required value="{{old('subcounty')}}"  />
+                        <label class="form-label" for="form3Example3">Sub County</label>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        <input type="text" id="ward" class="form-control form-control-lg"
+                        placeholder="Ward" name="ward" required value="{{old('ward')}}"  />
+                        <label class="form-label" for="form3Example3">Ward</label>
+                    </div>
 
                       <div class="form-outline mb-4">
                       <input type="email" id="email" class="form-control form-control-lg"

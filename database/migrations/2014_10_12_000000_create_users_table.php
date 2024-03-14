@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('role');
             $table->string('phone');
             $table->string('email')->unique();
+            $table->string('county');
+            $table->string('subcounty');
+            $table->string('ward');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

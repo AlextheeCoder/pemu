@@ -142,8 +142,8 @@ Route::post('/pemu/category/store', [AdminController::class, 'create_category'])
 Route::get('/pemu/category/create',[AdminController::class,'category'])->middleware('checkRole:admin');
 
 
-//Show farmers
-Route::get('/pemu/farmers/view',[AdminController::class,'showFarmers'])->middleware('checkRole:admin');
+//Show Users
+Route::get('/pemu/users/view',[AdminController::class,'showUsers'])->middleware('checkRole:admin');
 //Show providers
 Route::get('/pemu/providers/view',[AdminController::class,'showProviders'])->middleware('checkRole:admin');
 
@@ -160,9 +160,11 @@ Route::get('/pemu/view/contact/{id}', [AdminController::class, 'specific_contact
 //View Newsletter
 Route::get('/pemu/newsletters/view',[AdminController::class,'view_newsletters'])->middleware('checkRole:admin');
 
+//View single USer
+Route::get('/pemu/view/user/{id}', [AdminController::class, 'view_user'])->name('user.detail');
 
-
-
+// Delete User
+Route::delete('/pemu/delete/user/{user}', [AdminController::class, 'delete_user'])->name('user.delete')->middleware('checkRole:admin');
 
 
 

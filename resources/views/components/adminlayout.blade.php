@@ -118,15 +118,13 @@
                             </li>
                          
                             <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fa fa-fw fa-rocket"></i>Users</a>
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fa fa-user"></i>Users</a>
                                 <div id="submenu-2" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/pemu/farmers/view">Farmers <span class="badge badge-secondary">New</span></a>
+                                            <a class="nav-link" href="/pemu/users/view">Registerd Users <span class="badge badge-secondary">New</span></a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/pemu/providers/view">Providers</a>
-                                        </li>
+                                       
                                     
                                     </ul>
                                 </div>

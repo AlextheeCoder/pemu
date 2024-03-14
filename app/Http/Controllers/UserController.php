@@ -28,6 +28,9 @@ class UserController extends Controller
             'dob' => ['required'],
             'email' => ['required', 'email', Rule::unique('users', 'email')],
             'phone'=> ['required'],
+            'county'=> ['required'],
+            'subcounty'=> ['required'],
+            'ward'=> ['required'],
             'role'=> ['required'],
             'password' => 'required|confirmed|min:6'
         ]);

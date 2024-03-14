@@ -18,9 +18,12 @@ class DatabaseSeeder extends Seeder
          \App\Models\User::factory()->create([
             'firstname' => 'Peter',
             'lastname' => 'Muthee',
-            'dob' => 2001-03-01,
+            'dob' => 1971-03-01,
             'role' => 'admin',
             'phone' => '0722203396',
+            'county' => 'Nairobi',
+            'subcounty' => 'Roysambu',
+            'ward' => 'Roysambu',
             'password' => Hash::make('@Pemu24agrifood#'),
             'email' => 'admin@pemuagrifood.com',
 
