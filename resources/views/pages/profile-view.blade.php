@@ -31,9 +31,7 @@
                 </div>
                 <div class="col-md-2">
                     <div class="row">
-                        <div class="col-md-12" style="margin-bottom: 30px">
-                            <a href="" class="btn btn-rounded btn-warning"><i class="fa fa-user" aria-hidden="true"></i> Edit Profile</a>
-                        </div>
+                        
                         @php
                                  $userFilledSurvey = \App\Models\Survey::where('user_id', auth()->id())->exists();
                         @endphp

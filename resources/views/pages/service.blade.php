@@ -43,7 +43,7 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="service-item bg-light text-center p-5">
                         <i class="fa fa-briefcase display-1 text-primary mb-3"></i>
-                        <h4>Finiding you Manpower</h4>
+                        <h4>Finding you Manpower</h4>
                         <p class="mb-0" style="text-align: left">At PEMU, we understand that finding good, skilled people to work on farms and in food businesses can be really tough. But don’t worry, we’ve got you covered. We know exactly what kind of help you need to keep things running smoothly and how to find the right people for every job.</p>
                     </div>
                 </div>

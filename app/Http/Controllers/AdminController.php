@@ -9,6 +9,7 @@ use App\Models\Visit;
 use App\Models\Contact;
 use App\Models\Categorie;
 use App\Models\Newsletter;
+use App\Models\Survey;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -266,12 +267,16 @@ class AdminController extends Controller
     }
 
     public function view_user($id){
-       
-        $user = User::with('surveys')->find($id);
+        // Find the user
+        $user = User::find($id);
 
-
-        return view('Admin.pages.single-user', compact('user'));
+        $user_id=$user->id;
+        // Retrieve the survey responses of the user
+        $surveyResponse = Survey::where('user_id', $user_id)->with('user')->first();
+    
+        return view('Admin.pages.single-user', ['user' => $user, 'surveyResponse' => $surveyResponse]);
     }
+    
 
 
 }
