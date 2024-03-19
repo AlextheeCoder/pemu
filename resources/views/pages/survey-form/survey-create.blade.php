@@ -75,6 +75,38 @@
         
          document.querySelector('.survey-form .submit-button').addEventListener('click', submitForm); 
      </script>
-         
+         <script>
+            // Get all the checkbox groups
+let checkboxGroups = document.querySelectorAll('.checkbox-group');
+
+// Apply the logic to each group separately
+checkboxGroups.forEach(function(group) {
+    // Get all the checkboxes in the current group
+    let checkboxes = group.querySelectorAll('input[type="checkbox"]');
+
+    // Add event listener to each checkbox
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            // If 'None of the Above' is checked, uncheck all other checkboxes
+            if (this.value === 'none' && this.checked) {
+                checkboxes.forEach(function(c) {
+                    if (c.value !== 'none') {
+                        c.checked = false;
+                    }
+                });
+            }
+            // If another checkbox is checked, uncheck 'None of the Above'
+            else if (this.value !== 'none' && this.checked) {
+                checkboxes.forEach(function(c) {
+                    if (c.value === 'none') {
+                        c.checked = false;
+                    }
+                });
+            }
+        });
+    });
+});
+
+         </script>
      
  </x-layout>
