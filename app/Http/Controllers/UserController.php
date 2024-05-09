@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Contact;
+use App\Models\Farmer;
 use App\Models\Newsletter;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -101,6 +102,25 @@ class UserController extends Controller
             
             return redirect('/')->with('error', 'You are already a subscriber!');
         }
+
+    }
+
+    public function store_farmer(Request $request){
+        $formFields = $request->validate([
+            'fullname' => ['required'],
+            'gender' =>['required'],
+            'dob' => ['required'],
+            'idnumber'=> ['required'],
+            'phonenumber'=> ['required'],
+            'crops'=> ['required'],
+            'area'=> ['required'],
+            'operator'=> ['required'],
+        ]);
+
+
+         Farmer::create($formFields);
+        return redirect('/add-farmer')->with('message', 'Registration successful!');
+
 
     }
 

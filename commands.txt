@@ -10,7 +10,7 @@ php artisan make:migration create_financials_table --create=financials
 
 php artisan make:migration create_labors_table --create=labors
 
-php artisan make:migration create_inputs_table --create=inputs
+php artisan make:migration create_farmers_table --create=farmers
 php artisan make:migration create_markets_table --create=markets
 
 php artisan make:migration create_categories_table --create=categories
@@ -29,7 +29,7 @@ php artisan make:model Message
 php artisan make:model Provider
 php artisan make:model Categorie
 php artisan make:model Profile
-php artisan make:model Financial
+php artisan make:model Farmer
 
 php artisan make:model Survey
 

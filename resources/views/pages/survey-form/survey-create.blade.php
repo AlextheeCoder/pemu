@@ -66,7 +66,7 @@
                      throw new Error(message);
                  }
      
-                 window.location.href = '/survey/success';
+                 window.location.href = '/';
              } catch (error) {
                  console.error('Form submission error:', error);
              }

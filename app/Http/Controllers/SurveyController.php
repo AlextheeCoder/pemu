@@ -113,6 +113,6 @@ class SurveyController extends Controller
         Log::info('Request data:', $request->all());
         Survey::create($formFields);
     
-        return view('pages.profile-view')->with('message', 'Your Response has been successfully stored');
+        return redirect('/')->with('message', 'Your Response has been successfully stored');
     }
 }

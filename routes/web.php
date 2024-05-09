@@ -93,10 +93,14 @@ Route::post('/pemu/contact/store', [UserController::class, 'store_contacts']);
 
 //Store Contacts
 Route::post('/pemu/subscriber/store', [UserController::class, 'store_newsletters']);
+//Add Farmers
+Route::get('/add-farmer', function () {
+    return view('pages.farmer-create');
+})->name('add-farmer'); 
 
 
-
-
+//Store Farmers
+Route::post('/pemu/farmer/store', [UserController::class, 'store_farmer']);
 
 
 
@@ -165,6 +169,13 @@ Route::get('/pemu/view/user/{id}', [AdminController::class, 'view_user'])->name(
 
 // Delete User
 Route::delete('/pemu/delete/user/{user}', [AdminController::class, 'delete_user'])->name('user.delete')->middleware('checkRole:admin');
+
+Route::get('/pemu/view/surveys',[AdminController::class, 'displayAnalysis'])->middleware('checkRole:admin');
+
+Route::get('/pemu/view/farmers', [AdminController::class, 'get_farmers'])->middleware('checkRole:admin');
+
+
+
 
 
 

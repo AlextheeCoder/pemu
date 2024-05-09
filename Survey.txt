@@ -1,0 +1,168 @@
+Section 1: General Information
+ 1.	Type of Farming Entity:
+     •	Individual Farmer
+     •	Farming Cooperative
+     •	Agricultural Organization
+ 2.	Size of Farm:
+     •	Less than 5 hectares
+     •	5-10 hectares
+     •	10-20 hectares
+     •	More than 20 hectares
+Section 2: Farming Practices and Challenges
+ 3.	Current Regenerative Agriculture Practice:
+     •	Yes
+     •	No
+     •	Unsure what it is
+ 4.	Primary Farming Challenges: (Select all that apply)
+     •	Access to quality inputs
+     •	Market access
+     •	Knowledge on techniques
+     •	Government support
+     •	Environmental challenges
+ 5.	Soil Quality Rating:
+     •	Good
+     •	Average
+     •	Poor
+ 6.	Access to Irrigation:
+     •	Reliable and sufficient
+     •	Partially reliable
+     •	Rain-fed agriculture
+     •	Not applicable
+ 7.	Soil Improvement Techniques: (Select all that apply)
+     •	Organic matter addition
+     •	Crop rotation/diversification
+     •	Conservation tillage
+     •	Cover cropping
+     •	Soil testing
+     •	Irrigation management
+Section 3: Training and Extension Services
+ 8.	Interest in Training Services:
+     •	Very interested
+     •	Somewhat interested
+     •	Neutral
+     •	Not very interested
+     •	Not interested
+ 9.	Desired Training Areas: (Select all that apply)
+     •	Soil health
+     •	Crop diversification
+     •	Pest/disease management
+     •	Water conservation
+     •	Market access
+     •	Farming technology
+ 10.	Willingness to Pay for Training:
+     •	Yes
+     •	No
+     •	Depends on cost
+ 11.	Likelihood to Join Digital Platform:
+     •	Very likely
+     •	Likely
+     •	Unsure
+     •	Unlikely
+     •	Very unlikely
+ 12.	Challenges in Finding Operators:
+     •	Frequently
+     •	Sometimes
+     •	Rarely
+     •	Not at all
+ 13.	Interest in Upskilling Operators:
+     •	Very interested
+     •	Somewhat interested
+     •	Neutral
+     •	Not very interested
+     •	Not interested
+Section 4: Business Operations and Financial Management
+ 14.	Farm Operation as a Business:
+     •	Fully as a business
+     •	Partially as a business
+     •	Subsistence
+     •	Hobby/personal use
+ 15.	Record-Keeping:
+     •	Detailed records
+     •	Some records
+     •	No records
+ 16.	Profitability Analysis:
+     •	Frequently
+     •	Occasionally
+     •	Rarely
+     •	Never
+ 17.	Long-term Strategy/Plan:
+     •	Detailed plan
+     •	General idea
+     •	No plan
+ 18.	Sources of Finance: (Select all that apply)
+     •	Personal savings
+     •	Bank loans
+     •	Microfinance
+     •	Government grants
+     •	Friends/family loans
+     •	Crowdfunding
+ 19.	Borrowing Habits:
+     •	Yes, in past year
+     •	No
+ 20.	Challenges in Finance Access: (Select all that apply)
+     •	High interest rates
+     •	Stringent criteria
+     •	Complex processes
+     •	Limited financial knowledge
+     •	Lack of suitable products
+Section 5: Sales and Marketing
+ 21.	Sales Channels: (Select all that apply)
+     •	Direct to consumers
+     •	Cooperatives/groups
+     •	Local retailers
+     •	Wholesalers
+     •	Online platforms
+ 22.	Market Reliability:
+     •	Consistently reliable
+     •	Mostly reliable
+     •	Often struggle
+     •	No reliable market
+ 23.	Selling Challenges: (Select all that apply)
+     •	Price fluctuations
+     •	Access to markets
+     •	Competition
+     •	Transportation/logistics
+     •	Quality standards
+     •	Marketing skills
+     
+ 24.	Marketing Strategies:
+     •	Several strategies
+     •	Basic strategies
+     •	No specific strategies
+Section 6: Crop and Livestock Enterprises
+ 25.	Current Crops: (Select all that apply)
+     •	Staple food crops
+     •	Cash crops
+     •	Fruits and vegetables
+     •	Specialty crops
+ 26.	Interest in New Crops:
+     •	Yes
+     •	No
+ 27.	Constraints in Crop Choice: (Select all that apply)
+     •	Market access
+     •	Lack of knowledge
+     •	Financial constraints
+     •	Environmental limitations
+     •	Input availability
+     •	Labor/technical needs
+ 28.	Current Livestock: (Select all that apply)
+     •	Cattle
+     •	Sheep
+     •	Goats
+     •	Poultry
+     •	Pigs
+     •	Bees
+     •	Fish
+     •	None
+ 29.	Interest in Livestock Farming:
+     •	Start livestock farming
+     •	Expand livestock farming
+     •	Not interested
+ 30.	Challenges in Livestock Farming: (Select all that apply)
+     •	Financial constraints
+     •	Lack of knowledge
+     •	Veterinary/health issues
+     •	Feed availability
+     •	Market access
+     •	Infrastructure
+     •	Environmental conditions

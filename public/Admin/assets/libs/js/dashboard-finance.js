@@ -77,119 +77,18 @@ $(function() {
     });
     // ============================================================== 
     // Chart Balance Bar
-    // ============================================================== 
-    var ctx = document.getElementById("chartjs_balance_bar").getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-
-        
-        data: {
-            labels: ["Current", "1-30", "31-60", "61-90", "91+"],
-            datasets: [{
-                label: 'Aged Payables',
-                data: [500, 1000, 1500, 3700, 2500],
-                backgroundColor: "rgba(89, 105, 255,.8)",
-                borderColor: "rgba(89, 105, 255,1)",
-                borderWidth:2
-
-            }, {
-                label: 'Aged Receiables',
-                data: [1000, 1500, 2500, 3500, 2500],
-                backgroundColor: "rgba(255, 64, 123,.8)",
-                borderColor: "rgba(255, 64, 123,1)",
-                borderWidth:2
-
-
-            }]
-
-        },
-        options: {
-            legend: {
-                    display: true,
-
-                    position: 'bottom',
-
-                    labels: {
-                        fontColor: '#71748d',
-                        fontFamily:'Circular Std Book',
-                        fontSize: 14,
-                    }
-            },
-
-                scales: {
-                    xAxes: [{
-                ticks: {
-                    fontSize: 14,
-                     fontFamily:'Circular Std Book',
-                     fontColor: '#71748d',
-                }
-            }],
-            yAxes: [{
-                ticks: {
-                    fontSize: 14,
-                     fontFamily:'Circular Std Book',
-                     fontColor: '#71748d',
-                }
-            }]
-                }
-    }
-
-
-
-});
+ 
  
     
     // ============================================================== 
     // Gross Profit Margin
     // ============================================================== 
-   Morris.Donut({
-                element: 'morris_gross',
 
-                data: [
-                    { value: 94, label: 'Budget' },
-                    { value: 15, label: '' }
-                   
-                ],
-             
-                labelColor: '#5969ff',
-
-                colors: [
-                    '#5969ff',
-                    '#a8b0ff'
-                   
-                ],
-
-                formatter: function(x) { return x + "%" },
-                  resize: true
-
-            });
 
     // ============================================================== 
     // Net Profit Margin
     // ============================================================== 
-    Morris.Donut({
-                element: 'morris_profit',
-
-                data: [
-                    { value: 93, label: 'Profit' },
-                    { value: 15, label: '' }
-                   
-                ],
-             
-                labelColor: '#ff407b',
-
-
-                colors: [
-                    '#ff407b',
-                    '#ffd5e1'
-                   
-                ],
-
-                formatter: function(x) { return x + "%" },
-                  resize: true
-
-            });
-
+   
 
 
 
@@ -320,39 +219,7 @@ $(function() {
     // Accounts Payable Age
     // ============================================================== 
 
-    var chart = c3.generate({
-        bindto: "#account",
-        color: { pattern: ["#5969ff", "#ff407b", "#25d5f2", "#ffc750"] },
-        data: {
-            // iris data from R
-            columns: [
-                ['30 days', 120],
-                ['60 days', 70],
-                ['90 days', 50],
-                 ['90+ Days', 30],
-
-            ],
-            type: 'pie',
-            
-        }
-    });
-
-    setTimeout(function() {
-        chart.load({
-            
-        });
-    }, 1500);
-
-    setTimeout(function() {
-        chart.unload({
-            ids: 'data1'
-        });
-        chart.unload({
-            ids: 'data2'
-        });
-    }, 
-    2500
-    );
+   
 
     // ============================================================== 
     // Working Capital
