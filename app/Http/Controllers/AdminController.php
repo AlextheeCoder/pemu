@@ -406,4 +406,18 @@ class AdminController extends Controller
     
 
 
+    public function exportCSV()
+{
+    $tableData = Farmer::all(); 
+    $fileName = 'farmers.csv';
+    $file = fopen($fileName, 'w');
+    fputcsv($file, ['ID', 'FullName', 'Gender', 'Date of Birth', 'ID Number', 'Phone Number', 'Crops Grown', 'Area', 'Farm Operator', 'Date Created', 'Date Updated']);
+    foreach ($tableData as $row) {
+        fputcsv($file, $row->toArray());
+    }
+    fclose($file);
+    return response()->download($fileName);
+}
+
+
 }

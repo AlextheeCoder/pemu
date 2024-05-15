@@ -174,6 +174,7 @@ Route::get('/pemu/view/surveys',[AdminController::class, 'displayAnalysis'])->mi
 
 Route::get('/pemu/view/farmers', [AdminController::class, 'get_farmers'])->middleware('checkRole:admin');
 
+Route::get('/export-csv', [AdminController::class, 'exportCSV'])->name('export-csv')->middleware('checkRole:admin');
 
 
 

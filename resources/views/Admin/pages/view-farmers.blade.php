@@ -49,6 +49,7 @@
                     <option value="operator">Land Size</option>
                     <!-- Add more options for other fields if needed -->
                 </select>
+                <a href="{{ route('export-csv') }}" class="btn btn-success" style="margin-left: 30px">Download CSV</a>
             </div>
         </div>
         <div class="row">
