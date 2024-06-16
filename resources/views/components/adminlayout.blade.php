@@ -200,9 +200,9 @@
                             </li>
                             <li class="nav-item ">
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false"
-                                    data-target="#submenu-4" aria-controls="submenu-4"><i
+                                    data-target="#submenu-6" aria-controls="submenu-6"><i
                                         class="fab fa-fw fa-wpforms"></i>Notifications</a>
-                                <div id="submenu-4" class="collapse submenu" style="">
+                                <div id="submenu-6" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
                                             <a class="nav-link" href="/pemu/contacts/view">Contacts</a>
