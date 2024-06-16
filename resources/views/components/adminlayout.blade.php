@@ -170,6 +170,10 @@
                                             <a class="nav-link" href="/pemu/view/farmers">Farmer Analytics <span
                                                     class="badge badge-secondary">New</span></a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/pemu/view/moblie/farmers">Farmers Mobile<span
+                                                    class="badge badge-secondary">New</span></a>
+                                        </li>
 
                                     </ul>
                                 </div>

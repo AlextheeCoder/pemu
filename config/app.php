@@ -169,6 +169,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Spatie\Sitemap\SitemapServiceProvider::class,
+        App\Providers\AppwriteServiceProvider::class,
 
     ])->toArray(),
 

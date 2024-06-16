@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\BlogController;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\SurveyController;
+use App\Http\Controllers\AppwriteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,15 @@ Route::get('/blogs', [BlogController::class, 'blogs'] )->name('blogs');
 
 //Single Blog
 Route::get('/blog/post/{slug}', [BlogController::class, 'blogdetail'])->name('blog.detail');
+
+
+//Api
+
+Route::get('/api/blogs', [BlogController::class, 'blogsApi']);
+Route::get('/api/blog/post/{slug}', [BlogController::class, 'blogdetailApi']);
+
+//Api End
+
 
 // Contact Page
 Route::get('/contact-us', function () {
@@ -103,6 +113,8 @@ Route::get('/add-farmer', function () {
 Route::post('/pemu/farmer/store', [UserController::class, 'store_farmer']);
 
 
+Route::get('/export-csv', [AdminController::class, 'exportCSV'])->name('export-csv')->middleware('checkRole:admin');
+
 
 
 
@@ -172,12 +184,13 @@ Route::delete('/pemu/delete/user/{user}', [AdminController::class, 'delete_user'
 
 Route::get('/pemu/view/surveys',[AdminController::class, 'displayAnalysis'])->middleware('checkRole:admin');
 
+//
 Route::get('/pemu/view/farmers', [AdminController::class, 'get_farmers'])->middleware('checkRole:admin');
 
-Route::get('/export-csv', [AdminController::class, 'exportCSV'])->name('export-csv')->middleware('checkRole:admin');
+//Appwrite Farmers
+Route::get('/pemu/view/moblie/farmers', [AppwriteController::class, 'getAllFarmers'])->middleware('checkRole:admin');
 
-
-
+Route::get('/pemu/view/moblie/farmer/{id}', [AppwriteController::class, 'getFarmerDetails'])->name('farmer.details')->middleware('checkRole:admin');
 
 
 

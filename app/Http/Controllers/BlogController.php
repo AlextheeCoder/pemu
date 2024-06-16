@@ -308,7 +308,49 @@ public function popularCategories()
             }
             return response()->json(['success' => true]);
 }
+
+
+  public function blogsApi(Request $request){
+        $latestblogs = Blog::latest('created_at')->limit(3)->get();
+        if ($request->has('tag')) {
+            $tag = $request->input('tag');
+            $blogs = Blog::where('tags', 'like', '%' . $tag . '%')->paginate(10);
+        }
+        elseif ($request->has('category')) {
+            $category = $request->input('category');
+            $blogs = Blog::where('category', $category)->paginate(10);
+        } 
+        elseif ($request->has('search')) {
+            $search = $request->input('search');
+            $blogs = Blog::where('title', 'like', '%' . $search . '%')
+                                ->orWhere('content', 'like', '%' . $search . '%')
+                                ->orWhere('category', 'like', '%' . $search . '%')
+                                ->paginate(10);
+        } 
+        else {
+            $blogs = Blog::latest('created_at')->get();
+        }
+        $popularTags = $this->popularTags();
+        $popularCategories = $this->popularCategories(); 
+
+        return response()->json([
+            'blogs' => $blogs,
+            'latestblogs' => $latestblogs,
+            'popularTags' => $popularTags,
+            'popularCategories' => $popularCategories,
+        ]);
+    }
+    
+    public function blogdetailApi(Request $request, $slug){
+        $blog = Blog::where('slug', $slug)->firstOrFail();
+        $comments = $blog->comments()->whereNull('parent_id')->latest()->get();
+        return response()->json([
+            'blog' => $blog,
+            'comments' => $comments,
+        ]);
+    }
+
+
+
     
 }
-
-
