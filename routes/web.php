@@ -192,6 +192,8 @@ Route::get('/pemu/view/moblie/farmers', [AppwriteController::class, 'getAllFarme
 
 Route::get('/pemu/view/moblie/farmer/{id}', [AppwriteController::class, 'getFarmerDetails'])->name('farmer.details')->middleware('checkRole:admin');
 
+Route::post('/pemu/mobile/update-farmer', [AppwriteController::class, 'editFarmer'])->name('updateMobileFarmer')->middleware('checkRole:admin');
+
 
 
 

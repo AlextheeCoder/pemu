@@ -125,15 +125,49 @@
                                             <h3 class="section-title">Manage {{ $farmer['name'] }}</h3>
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                         <div class="card">
                                             <div class="card-body">
-                                                <form method="POST" action="">
+                                                <form method="POST" action="{{ route('updateMobileFarmer') }}">
                                                     @csrf
+                                                    <div class="form-group">
+                                                        <label for="name">Name</label>
+                                                        <input type="text" class="form-control" id="name"
+                                                            placeholder="Enter Name" value="{{ $farmer['name'] }}"
+                                                            name="name">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="idnumber">ID Number</label>
+                                                        <input type="text" class="form-control" id="idnumber"
+                                                            placeholder="Enter ID Number" inputmode="numeric"
+                                                            value="{{ $farmer['IDnumber'] }}" name="IDnumber">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="phonenumber">Phone Number</label>
+                                                        <input type="text" class="form-control" id="phonenumber"
+                                                            placeholder="Enter Phone Number" inputmode="numeric"
+                                                            value="{{ $farmer['phonenumber'] }}" name="phonenumber">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="exampleFormControlSelect1">Type: </label>
+                                                        <select class="form-control" id="type" name="type">
+                                                            <option value="{{ $farmer['type'] }}">
+                                                                {{ $farmer['type'] }}
+                                                            </option>
+                                                            <option value="Walk In">Walk In</option>
+                                                            <option value="Walk In With Service">Walk In With Service
+                                                            </option>
+                                                            <option value="Outgrower">Outgrower</option>
+                                                        </select>
+                                                    </div>
 
-                                                    <button class="btn btn-danger"> Delete</button>
+                                                    <input type="hidden" value="{{ $farmer['$id'] }}"
+                                                        name="farmerID" />
+                                                    <button type="submit" class="btn btn-success">Edit
+                                                        {{ $farmer['name'] }}</button>
+                                                    <button class="btn btn-danger"> Delete
+                                                        {{ $farmer['name'] }}</button>
                                                 </form>
-
                                             </div>
                                         </div>
                                     </div>
@@ -149,14 +183,56 @@
                                 aria-labelledby="pills-review-tab">
                                 <div class="card">
                                     <h5 class="card-header">Transactions</h5>
-                                    <div class="card-body">
-                                        <div class="review-block">
-                                            <h5 class="card-header">No transactions yet</h5>
-                                            <p class="review-text font-italic m-0">No Transactions have been Recorded
-                                            </p>
+                                    @if (!$farmerTransactions)
+                                        <div class="card-body">
+                                            <div class="review-block">
+                                                <h5 class="card-header">No transactions yet</h5>
+                                                <p class="review-text font-italic m-0">No Transactions have been
+                                                    Recorded
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @else
+                                        <div class="card">
+                                            <h5 class="card-header" style="font-style: italic">
+                                                {{ $farmer['name'] }}'s Transactions with Pemu</h5>
+                                            <div class="card-body p-0">
 
+                                                <div class="table-responsive">
+                                                    <table class="table" id="dataTable">
+                                                        <thead class="bg-light">
+                                                            <tr class="border-0">
+                                                                <th class="border-0">#</th>
+                                                                <th class="border-0">Product</th>
+                                                                <th class="border-0">Units</th>
+                                                                <th class="border-0">Quantity</th>
+                                                                <th class="border-0">Payment Method</th>
+                                                                <th class="border-0">Amount</th>
+                                                                <th></th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                            @foreach ($farmerTransactions as $farmerTransaction)
+                                                                <tr>
+                                                                    <td>#</td>
+                                                                    <td>{{ $farmerTransaction['product_name'] }}</td>
+                                                                    <td>{{ $farmerTransaction['units'] }}</td>
+                                                                    <td>{{ $farmerTransaction['quantity'] }}</td>
+                                                                    <td>{{ $farmerTransaction['payment_method'] }}</td>
+                                                                    <td style="color: green">KES
+                                                                        {{ $farmerTransaction['amount'] }}</td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    @endif
 
                                 </div>
 
@@ -174,5 +250,11 @@
             </div>
         </div>
     </div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.6/inputmask.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Inputmask('9999 999999').mask(document.getElementById('phonenumber'));
+            Inputmask('99999999').mask(document.getElementById('idnumber'));
+        });
+    </script>
 </x-adminlayout>

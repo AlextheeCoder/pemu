@@ -214,7 +214,22 @@
                                     </ul>
                                 </div>
                             </li>
+                            <li class="nav-item ">
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false"
+                                    data-target="#submenu-7" aria-controls="submenu-7"><i
+                                        class="fa fa-barcode"></i>Products</a>
+                                <div id="submenu-7" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="">View</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="">Create</a>
+                                        </li>
 
+                                    </ul>
+                                </div>
+                            </li>
 
                         </ul>
                     </div>
