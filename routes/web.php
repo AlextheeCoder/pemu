@@ -194,7 +194,13 @@ Route::get('/pemu/view/moblie/farmer/{id}', [AppwriteController::class, 'getFarm
 
 Route::post('/pemu/mobile/update-farmer', [AppwriteController::class, 'editFarmer'])->name('updateMobileFarmer')->middleware('checkRole:admin');
 
+Route::get('/pemu/view/moblie/products', [AppwriteController::class, 'viewProducts'])->name('viewProducts')->middleware('checkRole:admin');
 
+Route::get('/pemu/create/moblie/products', function () {
+    return view('Admin.pages.create-products');
+})->middleware('checkRole:admin');
+
+Route::post('/pemu/mobile/create-product', [AppwriteController::class, 'createProduct'])->middleware('checkRole:admin');
 
 
 Route::get('/sitemap.xml', function () {

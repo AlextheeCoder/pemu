@@ -221,10 +221,10 @@
                                 <div id="submenu-7" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="">View</a>
+                                            <a class="nav-link" href="/pemu/view/moblie/products">View</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="">Create</a>
+                                            <a class="nav-link" href="/pemu/create/moblie/products">Create</a>
                                         </li>
 
                                     </ul>

@@ -125,5 +125,85 @@ public function editFarmer(Request $request)
     }
 }
 
+public function viewProducts(Request $request) {
+    try {
+        $allProducts = [];
+        $hasMore = true;
+        $lastDocumentId = null;
+
+        while ($hasMore) {
+            $options = [
+                Query::orderDesc('$createdAt'),
+            ];
+
+            if ($lastDocumentId) {
+                $options[] = Query::cursorAfter($lastDocumentId);
+            }
+
+            $response = $this->database->listDocuments(
+                env('APPWRITE_DATABASE_ID'),
+                env('APPWRITE_PRODUCTS_COLLECTION_ID'),
+                $options
+            );
+
+            if (!$response || !isset($response['documents'])) {
+                throw new \Exception('Error fetching documents from the database.');
+            }
+
+            $documents = $response['documents'];
+            $allProducts = array_merge($allProducts, $documents);
+
+            if (count($documents) > 0) {
+                $lastDocumentId = end($documents)['$id'];
+                $hasMore = count($documents) == 25; // Assuming the limit is 25
+            } else {
+                $hasMore = false;
+            }
+        }
+
+        // Manually paginate the products array
+        $perPage = 10;
+        $page = $request->get('page', 1);
+        $offset = ($page - 1) * $perPage;
+
+        $productsCollection = collect($allProducts);
+        $paginatedProducts = new LengthAwarePaginator(
+            $productsCollection->slice($offset, $perPage)->all(),
+            $productsCollection->count(),
+            $perPage,
+            $page,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
+
+        return view('Admin.pages.view-products', ['products' => $paginatedProducts]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
+
+public function createProduct(Request $request)
+{
+    $request->validate([
+        'product_name' => 'required',
+        'sales_price' => 'required',
+    ]);
+
+    try {
+        $response = $this->database->createDocument(
+            env('APPWRITE_DATABASE_ID'),
+            env('APPWRITE_PRODUCTS_COLLECTION_ID'),
+            uniqid(), 
+            [
+                'product_name' => $request->input('product_name'),
+                'sales_price' => $request->input('sales_price'),
+            ],[]
+        );
+
+        return redirect()->route('viewProducts')->with('success', 'Farmer updated successfully!');
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
+
 
 }
