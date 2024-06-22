@@ -16,40 +16,161 @@ class AppwriteController extends Controller
     {
         $this->database = $database;
     }
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
    
-    public function getAllFarmers(Request $request)
-    {
-        try {
+public function getAllFarmers(Request $request)
+{
+    try {
+        // Fetch all farmers to calculate the farmer types
+        $limit = 100; // Set a limit per request
+        $offset = 0;
+        $allFarmers = [];
+
+        do {
             $response = $this->database->listDocuments(
                 env('APPWRITE_DATABASE_ID'),
                 env('APPWRITE_FARMERS_COLLECTION_ID'),
                 [
+                    Query::limit($limit),
+                    Query::offset($offset),
                     Query::orderDesc('$createdAt'),
                 ]
             );
 
             $farmers = $response['documents'];
-              // Manually paginate the farmers array
-              $perPage = 10;
-              $page = $request->get('page', 1);
-              $offset = ($page - 1) * $perPage;
-  
-              $farmersCollection = collect($farmers);
-              $paginatedFarmers = new LengthAwarePaginator(
-                  $farmersCollection->slice($offset, $perPage)->all(),
-                  $farmersCollection->count(),
-                  $perPage,
-                  $page,
-                  ['path' => $request->url(), 'query' => $request->query()]
-              );
-  
+            $allFarmers = array_merge($allFarmers, $farmers);
+            $offset += $limit;
 
-              return view('Admin.pages.view-mobile-farmers', ['farmers' => $paginatedFarmers]);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+        } while (count($farmers) == $limit);
+
+        // Group farmers by type
+        $farmerTypes = [];
+        foreach ($allFarmers as $farmer) {
+            $type = $farmer['type']; // Assuming 'type' is the field name for farmer type
+            if (!isset($farmerTypes[$type])) {
+                $farmerTypes[$type] = 0;
+            }
+            $farmerTypes[$type]++;
         }
+
+        // Determine the top farmer type
+        arsort($farmerTypes);
+        $topFarmerType = key($farmerTypes);
+
+        // Prepare data for pie chart (farmer types)
+        $pieChartData = [];
+        foreach ($farmerTypes as $type => $count) {
+            $pieChartData[] = ['type' => $type, 'count' => $count];
+        }
+
+        // Extract xValues and yValues for farmer type pie chart
+        $xValues = [];
+        $yValues = [];
+        foreach ($pieChartData as $data) {
+            $xValues[] = $data['type'];
+            $yValues[] = $data['count'];
+        }
+
+        // Query transactions table to find the most repeated product
+        $response = $this->database->listDocuments(
+            env('APPWRITE_DATABASE_ID'),
+            env('APPWRITE_FARMERTRANSACTION_COLLECTION_ID'),
+            [
+                Query::limit(100), // Limit to a reasonable number of documents
+                Query::orderDesc('$createdAt'), // Order by createdAt descending
+            ]
+        );
+
+        $transactions = $response['documents'];
+
+        // Count occurrences of each product
+        $productCounts = [];
+        foreach ($transactions as $transaction) {
+            $productName = $transaction['product_name']; // Assuming 'product_name' is the field name
+            if (!isset($productCounts[$productName])) {
+                $productCounts[$productName] = 0;
+            }
+            $productCounts[$productName]++;
+        }
+
+        // Determine the most repeated product
+        arsort($productCounts);
+        $topProduct = key($productCounts);
+
+        // Count total transactions
+        $totalTransactions = count($transactions); // Total number of transactions
+
+        // Prepare data for pie chart (payment methods)
+        $paymentMethods = [];
+        foreach ($transactions as $transaction) {
+            $paymentMethod = $transaction['payment_method']; // Assuming 'payment_method' is the field name
+            if (!isset($paymentMethods[$paymentMethod])) {
+                $paymentMethods[$paymentMethod] = 0;
+            }
+            $paymentMethods[$paymentMethod]++;
+        }
+
+        // Extract xValues and yValues for payment method pie chart
+        $paymentMethodXValues = [];
+        $paymentMethodYValues = [];
+        foreach ($paymentMethods as $method => $count) {
+            $paymentMethodXValues[] = $method;
+            $paymentMethodYValues[] = $count;
+        }
+
+        // Paginate the farmers for the current page
+        $search = $request->get('search');
+        $limit = 10; // Set a limit per page
+        $page = $request->get('page', 1);
+        $offset = ($page - 1) * $limit;
+
+        $queryOptions = [
+            Query::limit($limit),
+            Query::offset($offset),
+            Query::orderDesc('$createdAt'),
+        ];
+
+        if ($search) {
+            $queryOptions[] = Query::search('name', $search);
+            // Add other fields to search as needed
+        }
+
+        $response = $this->database->listDocuments(
+            env('APPWRITE_DATABASE_ID'),
+            env('APPWRITE_FARMERS_COLLECTION_ID'),
+            $queryOptions
+        );
+
+        $farmers = $response['documents'];
+        $totalFarmers = $response['total'];
+
+        $paginatedFarmers = new LengthAwarePaginator(
+            $farmers,
+            $totalFarmers,
+            $limit,
+            $page,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
+
+        return view('Admin.pages.view-mobile-farmers', [
+            'farmers' => $paginatedFarmers,
+            'totalFarmers' => $totalFarmers,
+            'topFarmerType' => $topFarmerType,
+            'xValues' => $xValues,
+            'yValues' => $yValues,
+            'topProduct' => $topProduct,
+            'totalTransactions' => $totalTransactions,
+            'paymentMethodXValues' => $paymentMethodXValues,
+            'paymentMethodYValues' => $paymentMethodYValues,
+        ]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
     }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public function getFarmerDetails($id)
 {
     try {

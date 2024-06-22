@@ -165,13 +165,8 @@
                                             <a class="nav-link" href="/add-farmer">Register a Farmer <span
                                                     class="badge badge-secondary">New</span></a>
                                         </li>
-
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/pemu/view/farmers">Farmer Analytics <span
-                                                    class="badge badge-secondary">New</span></a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/pemu/view/moblie/farmers">Farmers Mobile<span
+                                            <a class="nav-link" href="/pemu/view/moblie/farmers">View Analysis<span
                                                     class="badge badge-secondary">New</span></a>
                                         </li>
 

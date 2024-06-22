@@ -15,6 +15,9 @@
                                     <li class="breadcrumb-item"><a href="/pemu-admin"
                                             class="breadcrumb-link">Dashboard</a>
                                     </li>
+                                    <li class="breadcrumb-item"><a href="/pemu/view/moblie/farmers"
+                                            class="breadcrumb-link">Farmers</a>
+                                    </li>
                                     <li class="breadcrumb-item active" aria-current="page">Farmer Profile</li>
                                 </ol>
                             </nav>
