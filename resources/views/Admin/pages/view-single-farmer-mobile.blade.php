@@ -58,6 +58,8 @@
                                     <li class="mb-0">Location: <span style="color: green">
                                             {{ $farmer['location'] }}</span> </li>
                                     <li class="mb-0">Type: <span style="color: green">{{ $farmer['type'] }}</span>
+                                    <li class="mb-0">Coordinates: <span
+                                            style="color: green">{{ $farmer['type'] }}</span>
                                     </li>
                                 </ul>
                             </div>
@@ -206,35 +208,56 @@
                                                         <thead class="bg-light">
                                                             <tr class="border-0">
                                                                 <th class="border-0">#</th>
+                                                                <th class="border-0">Transaction Date</th>
                                                                 <th class="border-0">Product</th>
                                                                 <th class="border-0">Units</th>
                                                                 <th class="border-0">Quantity</th>
                                                                 <th class="border-0">Payment Method</th>
                                                                 <th class="border-0">Amount</th>
-                                                                <th></th>
 
+                                                                <th></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-
+                                                            @php
+                                                                $totalAmount = 0;
+                                                            @endphp
                                                             @foreach ($farmerTransactions as $farmerTransaction)
                                                                 <tr>
                                                                     <td>#</td>
+                                                                    <td>{{ \Carbon\Carbon::parse($farmerTransaction['$createdAt'])->format('d/m/Y') }}
                                                                     <td>{{ $farmerTransaction['product_name'] }}</td>
                                                                     <td>{{ $farmerTransaction['units'] }}</td>
                                                                     <td>{{ $farmerTransaction['quantity'] }}</td>
                                                                     <td>{{ $farmerTransaction['payment_method'] }}</td>
                                                                     <td style="color: green">KES
                                                                         {{ $farmerTransaction['amount'] }}</td>
+                                                                    @php
+                                                                        $totalAmount += $farmerTransaction['amount'];
+                                                                    @endphp
+                                                                    </td>
                                                                 </tr>
                                                             @endforeach
+                                                            <tr>
+                                                                <td colspan="5" class="text-right"><strong>Total
+                                                                        Amount:</strong></td>
+                                                                <td style="color: green"><strong>KES
+                                                                        {{ $totalAmount }}</strong></td>
+                                                                <td></td>
+                                                            </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
 
-                                            </div>
-                                        </div>
 
+                                            </div>
+
+
+                                        </div>
+                                        <a href="{{ route('transactions.downloadPDF', ['farmerId' => $farmer['$id']]) }}"
+                                            class="btn btn-success"
+                                            style="width: 20%; margin-left:5px; margin-bottom:5px">Download
+                                            Transactions PDF</a>
                                     @endif
 
                                 </div>

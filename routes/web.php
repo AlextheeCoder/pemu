@@ -202,6 +202,9 @@ Route::get('/pemu/create/moblie/products', function () {
 
 Route::post('/pemu/mobile/create-product', [AppwriteController::class, 'createProduct'])->middleware('checkRole:admin');
 
+Route::get('/download-transactions-pdf/{farmerId}', [AppwriteController::class, 'downloadPDF'])->name('transactions.downloadPDF');
+
+
 
 Route::get('/sitemap.xml', function () {
     return response()->file(public_path('pemu.xml'), [

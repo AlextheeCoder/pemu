@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Appwrite\Services\Databases;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Http\Request;
 use Appwrite\Query;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Carbon\Carbon;
 
 class AppwriteController extends Controller
 {
@@ -210,6 +212,47 @@ public function getAllFarmers(Request $request)
             : [];
 
         return view('Admin.pages.view-single-farmer-mobile', compact('farmer', 'farmerDetails', 'farmerTransactions'));
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
+
+public function downloadPDF($farmerId)
+{
+    try {
+        // Fetch main farmer details
+        $farmerResponse = $this->database->getDocument(
+            env('APPWRITE_DATABASE_ID'),
+            env('APPWRITE_FARMERS_COLLECTION_ID'),
+            $farmerId
+        );
+        $farmer = $farmerResponse;
+        $farmerName = $farmer['name']; // Assuming the farmer's name is in the 'name' field
+
+        // Fetch farmer transactions
+        $farmerTransactionsResponse = $this->database->listDocuments(
+            env('APPWRITE_DATABASE_ID'),
+            env('APPWRITE_FARMERTRANSACTION_COLLECTION_ID'),
+            [
+                Query::equal('farmerID', [$farmerId]),
+                Query::orderDesc('$createdAt')
+            ]
+        );
+        $farmerTransactions = isset($farmerTransactionsResponse['documents'])
+            ? $farmerTransactionsResponse['documents']
+            : [];
+
+        $totalAmount = array_sum(array_column($farmerTransactions, 'amount'));
+
+        // Load the view for the PDF
+        $pdf = PDF::loadView('Admin.templates.transactions', compact('farmerTransactions', 'totalAmount', 'farmer'));
+
+        // Create the filename
+        $date = Carbon::now()->format('d-m-Y');
+        $filename = "{$farmerName}-{$date}-transactions.pdf";
+
+        // Download the PDF with the customized filename
+        return $pdf->download($filename);
     } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()], 500);
     }
