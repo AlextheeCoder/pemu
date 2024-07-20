@@ -122,7 +122,7 @@ public function getAllFarmers(Request $request)
 
         // Paginate the farmers for the current page
         $search = $request->get('search');
-        $limit = 10; // Set a limit per page
+        $limit = 1; // Set a limit per page
         $page = $request->get('page', 1);
         $offset = ($page - 1) * $limit;
 
@@ -171,9 +171,9 @@ public function getAllFarmers(Request $request)
 }
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function getFarmerDetails($id)
+public function getFarmerDetails($id)
 {
     try {
         // Fetch main farmer details
@@ -185,37 +185,95 @@ public function getAllFarmers(Request $request)
 
         $farmer = $farmerResponse;
 
-        // Fetch additional farmer details
-        $farmerDetailsResponse = $this->database->listDocuments(
+        // Fetch farmer transactions with pagination and filters
+        $limit = 25;
+        $offset = 0;
+        $allFarmerTransactions = [];
+        $totalAmountTransacted = 0;
+
+        $filters = [
+            Query::equal('farmerID', [$id]),
+            Query::orderDesc('$createdAt')
+        ];
+
+        if ($crop = request('crop')) {
+            $filters[] = Query::equal('CropID', [$crop]);
+        }
+
+        if ($account = request('account')) {
+            $filters[] = Query::equal('HellaAccountID', [$account]);
+        }
+
+        do {
+            $farmerTransactionsResponse = $this->database->listDocuments(
+                env('APPWRITE_DATABASE_ID'),
+                env('APPWRITE_FARMERTRANSACTION_COLLECTION_ID'),
+                array_merge($filters, [Query::limit($limit), Query::offset($offset)])
+            );
+
+            $farmerTransactions = isset($farmerTransactionsResponse['documents'])
+                ? $farmerTransactionsResponse['documents']
+                : [];
+
+            $allFarmerTransactions = array_merge($allFarmerTransactions, $farmerTransactions);
+            $offset += $limit;
+
+            // Calculate total amount transacted
+            foreach ($farmerTransactions as $transaction) {
+                $totalAmountTransacted += $transaction['amount'];
+            }
+        } while (count($farmerTransactions) === $limit);
+
+        //Fetch unit details
+        $unitIDs = array_column($allFarmerTransactions, 'unitID');
+        $uniqueUnitIDs = array_unique($unitIDs);
+        $totalUnits = count($uniqueUnitIDs);
+
+        // Fetch crop details
+        $cropIDs = array_column($allFarmerTransactions, 'CropID');
+        $cropDetailsResponse = $this->database->listDocuments(
             env('APPWRITE_DATABASE_ID'),
-            env('APPWRITE_FARMERDETAILS_COLLECTION_ID'),
+            env('APPWRITE_CROPS_COLLECTION_ID'),
             [
-                Query::equal('farmerID', [$id]),
+                Query::equal('$id', $cropIDs)
             ]
         );
-
-        // Ensure we have documents and access the first one
-        $farmerDetails = isset($farmerDetailsResponse['documents']) && count($farmerDetailsResponse['documents']) > 0
-            ? $farmerDetailsResponse['documents'][0]
-            : null;
-
-        $farmerTransactionsResponse = $this->database->listDocuments(
-            env('APPWRITE_DATABASE_ID'),
-            env('APPWRITE_FARMERTRANSACTION_COLLECTION_ID'),
-            [
-                Query::equal('farmerID', [$id]),
-                Query::orderDesc('$createdAt')
-              ]
-        );
-        $farmerTransactions = isset($farmerTransactionsResponse['documents'])
-            ? $farmerTransactionsResponse['documents']
+        $cropDetails = isset($cropDetailsResponse['documents'])
+            ? array_column($cropDetailsResponse['documents'], null, '$id')
             : [];
 
-        return view('Admin.pages.view-single-farmer-mobile', compact('farmer', 'farmerDetails', 'farmerTransactions'));
+        // Map crop names and planting dates to transactions
+        foreach ($allFarmerTransactions as &$transaction) {
+            $cropID = $transaction['CropID'];
+            if (isset($cropDetails[$cropID])) {
+                $cropName = $cropDetails[$cropID]['crop_name'];
+                $plantingDate = \Carbon\Carbon::parse($cropDetails[$cropID]['planting_date'])->format('d/m/Y');
+                $transaction['CropName'] = "$cropName (Planted on: $plantingDate)";
+            } else {
+                $transaction['CropName'] = 'Unknown Crop';
+            }
+        }
+
+     
+
+        // Calculate total crops grown
+        $uniqueCropIDs = array_unique($cropIDs);
+        $totalCropsGrown = count($uniqueCropIDs);
+
+        // Calculate total transactions count
+        $totalTransactionsCount = count($allFarmerTransactions);
+
+        return view('Admin.pages.view-single-farmer-mobile', compact('farmer', 'allFarmerTransactions', 'cropDetails', 'totalCropsGrown', 'totalTransactionsCount', 'totalAmountTransacted', 'totalUnits'));
     } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()], 500);
     }
 }
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 public function downloadPDF($farmerId)
 {
@@ -363,11 +421,46 @@ public function createProduct(Request $request)
             ],[]
         );
 
-        return redirect()->route('viewProducts')->with('success', 'Farmer updated successfully!');
+        return redirect()->route('create-products')->with('success', 'Farmer updated successfully!');
     } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()], 500);
     }
 }
+
+// public function batchInsertProducts()
+// {
+//     ini_set('max_execution_time', 300);
+//     $products = [
+//         ['product_name' => 'Bonzin 100mls', 'sales_price' => '200.00'],
+//         ['product_name' => 'Bonzin 500mls', 'sales_price' => '615.00'],
+//     ];
+    
+
+//     $errors = [];
+//     foreach ($products as $product) {
+//         try {
+//             $this->database->createDocument(
+//                 env('APPWRITE_DATABASE_ID'),
+//                 env('APPWRITE_PRODUCTS_COLLECTION_ID'),
+//                 uniqid(),
+//                 [
+//                     'product_name' => $product['product_name'],
+//                     'sales_price' => $product['sales_price'],
+//                 ],
+//                 []
+//             );
+//         } catch (\Exception $e) {
+//             $errors[] = ['product' => $product, 'error' => $e->getMessage()];
+//         }
+//     }
+
+//     if (count($errors) > 0) {
+//         return response()->json(['errors' => $errors], 500);
+//     }
+
+//     return response()->json(['success' => 'All products inserted successfully!']);
+// }
+
 
 
 }

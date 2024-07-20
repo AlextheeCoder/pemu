@@ -123,7 +123,7 @@
                                     @endif
                                 </tbody>
                             </table>
-                            {{ $farmers->links('pagination::bootstrap-4') }}
+
                         </div>
                     </div>
                 </div>

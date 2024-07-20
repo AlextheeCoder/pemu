@@ -198,11 +198,14 @@ Route::get('/pemu/view/moblie/products', [AppwriteController::class, 'viewProduc
 
 Route::get('/pemu/create/moblie/products', function () {
     return view('Admin.pages.create-products');
-})->middleware('checkRole:admin');
+})->name('create-products')->middleware('checkRole:admin');
 
 Route::post('/pemu/mobile/create-product', [AppwriteController::class, 'createProduct'])->middleware('checkRole:admin');
 
 Route::get('/download-transactions-pdf/{farmerId}', [AppwriteController::class, 'downloadPDF'])->name('transactions.downloadPDF');
+
+
+// Route::get('/pemu/batch-insert-products', [AppwriteController::class, 'batchInsertProducts']);
 
 
 

@@ -69,28 +69,10 @@
                         <div class="card-body border-top">
                             <h3 class="font-16">Crops Grown</h3>
                             <div>
-                                @if ($farmerDetails)
-                                    @foreach (explode(',', $farmerDetails['crops']) as $crop)
-                                        <p class="badge mr-1 badge-success">{{ trim($crop) }}</p>
-                                    @endforeach
-                                @else
-                                    <p>Farmer Details haven't been captured Yet</p>
-                                @endif
+                                <p>Farmer Details haven't been captured Yet</p>
+                            </div>
+                        </div>
 
-                            </div>
-                        </div>
-                        <div class="card-body border-top">
-                            <h3 class="font-16">Treatments in Use</h3>
-                            <div>
-                                @if ($farmerDetails)
-                                    @foreach (explode(',', $farmerDetails['treatments']) as $treatment)
-                                        <p class="badge mr-1 badge-warning">{{ trim($treatment) }}</p>
-                                    @endforeach
-                                @else
-                                    <p>Farmer Details haven't been captured Yet</p>
-                                @endif
-                            </div>
-                        </div>
                     </div>
                     <!-- ============================================================== -->
                     <!-- end card profile -->
@@ -188,7 +170,7 @@
                                 aria-labelledby="pills-review-tab">
                                 <div class="card">
                                     <h5 class="card-header">Transactions</h5>
-                                    @if (!$farmerTransactions)
+                                    @if (!$allFarmerTransactions)
                                         <div class="card-body">
                                             <div class="review-block">
                                                 <h5 class="card-header">No transactions yet</h5>
@@ -197,10 +179,146 @@
                                                 </p>
                                             </div>
                                         </div>
+                                    @elseif ($farmer['type'] == 'Outgrower')
+                                        <div class="card">
+                                            <h5 class="card-header" style="font-style: italic">
+                                                {{ $farmer['name'] }}'s Transactions with PEMU</h5>
+                                            <div class="card-body p-0">
+                                                <div class="card" style="margin: 30px;">
+                                                    <form style="margin: 10px;" method="GET"
+                                                        action="{{ route('farmer.details', ['id' => $farmer['$id']]) }}">
+                                                        <div class="row mb-3">
+                                                            <div class="col-md-6">
+                                                                <label for="cropFilter">Filter by Crop:</label>
+                                                                <select name="crop" id="cropFilter"
+                                                                    class="form-control">
+                                                                    <option value="">All {{ $farmer['name'] }}'s
+                                                                        Crops</option>
+                                                                    @foreach ($cropDetails as $crop)
+                                                                        <option value="{{ $crop['$id'] }}"
+                                                                            {{ request('crop') == $crop['$id'] ? 'selected' : '' }}>
+                                                                            {{ $crop['crop_name'] }} (Planted on:
+                                                                            {{ \Carbon\Carbon::parse($crop['planting_date'])->format('d/m/Y') }})
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-success">Apply
+                                                            Filters</button>
+                                                        <a href="{{ route('farmer.details', ['id' => $farmer['$id']]) }}"
+                                                            class="btn btn-warning">Reset Filters</a>
+                                                    </form>
+                                                </div>
+                                                @php
+                                                    $CardtotalAmount = 0;
+                                                @endphp
+
+                                                <div class="row" style="margin-left: 20px">
+                                                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <h5 class="text-muted">Total Amount</h5>
+                                                                <div class="metric-value d-inline-block">
+                                                                    <h1 class="mb-1" style="color: green">
+                                                                        KES {{ $totalAmountTransacted }}
+                                                                    </h1>
+                                                                </div>
+
+                                                            </div>
+                                                            <div id="sparkline-revenue"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <h5 class="text-muted">Total units</h5>
+                                                                <div class="metric-value d-inline-block">
+                                                                    <h1 class="mb-1 text-warning">
+                                                                        {{ $totalUnits }}</h1>
+                                                                </div>
+                                                            </div>
+                                                            <div id="sparkline-revenue"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <h5 class="text-muted">Total transactions</h5>
+                                                                <div class="metric-value d-inline-block">
+                                                                    <h1 class="mb-1 text-danger">
+                                                                        {{ $totalTransactionsCount }}
+                                                                    </h1>
+                                                                </div>
+                                                            </div>
+                                                            <div id="sparkline-revenue"></div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+
+                                                <div class="table-responsive">
+                                                    <table class="table" id="dataTable">
+                                                        <thead class="bg-light">
+                                                            <tr class="border-0">
+                                                                <th class="border-0">#</th>
+                                                                <th class="border-0">Transaction Date</th>
+                                                                <th class="border-0">Crop</th>
+                                                                <th class="border-0">Product</th>
+                                                                <th class="border-0">Quantity</th>
+                                                                <th class="border-0">Amount</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @php
+                                                                $totalAmount = 0;
+                                                            @endphp
+                                                            @foreach ($allFarmerTransactions as $farmerTransaction)
+                                                                <tr>
+                                                                    <td>{{ $loop->iteration }}</td>
+                                                                    <td>{{ \Carbon\Carbon::parse($farmerTransaction['$createdAt'])->format('d/m/Y') }}
+                                                                    </td>
+                                                                    <td>{{ $farmerTransaction['CropName'] }}</td>
+                                                                    <td>{{ $farmerTransaction['product_name'] }}</td>
+                                                                    <td>{{ $farmerTransaction['quantity'] }}</td>
+                                                                    <td style="color: green">KES
+                                                                        {{ $farmerTransaction['amount'] }}</td>
+                                                                    @php
+                                                                        $totalAmount += $farmerTransaction['amount'];
+                                                                        $CardtotalAmount = $totalAmount;
+                                                                    @endphp
+                                                                </tr>
+                                                            @endforeach
+                                                            <tr>
+                                                                <td colspan="5" class="text-right"><strong>Total
+                                                                        Amount:</strong></td>
+                                                                <td style="color: green"><strong>KES
+                                                                        {{ $totalAmount }}</strong></td>
+                                                                <td></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+
+                                                </div>
+
+
+                                            </div>
+
+
+                                        </div>
+                                        <a href="{{ route('transactions.downloadPDF', ['farmerId' => $farmer['$id']]) }}"
+                                            class="btn btn-success"
+                                            style="width: 20%; margin-left:5px; margin-bottom:5px">Download
+                                            Transactions PDF</a>
+
+                                        {{-- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- --}}
                                     @else
                                         <div class="card">
                                             <h5 class="card-header" style="font-style: italic">
-                                                {{ $farmer['name'] }}'s Transactions with Pemu</h5>
+                                                {{ $farmer['name'] }}'s Transactions with PEMU</h5>
                                             <div class="card-body p-0">
 
                                                 <div class="table-responsive">
@@ -222,7 +340,7 @@
                                                             @php
                                                                 $totalAmount = 0;
                                                             @endphp
-                                                            @foreach ($farmerTransactions as $farmerTransaction)
+                                                            @foreach ($allFarmerTransactions as $farmerTransaction)
                                                                 <tr>
                                                                     <td>#</td>
                                                                     <td>{{ \Carbon\Carbon::parse($farmerTransaction['$createdAt'])->format('d/m/Y') }}
