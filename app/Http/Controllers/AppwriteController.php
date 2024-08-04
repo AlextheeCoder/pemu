@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Appwrite\Services\Databases;
-use Barryvdh\DomPDF\Facade\Pdf as PDF;
-use Illuminate\Http\Request;
-use Appwrite\Query;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Carbon\Carbon;
+use Appwrite\Query;
+use Illuminate\Http\Request;
+use Appwrite\Services\Databases;
+use Illuminate\Support\Facades\Log;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class AppwriteController extends Controller
 {
@@ -200,9 +201,7 @@ public function getFarmerDetails($id)
             $filters[] = Query::equal('CropID', [$crop]);
         }
 
-        if ($account = request('account')) {
-            $filters[] = Query::equal('HellaAccountID', [$account]);
-        }
+      
 
         do {
             $farmerTransactionsResponse = $this->database->listDocuments(
@@ -224,7 +223,7 @@ public function getFarmerDetails($id)
             }
         } while (count($farmerTransactions) === $limit);
 
-        //Fetch unit details
+        // Fetch unit details
         $unitIDs = array_column($allFarmerTransactions, 'unitID');
         $uniqueUnitIDs = array_unique($unitIDs);
         $totalUnits = count($uniqueUnitIDs);
@@ -254,8 +253,6 @@ public function getFarmerDetails($id)
             }
         }
 
-     
-
         // Calculate total crops grown
         $uniqueCropIDs = array_unique($cropIDs);
         $totalCropsGrown = count($uniqueCropIDs);
@@ -263,7 +260,125 @@ public function getFarmerDetails($id)
         // Calculate total transactions count
         $totalTransactionsCount = count($allFarmerTransactions);
 
-        return view('Admin.pages.view-single-farmer-mobile', compact('farmer', 'allFarmerTransactions', 'cropDetails', 'totalCropsGrown', 'totalTransactionsCount', 'totalAmountTransacted', 'totalUnits'));
+        // Fetch payments with pagination and filters
+        $offset = 0;
+        $allFarmerPayments = [];
+        $totalPaymentsAmount = 0;
+        $totalKgsAmount = 0;
+        $totalAmount_deducted = 0;
+
+        $paymentFilters = [
+            Query::equal('farmerID', [$id]),
+            Query::orderDesc('$createdAt')
+        ];
+
+        if ($cropPayment = request('cropPayment')) {
+            $paymentFilters[] = Query::equal('CropID', [$cropPayment]);
+        }
+
+        do {
+            $farmerPaymentsResponse = $this->database->listDocuments(
+                env('APPWRITE_DATABASE_ID'),
+                env('APPWRITE_PEMU_PAYMENTS_COLLECTION_ID'),
+                array_merge($paymentFilters, [Query::limit($limit), Query::offset($offset)])
+            );
+
+            $farmerPayments = isset($farmerPaymentsResponse['documents'])
+                ? $farmerPaymentsResponse['documents']
+                : [];
+
+            $allFarmerPayments = array_merge($allFarmerPayments, $farmerPayments);
+            $offset += $limit;
+
+
+
+            // Calculate total payments amount
+            foreach ($allFarmerPayments as &$payment) {
+                $totalPaymentsAmount += $payment['amount_payed'];
+                $totalAmount_deducted += $payment['amount_deducted'];
+                
+
+                 // Extract harvest IDs from the payment
+                 $harvestIDs = explode(',', $payment['HarvestIDs']);
+                 $harvestIDs = array_map('trim', $harvestIDs);
+ 
+                 // Fetch harvest details using the harvest IDs
+                 $harvestDetails = [];
+                 foreach ($harvestIDs as $harvestID) {
+                     $harvestResponse = $this->database->getDocument(
+                         env('APPWRITE_DATABASE_ID'),
+                         env('APPWRITE_HARVESTS_COLLECTION_ID'),
+                         $harvestID
+                     );
+                     if ($harvestResponse) {
+                         $harvestDetails[] = $harvestResponse;
+                     }
+                 }
+ 
+                 $acceptedKgs = array_column($harvestDetails, 'accepted_kgs');
+
+                // Convert the array to a comma-separated string
+                $acceptedKgsString = implode(', ', $acceptedKgs);
+
+                // Log the string value
+                //Log::info('Accepted Kgs String: ', [$acceptedKgsString]);
+
+                // Assign the string to the payment array
+                $payment['acceptedKgs'] = $acceptedKgsString;
+                $totalAcceptedKgs = array_sum($acceptedKgs);
+                $payment['totalAcceptedKilos'] = $totalAcceptedKgs;
+
+                $totalKgsAmount += $payment['totalAcceptedKilos'];
+
+
+
+                //Crop Details for payments
+                $cropDetailsPayments = [];
+                foreach ($harvestDetails as $harvestDetail) {
+                    if (isset($harvestDetail['CropID']) && is_array($harvestDetail['CropID'])) {
+                        $cropDetailsPayments[] = $harvestDetail['CropID'];
+                    }
+                }
+
+                $cropDetailsString = array_map(function($crop) {
+                    // Ensure $crop is an array and has the expected keys
+                    if (is_array($crop) && isset($crop['planting_date']) && isset($crop['crop_name'])) {
+                        $plantingDate = \Carbon\Carbon::parse($crop['planting_date'])->format('d/m/Y');
+                        return "{$crop['crop_name']}({$plantingDate})";
+                    }
+                    return 'Unknown Crop'; // Default case if data is not as expected
+                }, $cropDetailsPayments);
+
+                $cropDetailsString = implode(', ', $cropDetailsString);
+                // Log the string representation of crop details
+                // Log::info('Payment Crop Details String:', [$cropDetailsString]);
+
+                // You can also assign it to the payment array if needed
+                $payment['PaymentcropDetails'] = $cropDetailsString;
+
+            }
+            $totalpaymentsCount= count($allFarmerPayments);
+
+
+        } while (count($farmerPayments) === $limit);
+
+       
+
+        return view('Admin.pages.view-single-farmer-mobile', compact(
+            'farmer', 
+            'allFarmerTransactions', 
+            'cropDetails', 
+            'cropDetailsPayments',
+            'totalCropsGrown', 
+            'totalTransactionsCount', 
+            'totalAmountTransacted', 
+            'totalUnits',
+            'allFarmerPayments',
+            'totalPaymentsAmount',
+            'totalpaymentsCount',
+            'totalKgsAmount',
+            'totalAmount_deducted',
+        ));
     } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()], 500);
     }
