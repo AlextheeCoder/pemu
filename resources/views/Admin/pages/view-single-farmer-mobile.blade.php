@@ -445,7 +445,8 @@
                                                             <div class="card-body">
                                                                 <h5 class="text-muted">Total Amount Payed</h5>
                                                                 <div class="metric-value d-inline-block">
-                                                                    <h1 class="mb-1" style="color: green">
+                                                                    <h1 class="mb-1"
+                                                                        style="color: green; font-size: 1.5rem;">
                                                                         KES {{ round($totalPaymentsAmount, 0) }}
                                                                     </h1>
                                                                 </div>
@@ -459,7 +460,8 @@
                                                             <div class="card-body">
                                                                 <h5 class="text-muted">Total Kgs Accepted</h5>
                                                                 <div class="metric-value d-inline-block">
-                                                                    <h1 class="mb-1 text-warning">
+                                                                    <h1 class="mb-1 text-warning"
+                                                                        style="font-size: 1.5rem;">
                                                                         {{ $totalKgsAmount }}</h1>
                                                                 </div>
                                                             </div>
@@ -471,7 +473,8 @@
                                                             <div class="card-body">
                                                                 <h5 class="text-muted">Total Deductions</h5>
                                                                 <div class="metric-value d-inline-block">
-                                                                    <h1 class="mb-1 text-success">
+                                                                    <h1 class="mb-1 text-success"
+                                                                        style="font-size: 1.5rem;">
                                                                         KES {{ round($totalAmount_deducted, 0) }}
                                                                     </h1>
                                                                 </div>
@@ -490,7 +493,8 @@
                                                                             $totalAmount_deducted;
                                                                     @endphp
 
-                                                                    <h1 class="mb-1 text-danger">
+                                                                    <h1 class="mb-1 text-danger"
+                                                                        style="font-size: 1.5rem;">
                                                                         @if ($amountOwed < 0)
                                                                             KES 0
                                                                         @else
