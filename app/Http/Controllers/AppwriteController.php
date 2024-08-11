@@ -197,9 +197,10 @@ public function getFarmerDetails($id)
             Query::orderDesc('$createdAt')
         ];
 
-        if ($crop = request('crop')) {
+        if ($crop = request('transactionCrop')) {
             $filters[] = Query::equal('CropID', [$crop]);
         }
+        
 
       
 
@@ -269,12 +270,13 @@ public function getFarmerDetails($id)
 
         $paymentFilters = [
             Query::equal('farmerID', [$id]),
-            Query::orderDesc('$createdAt')
+            Query::orderAsc('$createdAt')
         ];
 
-        if ($cropPayment = request('cropPayment')) {
+        if ($cropPayment = request('paymentCrop')) {
             $paymentFilters[] = Query::equal('CropID', [$cropPayment]);
         }
+        
 
         do {
             $farmerPaymentsResponse = $this->database->listDocuments(
@@ -293,70 +295,78 @@ public function getFarmerDetails($id)
 
 
             // Calculate total payments amount
+           
             foreach ($allFarmerPayments as &$payment) {
                 $totalPaymentsAmount += $payment['amount_payed'];
                 $totalAmount_deducted += $payment['amount_deducted'];
-                
-
-                 // Extract harvest IDs from the payment
-                 $harvestIDs = explode(',', $payment['HarvestIDs']);
-                 $harvestIDs = array_map('trim', $harvestIDs);
- 
-                 // Fetch harvest details using the harvest IDs
-                 $harvestDetails = [];
-                 foreach ($harvestIDs as $harvestID) {
-                     $harvestResponse = $this->database->getDocument(
-                         env('APPWRITE_DATABASE_ID'),
-                         env('APPWRITE_HARVESTS_COLLECTION_ID'),
-                         $harvestID
-                     );
-                     if ($harvestResponse) {
-                         $harvestDetails[] = $harvestResponse;
-                     }
-                 }
- 
-                 $acceptedKgs = array_column($harvestDetails, 'accepted_kgs');
-
+            
+                // Extract harvest IDs from the payment
+                $harvestIDs = explode(',', $payment['HarvestIDs']);
+                $harvestIDs = array_map('trim', $harvestIDs);
+            
+                // Fetch harvest details using the harvest IDs
+                $harvestDetails = [];
+                $deliveryDates = [];
+                $unitprices = [];
+                foreach ($harvestIDs as $harvestID) {
+                    $harvestResponse = $this->database->getDocument(
+                        env('APPWRITE_DATABASE_ID'),
+                        env('APPWRITE_HARVESTS_COLLECTION_ID'),
+                        $harvestID
+                    );
+                    if ($harvestResponse) {
+                        $harvestDetails[] = $harvestResponse;
+                        if (isset($harvestResponse['$createdAt'])) {
+                            $deliveryDates[] = \Carbon\Carbon::parse($harvestResponse['$createdAt'])->format('d/m/Y');
+                            $unitprices[] = $harvestResponse['value_per_kg'];
+                        } else {
+                            $deliveryDates[] = 'Unknown Date'; // Default case if delivery_date is missing
+                        }
+                    }
+                }
+            
+                $acceptedKgs = array_column($harvestDetails, 'accepted_kgs');
+            
                 // Convert the array to a comma-separated string
                 $acceptedKgsString = implode(', ', $acceptedKgs);
-
-                // Log the string value
-                //Log::info('Accepted Kgs String: ', [$acceptedKgsString]);
-
+            
                 // Assign the string to the payment array
                 $payment['acceptedKgs'] = $acceptedKgsString;
                 $totalAcceptedKgs = array_sum($acceptedKgs);
                 $payment['totalAcceptedKilos'] = $totalAcceptedKgs;
-
+            
                 $totalKgsAmount += $payment['totalAcceptedKilos'];
-
-
-
-                //Crop Details for payments
+            
+                // Crop Details for payments
                 $cropDetailsPayments = [];
                 foreach ($harvestDetails as $harvestDetail) {
-                    if (isset($harvestDetail['CropID']) && is_array($harvestDetail['CropID'])) {
+                    if (isset($harvestDetail['CropID'])) {
                         $cropDetailsPayments[] = $harvestDetail['CropID'];
                     }
                 }
-
+            
                 $cropDetailsString = array_map(function($crop) {
                     // Ensure $crop is an array and has the expected keys
                     if (is_array($crop) && isset($crop['planting_date']) && isset($crop['crop_name'])) {
                         $plantingDate = \Carbon\Carbon::parse($crop['planting_date'])->format('d/m/Y');
-                        return "{$crop['crop_name']}({$plantingDate})";
+                        return "{$crop['crop_name']} (Planted on: {$plantingDate})";
                     }
                     return 'Unknown Crop'; // Default case if data is not as expected
                 }, $cropDetailsPayments);
-
+            
                 $cropDetailsString = implode(', ', $cropDetailsString);
-                // Log the string representation of crop details
-                // Log::info('Payment Crop Details String:', [$cropDetailsString]);
-
-                // You can also assign it to the payment array if needed
                 $payment['PaymentcropDetails'] = $cropDetailsString;
-
+            
+                // Add delivery dates to the payment array
+                $deliveryDatesString = implode(', ', $deliveryDates);
+                $unitpricesString = implode(', ', $unitprices);
+                $payment['unitPrice'] = $unitpricesString;
+                $payment['deliveryDates'] = $deliveryDatesString;
             }
+            
+
+
+
             $totalpaymentsCount= count($allFarmerPayments);
 
 

@@ -392,7 +392,7 @@
 
                             </div>
 
-                            {{-- -----------------------------------------------------------------------------------------------------------------------------------------------------Payments--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- --}}
+                            {{-- ---------------------------------------------------------------------------------------Payments--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- --}}
 
                             <div class="tab-pane fade" id="pills-payments" role="tabpanel"
                                 aria-labelledby="pills-review-tab">
@@ -418,6 +418,8 @@
                                                         action="{{ route('farmer.details', ['id' => $farmer['$id']]) }}">
                                                         <div class="row mb-3">
                                                             <div class="col-md-6">
+
+
                                                                 <label for="paymentCropFilter">Filter by Crop:</label>
                                                                 <select name="paymentCrop" id="paymentCropFilter"
                                                                     class="form-control">
@@ -433,10 +435,13 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <button type="submit" class="btn btn-success">Apply
+                                                        {{-- <button type="submit" class="btn btn-success">Apply
                                                             Filters</button>
                                                         <a href="{{ route('farmer.details', ['id' => $farmer['$id']]) }}"
-                                                            class="btn btn-warning">Reset Filters</a>
+                                                            class="btn btn-warning">Reset Filters</a> --}}
+
+                                                        <a href="#" class="btn btn-warning">Under
+                                                            Construction</a>
                                                     </form>
                                                 </div>
                                                 <div class="row" style="margin-left: 20px; margin-right: 10px">
@@ -518,11 +523,14 @@
                                                                 <th class="border-0">#</th>
                                                                 <th class="border-0">Transaction Date</th>
                                                                 <th class="border-0">Crop</th>
-                                                                <th class="border-0">Number of Harvests</th>
+                                                                <th class="border-0">Delivery Date</th>
                                                                 <th class="border-0">Accepted Kgs</th>
+                                                                <th class="border-0">Unit Price (KES)</th>
                                                                 <th class="border-0">Total Value</th>
                                                                 <th class="border-0">Amount Deducted</th>
+                                                                <th class="border-0">Total Debt</th>
                                                                 <th class="border-0">Amount Paid</th>
+                                                                <th class="border-0">Debt Balance</th>
                                                                 <th></th>
                                                             </tr>
                                                         </thead>
@@ -537,35 +545,38 @@
                                                                         $totalValue =
                                                                             floatval($pemupayment['amount_deducted']) +
                                                                             floatval($pemupayment['amount_payed']);
+                                                                        $debtBalance =
+                                                                            floatval($pemupayment['debt_balance']) -
+                                                                            floatval($pemupayment['amount_deducted']);
                                                                     @endphp
                                                                     <td>{{ $loop->iteration }}</td>
                                                                     <td>{{ \Carbon\Carbon::parse($pemupayment['$createdAt'])->format('d/m/Y') }}
                                                                     </td>
                                                                     <td>{{ $pemupayment['PaymentcropDetails'] }}</td>
-                                                                    <td>{{ count(explode(',', $pemupayment['HarvestIDs'])) }}
-                                                                    </td>
-                                                                    <td> {{ $pemupayment['acceptedKgs'] }}</td>
+                                                                    <td>{{ $pemupayment['deliveryDates'] }}</td>
+                                                                    <td>{{ $pemupayment['acceptedKgs'] }}</td>
+                                                                    <td>{{ $pemupayment['unitPrice'] }}</td>
                                                                     <td style="color: green">KES {{ $totalValue }}
                                                                     </td>
                                                                     <td style="color: green">KES
                                                                         {{ $pemupayment['amount_deducted'] }}</td>
+                                                                    <td style="color: red">KES
+                                                                        {{ $pemupayment['debt_balance'] }}</td>
                                                                     <td style="color: green">KES
                                                                         {{ $pemupayment['amount_payed'] }}</td>
+                                                                    <td style="color: orange">KES {{ $debtBalance }}
+                                                                    </td>
                                                                     @php
                                                                         $totalAmount += $pemupayment['amount_payed'];
                                                                         $totalharvests += count(
                                                                             explode(',', $pemupayment['HarvestIDs']),
                                                                         );
                                                                     @endphp
-
                                                                 </tr>
                                                             @endforeach
                                                             <tr>
-                                                                <td colspan="3" class="text-right"><strong>Total
-                                                                        Harvests:</strong></td>
-                                                                <td style="color: red"><strong>
-                                                                        {{ $totalharvests }}</strong></td>
-                                                                <td colspan="3" class="text-right"><strong>Total
+
+                                                                <td colspan="9" class="text-right"><strong>Total
                                                                         Amount Payed:</strong></td>
                                                                 <td style="color: green"><strong>KES
                                                                         {{ $totalAmount }}</strong></td>
