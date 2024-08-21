@@ -204,6 +204,8 @@ Route::post('/pemu/mobile/create-product', [AppwriteController::class, 'createPr
 
 Route::get('/download-transactions-pdf/{farmerId}', [AppwriteController::class, 'downloadPDF'])->name('transactions.downloadPDF');
 
+Route::get('/download-payments-pdf/{farmerId}', [AppwriteController::class, 'downloadFarmerPayments'])->name('transactions.downloadPaymentsPDF');
+
 
 // Route::get('/pemu/batch-insert-products', [AppwriteController::class, 'batchInsertProducts']);
 

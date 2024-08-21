@@ -463,11 +463,17 @@
                                                     <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
                                                         <div class="card">
                                                             <div class="card-body">
-                                                                <h5 class="text-muted">Total Kgs Accepted</h5>
+                                                                <h5 class="text-muted">Total Sales</h5>
                                                                 <div class="metric-value d-inline-block">
-                                                                    <h1 class="mb-1 text-warning"
-                                                                        style="font-size: 1.5rem;">
-                                                                        {{ $totalKgsAmount }}</h1>
+                                                                    <h1 class="mb-1 text-success"
+                                                                        style=" font-size: 1.5rem;">
+                                                                        @php
+                                                                            $totalSales =
+                                                                                $totalPaymentsAmount +
+                                                                                $totalAmount_deducted;
+                                                                        @endphp
+                                                                        KES {{ round($totalSales, 0) }}
+                                                                    </h1>
                                                                 </div>
                                                             </div>
                                                             <div id="sparkline-revenue"></div>
@@ -478,7 +484,7 @@
                                                             <div class="card-body">
                                                                 <h5 class="text-muted">Total Deductions</h5>
                                                                 <div class="metric-value d-inline-block">
-                                                                    <h1 class="mb-1 text-success"
+                                                                    <h1 class="mb-1 text-warning"
                                                                         style="font-size: 1.5rem;">
                                                                         KES {{ round($totalAmount_deducted, 0) }}
                                                                     </h1>
@@ -490,7 +496,7 @@
                                                     <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
                                                         <div class="card">
                                                             <div class="card-body">
-                                                                <h5 class="text-muted">Amount Owed</h5>
+                                                                <h5 class="text-muted">Amount Owed to PEMU</h5>
                                                                 <div class="metric-value d-inline-block">
                                                                     @php
                                                                         $amountOwed =
@@ -556,15 +562,20 @@
                                                                     <td>{{ $pemupayment['deliveryDates'] }}</td>
                                                                     <td>{{ $pemupayment['acceptedKgs'] }}</td>
                                                                     <td>{{ $pemupayment['unitPrice'] }}</td>
-                                                                    <td style="color: green">KES {{ $totalValue }}
+                                                                    <td style="color: green">KES
+                                                                        {{ round($totalValue, 2) }}
                                                                     </td>
                                                                     <td style="color: green">KES
-                                                                        {{ $pemupayment['amount_deducted'] }}</td>
+                                                                        {{ round($pemupayment['amount_deducted'], 2) }}
+                                                                    </td>
                                                                     <td style="color: red">KES
-                                                                        {{ $pemupayment['debt_balance'] }}</td>
+                                                                        {{ round($pemupayment['debt_balance'], 2) }}
+                                                                    </td>
                                                                     <td style="color: green">KES
-                                                                        {{ $pemupayment['amount_payed'] }}</td>
-                                                                    <td style="color: orange">KES {{ $debtBalance }}
+                                                                        {{ round($pemupayment['amount_payed'], 2) }}
+                                                                    </td>
+                                                                    <td style="color: orange">KES
+                                                                        {{ round($debtBalance, 2) }}
                                                                     </td>
                                                                     @php
                                                                         $totalAmount += $pemupayment['amount_payed'];
@@ -591,9 +602,9 @@
 
 
                                         </div>
-                                        <a href="{{ route('transactions.downloadPDF', ['farmerId' => $farmer['$id']]) }}"
+                                        <a href="{{ route('transactions.downloadPaymentsPDF', ['farmerId' => $farmer['$id']]) }}"
                                             class="btn btn-success"
-                                            style="width: 20%; margin-left:5px; margin-bottom:5px">Download
+                                            style="width: 30%; margin-left:5px; margin-bottom:5px">Download
                                             Transactions PDF</a>
                                     @endif
 
