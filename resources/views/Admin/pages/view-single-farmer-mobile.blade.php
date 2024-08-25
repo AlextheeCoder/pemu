@@ -350,29 +350,37 @@
                                                             @php
                                                                 $totalAmount = 0;
                                                             @endphp
-                                                            @foreach ($allFarmerTransactions as $farmerTransaction)
+                                                            @unless ($allFarmerTransactions->isEmpty())
+                                                                @foreach ($allFarmerTransactions as $farmerTransaction)
+                                                                    <tr>
+                                                                        <td>{{ $loop->iteration }}</td>
+                                                                        <td>{{ \Carbon\Carbon::parse($farmerTransaction['$createdAt'])->format('d/m/Y') }}
+                                                                        </td>
+                                                                        <td>{{ $farmerTransaction['product_name'] }}</td>
+                                                                        <td>{{ $farmerTransaction['units'] }}</td>
+                                                                        <td>{{ $farmerTransaction['quantity'] }}</td>
+                                                                        <td>{{ $farmerTransaction['payment_method'] }}</td>
+                                                                        <td style="color: green">KES
+                                                                            {{ $farmerTransaction['amount'] }}</td>
+                                                                        @php
+                                                                            $totalAmount +=
+                                                                                $farmerTransaction['amount'];
+                                                                        @endphp
+                                                                    </tr>
+                                                                @endforeach
                                                                 <tr>
-                                                                    <td>{{ $loop->iteration }}</td>
-                                                                    <td>{{ \Carbon\Carbon::parse($farmerTransaction['$createdAt'])->format('d/m/Y') }}
-                                                                    <td>{{ $farmerTransaction['product_name'] }}</td>
-                                                                    <td>{{ $farmerTransaction['units'] }}</td>
-                                                                    <td>{{ $farmerTransaction['quantity'] }}</td>
-                                                                    <td>{{ $farmerTransaction['payment_method'] }}</td>
-                                                                    <td style="color: green">KES
-                                                                        {{ $farmerTransaction['amount'] }}</td>
-                                                                    @php
-                                                                        $totalAmount += $farmerTransaction['amount'];
-                                                                    @endphp
-                                                                    </td>
+                                                                    <td colspan="5" class="text-right"><strong>Total
+                                                                            Amount:</strong></td>
+                                                                    <td style="color: green"><strong>KES
+                                                                            {{ $totalAmount }}</strong></td>
+                                                                    <td></td>
                                                                 </tr>
-                                                            @endforeach
-                                                            <tr>
-                                                                <td colspan="5" class="text-right"><strong>Total
-                                                                        Amount:</strong></td>
-                                                                <td style="color: green"><strong>KES
-                                                                        {{ $totalAmount }}</strong></td>
-                                                                <td></td>
-                                                            </tr>
+                                                            @else
+                                                                <tr>
+                                                                    <td colspan="7" class="text-center">No transactions
+                                                                        found</td>
+                                                                </tr>
+                                                            @endunless
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -545,46 +553,60 @@
                                                                 $totalAmount = 0;
                                                                 $totalharvests = 0;
                                                             @endphp
-                                                            @foreach ($allFarmerPayments as &$pemupayment)
+                                                            @unless (count($allFarmerPayments) == 0)
+                                                                @foreach ($allFarmerPayments as &$pemupayment)
+                                                                    <tr>
+                                                                        @php
+                                                                            $totalValue =
+                                                                                floatval(
+                                                                                    $pemupayment['amount_deducted'],
+                                                                                ) +
+                                                                                floatval($pemupayment['amount_payed']);
+                                                                            $debtBalance =
+                                                                                floatval($pemupayment['debt_balance']) -
+                                                                                floatval(
+                                                                                    $pemupayment['amount_deducted'],
+                                                                                );
+                                                                        @endphp
+                                                                        <td>{{ $loop->iteration }}</td>
+                                                                        <td>{{ \Carbon\Carbon::parse($pemupayment['$createdAt'])->format('d/m/Y') }}
+                                                                        </td>
+                                                                        <td>{{ $pemupayment['PaymentcropDetails'] }}</td>
+                                                                        <td>{{ $pemupayment['deliveryDates'] }}</td>
+                                                                        <td>{{ $pemupayment['acceptedKgs'] }}</td>
+                                                                        <td>{{ $pemupayment['unitPrice'] }}</td>
+                                                                        <td style="color: green">KES
+                                                                            {{ round($totalValue, 2) }}</td>
+                                                                        <td style="color: green">KES
+                                                                            {{ round($pemupayment['amount_deducted'], 2) }}
+                                                                        </td>
+                                                                        <td style="color: red">KES
+                                                                            {{ round($pemupayment['debt_balance'], 2) }}
+                                                                        </td>
+                                                                        <td style="color: green">KES
+                                                                            {{ round($pemupayment['amount_payed'], 2) }}
+                                                                        </td>
+                                                                        <td style="color: orange">KES
+                                                                            {{ round($debtBalance, 2) }}</td>
+                                                                        @php
+                                                                            $totalAmount +=
+                                                                                $pemupayment['amount_payed'];
+                                                                            $totalharvests += count(
+                                                                                explode(
+                                                                                    ',',
+                                                                                    $pemupayment['HarvestIDs'],
+                                                                                ),
+                                                                            );
+                                                                        @endphp
+                                                                    </tr>
+                                                                @endforeach
+                                                            @else
                                                                 <tr>
-                                                                    @php
-                                                                        $totalValue =
-                                                                            floatval($pemupayment['amount_deducted']) +
-                                                                            floatval($pemupayment['amount_payed']);
-                                                                        $debtBalance =
-                                                                            floatval($pemupayment['debt_balance']) -
-                                                                            floatval($pemupayment['amount_deducted']);
-                                                                    @endphp
-                                                                    <td>{{ $loop->iteration }}</td>
-                                                                    <td>{{ \Carbon\Carbon::parse($pemupayment['$createdAt'])->format('d/m/Y') }}
-                                                                    </td>
-                                                                    <td>{{ $pemupayment['PaymentcropDetails'] }}</td>
-                                                                    <td>{{ $pemupayment['deliveryDates'] }}</td>
-                                                                    <td>{{ $pemupayment['acceptedKgs'] }}</td>
-                                                                    <td>{{ $pemupayment['unitPrice'] }}</td>
-                                                                    <td style="color: green">KES
-                                                                        {{ round($totalValue, 2) }}
-                                                                    </td>
-                                                                    <td style="color: green">KES
-                                                                        {{ round($pemupayment['amount_deducted'], 2) }}
-                                                                    </td>
-                                                                    <td style="color: red">KES
-                                                                        {{ round($pemupayment['debt_balance'], 2) }}
-                                                                    </td>
-                                                                    <td style="color: green">KES
-                                                                        {{ round($pemupayment['amount_payed'], 2) }}
-                                                                    </td>
-                                                                    <td style="color: orange">KES
-                                                                        {{ round($debtBalance, 2) }}
-                                                                    </td>
-                                                                    @php
-                                                                        $totalAmount += $pemupayment['amount_payed'];
-                                                                        $totalharvests += count(
-                                                                            explode(',', $pemupayment['HarvestIDs']),
-                                                                        );
-                                                                    @endphp
+                                                                    <td colspan="11" class="text-center">No transactions
+                                                                        found</td>
                                                                 </tr>
-                                                            @endforeach
+                                                            @endunless
+
                                                             <tr>
 
                                                                 <td colspan="9" class="text-right"><strong>Total
@@ -605,7 +627,7 @@
                                         <a href="{{ route('transactions.downloadPaymentsPDF', ['farmerId' => $farmer['$id']]) }}"
                                             class="btn btn-success"
                                             style="width: 30%; margin-left:5px; margin-bottom:5px">Download
-                                            Transactions PDF</a>
+                                            Payments PDF</a>
                                     @endif
 
                                 </div>

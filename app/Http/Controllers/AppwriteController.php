@@ -174,6 +174,8 @@ public function getAllFarmers(Request $request)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
 public function getFarmerDetails($id)
 {
     try {
@@ -200,9 +202,6 @@ public function getFarmerDetails($id)
         if ($crop = request('transactionCrop')) {
             $filters[] = Query::equal('CropID', [$crop]);
         }
-        
-
-      
 
         do {
             $farmerTransactionsResponse = $this->database->listDocuments(
@@ -261,6 +260,9 @@ public function getFarmerDetails($id)
         // Calculate total transactions count
         $totalTransactionsCount = count($allFarmerTransactions);
 
+        // Initialize cropDetailsPayments as an empty array
+        $cropDetailsPayments = [];
+
         // Fetch payments with pagination and filters
         $offset = 0;
         $allFarmerPayments = [];
@@ -276,7 +278,6 @@ public function getFarmerDetails($id)
         if ($cropPayment = request('paymentCrop')) {
             $paymentFilters[] = Query::equal('CropID', [$cropPayment]);
         }
-        
 
         do {
             $farmerPaymentsResponse = $this->database->listDocuments(
@@ -292,18 +293,15 @@ public function getFarmerDetails($id)
             $allFarmerPayments = array_merge($allFarmerPayments, $farmerPayments);
             $offset += $limit;
 
-
-
             // Calculate total payments amount
-           
             foreach ($allFarmerPayments as &$payment) {
                 $totalPaymentsAmount += $payment['amount_payed'];
                 $totalAmount_deducted += $payment['amount_deducted'];
-            
+
                 // Extract harvest IDs from the payment
                 $harvestIDs = explode(',', $payment['HarvestIDs']);
                 $harvestIDs = array_map('trim', $harvestIDs);
-            
+
                 // Fetch harvest details using the harvest IDs
                 $harvestDetails = [];
                 $deliveryDates = [];
@@ -324,19 +322,19 @@ public function getFarmerDetails($id)
                         }
                     }
                 }
-            
+
                 $acceptedKgs = array_column($harvestDetails, 'accepted_kgs');
-            
+
                 // Convert the array to a comma-separated string
                 $acceptedKgsString = implode(', ', $acceptedKgs);
-            
+
                 // Assign the string to the payment array
                 $payment['acceptedKgs'] = $acceptedKgsString;
                 $totalAcceptedKgs = array_sum($acceptedKgs);
                 $payment['totalAcceptedKilos'] = $totalAcceptedKgs;
-            
+
                 $totalKgsAmount += $payment['totalAcceptedKilos'];
-            
+
                 // Crop Details for payments
                 $cropDetailsPayments = [];
                 foreach ($harvestDetails as $harvestDetail) {
@@ -344,7 +342,7 @@ public function getFarmerDetails($id)
                         $cropDetailsPayments[] = $harvestDetail['CropID'];
                     }
                 }
-            
+
                 $cropDetailsString = array_map(function($crop) {
                     // Ensure $crop is an array and has the expected keys
                     if (is_array($crop) && isset($crop['planting_date']) && isset($crop['crop_name'])) {
@@ -353,27 +351,22 @@ public function getFarmerDetails($id)
                     }
                     return 'Unknown Crop'; // Default case if data is not as expected
                 }, $cropDetailsPayments);
-            
+
                 $cropDetailsString = implode(', ', $cropDetailsString);
                 $payment['PaymentcropDetails'] = $cropDetailsString;
-            
+
                 // Add delivery dates to the payment array
                 $deliveryDatesString = implode(', ', $deliveryDates);
                 $unitpricesString = implode(', ', $unitprices);
                 $payment['unitPrice'] = $unitpricesString;
                 $payment['deliveryDates'] = $deliveryDatesString;
             }
-            
 
-
-
-            $totalpaymentsCount= count($allFarmerPayments);
-
+            $totalpaymentsCount = count($allFarmerPayments);
 
         } while (count($farmerPayments) === $limit);
 
-       
-
+        // Return the view with all the necessary data
         return view('Admin.pages.view-single-farmer-mobile', compact(
             'farmer', 
             'allFarmerTransactions', 
@@ -387,13 +380,12 @@ public function getFarmerDetails($id)
             'totalPaymentsAmount',
             'totalpaymentsCount',
             'totalKgsAmount',
-            'totalAmount_deducted',
+            'totalAmount_deducted'
         ));
     } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()], 500);
     }
 }
-
 
 
 
