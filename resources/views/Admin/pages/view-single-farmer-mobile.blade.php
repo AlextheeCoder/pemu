@@ -443,13 +443,12 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        {{-- <button type="submit" class="btn btn-success">Apply
+                                                        <button type="submit" class="btn btn-success">Apply
                                                             Filters</button>
                                                         <a href="{{ route('farmer.details', ['id' => $farmer['$id']]) }}"
-                                                            class="btn btn-warning">Reset Filters</a> --}}
+                                                            class="btn btn-warning">Reset Filters</a>
 
-                                                        <a href="#" class="btn btn-warning">Under
-                                                            Construction</a>
+
                                                     </form>
                                                 </div>
                                                 <div class="row" style="margin-left: 20px; margin-right: 10px">

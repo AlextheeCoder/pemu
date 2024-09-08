@@ -176,6 +176,7 @@ public function getAllFarmers(Request $request)
 
 
 
+
 public function getFarmerDetails($id)
 {
     try {
@@ -196,7 +197,7 @@ public function getFarmerDetails($id)
 
         $filters = [
             Query::equal('farmerID', [$id]),
-            Query::orderDesc('$createdAt')
+            Query::orderAsc('$createdAt')
         ];
 
         if ($crop = request('transactionCrop')) {
@@ -224,7 +225,9 @@ public function getFarmerDetails($id)
         } while (count($farmerTransactions) === $limit);
 
         // Fetch unit details
-        $unitIDs = array_column($allFarmerTransactions, 'unitID');
+
+
+        $unitIDs = array_column($allFarmerTransactions, 'CropID');
         $uniqueUnitIDs = array_unique($unitIDs);
         $totalUnits = count($uniqueUnitIDs);
 
@@ -569,8 +572,8 @@ public function downloadFarmerPayments ($farmerId){
         $cropDetailsString = array_map(function($crop) {
             // Ensure $crop is an array and has the expected keys
             if (is_array($crop) && isset($crop['planting_date']) && isset($crop['crop_name'])) {
-                $plantingDate = \Carbon\Carbon::parse($crop['planting_date'])->format('d/m/Y');
-                return "{$crop['crop_name']} (Planted on: {$plantingDate})";
+                $plantingDate = \Carbon\Carbon::parse($crop['planting_date'])->format('m/Y'); // e.g., 09/2024
+                return "{$crop['crop_name']} ({$plantingDate})";
             }
             return 'Unknown Crop'; // Default case if data is not as expected
         }, $cropDetailsPayments);
@@ -596,7 +599,7 @@ public function downloadFarmerPayments ($farmerId){
         //$totalAmount = array_sum(array_column($farmerTransactions, 'amount'));
 
         // Load the view for the PDF
-        $pdf = PDF::loadView('Admin.templates.payments', compact('allFarmerPayments','totalAmount_deducted','totalAmountTransacted', 'totalPaymentsAmount', 'farmer'));
+        $pdf = PDF::loadView('Admin.templates.payments', compact('allFarmerPayments','totalAmount_deducted','totalAmountTransacted', 'totalPaymentsAmount', 'farmer'))->setPaper('a4', 'landscape');
 
         // Create the filename
         $date = Carbon::now()->format('d-m-Y');

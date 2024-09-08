@@ -57,23 +57,19 @@
             font-weight: bold;
             color: #333;
             position: relative;
-            height: 120px;
+            height: 30px;
             padding: 0;
-
-        }
-
-        .main-table th.rotate div {
-            transform: rotate(-90deg);
-            /* Rotate the text */
-            transform-origin: left bottom;
-            /* Adjust the origin for better alignment */
-            position: absolute;
-            /* Positioning the rotated text correctly */
-            bottom: 0;
-            left: 50%;
-            width: max-content;
+            text-align: center;
+            vertical-align: middle;
             white-space: nowrap;
+            /* Ensures text is not wrapped */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            /* Adds ellipsis if text overflows */
+
         }
+
+
 
         .main-table tr:nth-child(even) {
             background-color: #f9f9f9;
@@ -151,7 +147,7 @@
                         <div>Accepted Kgs</div>
                     </th>
                     <th class="rotate">
-                        <div>Unit Price (KES)</div>
+                        <div>Unit Price</div>
                     </th>
                     <th class="rotate">
                         <div>Total Value</div>
@@ -185,11 +181,11 @@
                         <td>{{ $pemupayment['deliveryDates'] }}</td>
                         <td>{{ $pemupayment['acceptedKgs'] }}</td>
                         <td>{{ $pemupayment['unitPrice'] }}</td>
-                        <td style="color: green">KES {{ round($totalValue, 2) }}</td>
-                        <td style="color: green">KES {{ round($pemupayment['amount_deducted'], 2) }}</td>
-                        <td style="color: red">KES {{ round($pemupayment['debt_balance'], 2) }}</td>
-                        <td style="color: green">KES {{ round($pemupayment['amount_payed'], 2) }}</td>
-                        <td style="color: orange">KES {{ round($debtBalance, 2) }}</td>
+                        <td style="color: green"> {{ round($totalValue, 2) }}</td>
+                        <td style="color: green">{{ round($pemupayment['amount_deducted'], 2) }}</td>
+                        <td style="color: red">{{ round($pemupayment['debt_balance'], 2) }}</td>
+                        <td style="color: green">{{ round($pemupayment['amount_payed'], 2) }}</td>
+                        <td style="color: orange">{{ round($debtBalance, 2) }}</td>
                     </tr>
                 @endforeach
                 <tr class="total-row">

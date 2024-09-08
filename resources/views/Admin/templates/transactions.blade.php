@@ -85,9 +85,7 @@
                     <th>#</th>
                     <th>Transaction Date</th>
                     <th>Product</th>
-                    <th>Units</th>
                     <th>Quantity</th>
-                    <th>Payment Method</th>
                     <th>Amount</th>
                 </tr>
             </thead>
@@ -97,10 +95,8 @@
                         <td>{{ $index + 1 }}</td>
                         <td>{{ \Carbon\Carbon::parse($farmerTransaction['$createdAt'])->format('d/m/Y') }}</td>
                         <td>{{ $farmerTransaction['product_name'] }}</td>
-                        <td>{{ $farmerTransaction['units'] }}</td>
                         <td>{{ $farmerTransaction['quantity'] }}</td>
-                        <td>{{ $farmerTransaction['payment_method'] }}</td>
-                        <td>KES {{ $farmerTransaction['amount'] }}</td>
+                        <td>{{ $farmerTransaction['amount'] }}</td>
                     </tr>
                 @endforeach
                 <tr class="total-row">
