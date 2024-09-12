@@ -177,6 +177,8 @@
                                 aria-labelledby="pills-review-tab">
                                 <div class="card">
                                     <h5 class="card-header">Transactions</h5>
+                                    <button class="btn btn-success">Record a transaction</button>
+
                                     @if (!$allFarmerTransactions)
                                         <div class="card-body">
                                             <div class="review-block">
