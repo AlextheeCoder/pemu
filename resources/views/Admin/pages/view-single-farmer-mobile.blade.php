@@ -1,4 +1,46 @@
 <x-adminlayout>
+    <style>
+        /* Basic styles for the modal */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Black with opacity */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #ec0000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+
     <div class="influence-profile">
         <div class="container-fluid dashboard-content ">
             <!-- ============================================================== -->
@@ -69,6 +111,10 @@
                             <h3 class="font-16">Crops Grown</h3>
                             <div>
                                 <p>Farmer Details haven't been captured Yet</p>
+                            </div>
+
+                            <div>
+                                <button class="btn btn-success">Add Crop</button>
                             </div>
                         </div>
 
@@ -177,7 +223,89 @@
                                 aria-labelledby="pills-review-tab">
                                 <div class="card">
                                     <h5 class="card-header">Transactions</h5>
-                                    <button class="btn btn-success">Record a transaction</button>
+
+                                    <button class="btn btn-success" style="width: 20%; margin-left:5px;margin-top:5px"
+                                        id="openModalBtn">Record a
+                                        transaction</button>
+                                    <!-- The Modal -->
+                                    <div id="myModal" class="modal">
+
+
+                                        <div class="modal-content" style="display: hidden;">
+                                            <span id="close" class="close">&times;</span>
+                                            <h2 style="text-align: center;">Transaction Form</h2>
+                                            <form method="POST" action="{{ route('createTransaction') }}">
+                                                @csrf
+                                                <div class="form-group">
+                                                    <label for="CropID">Crop:</label>
+                                                    <select class="form-control" id="CropID" name="CropID">
+
+                                                        @unless (empty($farmerCrops))
+                                                            @foreach ($farmerCrops as $crop)
+                                                                <option value="{{ $crop['id'] }}">{{ $crop['label'] }}
+                                                                </option>
+                                                            @endforeach
+                                                        @else
+                                                            <option value="">Farmer has no crops</option>
+                                                        @endunless
+
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="product_id">Product: </label>
+                                                    <select class="form-control" id="product_id" name="product_id">
+                                                        <option value="">Select a product</option>
+                                                        @if (!empty($allProducts))
+                                                            @foreach ($allProducts as $product)
+                                                                <option value="{{ $product['$id'] }}">
+                                                                    {{ $product['product_name'] }}</option>
+                                                            @endforeach
+                                                        @else
+                                                            <option value="">No products available</option>
+                                                        @endif
+                                                    </select>
+                                                </div>
+
+
+
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlSelect1">Units: </label>
+                                                    <select class="form-control" id="units" name="units">
+                                                        <option value="liters">Liters</option>
+                                                        <option value="kgs">Kilograms</option>
+                                                        <option value="bkt">Bucket</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="quantity">Quantity</label>
+                                                    <input type="text" class="form-control" id="quantity"
+                                                        placeholder="Enter Quantity" inputmode="numeric"
+                                                        name="quantity">
+
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlSelect1">Method of Payment: </label>
+                                                    <select class="form-control" id="payment_method"
+                                                        name="payment_method">
+                                                        <option value="Cash">Cash</option>
+                                                        <option value="Mpesa">Mpesa</option>
+                                                        <option value="Loan Scheme">Loan Scheme</option>
+                                                    </select>
+                                                </div>
+
+
+                                                <input type="hidden" value="{{ $farmer['$id'] }}"
+                                                    name="farmerID" />
+                                                <button type="submit" class="btn btn-success">Record
+                                                    Transaction</button>
+
+
+
+                                            </form>
+                                        </div>
+                                    </div>
 
                                     @if (!$allFarmerTransactions)
                                         <div class="card-body">
@@ -280,6 +408,7 @@
                                                                 <th class="border-0">Quantity</th>
                                                                 <th class="border-0">Amount</th>
                                                                 <th></th>
+                                                                <th></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -297,6 +426,8 @@
                                                                     <td style="color: green">KES
                                                                         {{ floatval($farmerTransaction['amount']) }}
                                                                     </td>
+                                                                    <td> <a href="#"
+                                                                            class="btn btn-warning">Edit</a></td>
                                                                     @php
                                                                         $totalAmount += $farmerTransaction['amount'];
                                                                         $CardtotalAmount = $totalAmount;
@@ -321,10 +452,52 @@
 
 
                                         </div>
-                                        <a href="{{ route('transactions.downloadPDF', ['farmerId' => $farmer['$id']]) }}"
+
+
+                                        <!-- The Modal for transactions download-->
+                                        <div id="myModal2" class="modal">
+
+
+                                            <div class="modal-content" style="display: hidden;">
+                                                <span id="close2" class="close">&times;</span>
+                                                <h2 style="text-align: center;">Select Transaction Download</h2>
+
+                                                <form method="POST"
+                                                    action="{{ route('transactions.downloadPDF', ['farmerId' => $farmer['$id']]) }}">
+                                                    @csrf
+                                                    <div class="form-group">
+                                                        <label for="CropID">Crop:</label>
+                                                        <select class="form-control" id="CropID" name="CropID">
+                                                            <option value="">All Transactions</option>
+                                                            @unless (empty($farmerCrops))
+                                                                @foreach ($farmerCrops as $selectcrop)
+                                                                    <option value="{{ $selectcrop['id'] }}">
+                                                                        {{ $selectcrop['label'] }}
+                                                                    </option>
+                                                                @endforeach
+                                                            @else
+                                                                <option value="">Farmer has no crops</option>
+                                                            @endunless
+                                                        </select>
+                                                    </div>
+                                                    <input type="hidden" value="{{ $farmer['$id'] }}"
+                                                        name="farmerID" />
+                                                    <button type="submit" class="btn btn-success">Download
+                                                        Transaction Report</button>
+                                                </form>
+                                            </div>
+
+                                        </div>
+
+                                        {{-- <a href="{{ route('transactions.downloadPDF', ['farmerId' => $farmer['$id']]) }}"
                                             class="btn btn-success"
                                             style="width: 20%; margin-left:5px; margin-bottom:5px">Download
-                                            Transactions PDF</a>
+                                            Transactions PDF</a> --}}
+
+                                        <button class="btn btn-success"
+                                            style="width: 20%; margin-left:5px; margin-bottom:5px"
+                                            id="openModalBtn2">Download
+                                            transactions</button>
 
                                         {{-- -------------------------------------------------------------------------------------------Walk In Farmers------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ --}}
                                     @else
@@ -402,6 +575,7 @@
 
                             </div>
 
+
                             {{-- ---------------------------------------------------------------------------------------Payments--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- --}}
 
                             <div class="tab-pane fade" id="pills-payments" role="tabpanel"
@@ -454,21 +628,7 @@
                                                     </form>
                                                 </div>
                                                 <div class="row" style="margin-left: 20px; margin-right: 10px">
-                                                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <h5 class="text-muted">Total Amount Payed</h5>
-                                                                <div class="metric-value d-inline-block">
-                                                                    <h1 class="mb-1"
-                                                                        style="color: green; font-size: 1.5rem;">
-                                                                        KES {{ round($totalPaymentsAmount, 0) }}
-                                                                    </h1>
-                                                                </div>
 
-                                                            </div>
-                                                            <div id="sparkline-revenue"></div>
-                                                        </div>
-                                                    </div>
                                                     <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
                                                         <div class="card">
                                                             <div class="card-body">
@@ -502,6 +662,22 @@
                                                             <div id="sparkline-revenue"></div>
                                                         </div>
                                                     </div>
+                                                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <h5 class="text-muted">Total Amount Payed</h5>
+                                                                <div class="metric-value d-inline-block">
+                                                                    <h1 class="mb-1"
+                                                                        style="color: green; font-size: 1.5rem;">
+                                                                        KES {{ round($totalPaymentsAmount, 0) }}
+                                                                    </h1>
+                                                                </div>
+
+                                                            </div>
+                                                            <div id="sparkline-revenue"></div>
+                                                        </div>
+                                                    </div>
+
                                                     <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
                                                         <div class="card">
                                                             <div class="card-body">
@@ -647,10 +823,79 @@
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.6/inputmask.min.js"></script>
+    <!-- Include Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- Include Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             Inputmask('9999 999999').mask(document.getElementById('phonenumber'));
             Inputmask('99999999').mask(document.getElementById('idnumber'));
         });
     </script>
+
+    <script>
+        // Get modal, button, and close elements
+        const modal = document.getElementById("myModal");
+        const modal2 = document.getElementById("myModal2");
+        const btn = document.getElementById("openModalBtn");
+        const btn2 = document.getElementById("openModalBtn2");
+        const closeBtn = document.getElementById("close");
+        const closeBtn2 = document.getElementById("close2");
+
+        // Open the modal when the button is clicked
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+        btn2.onclick = function() {
+            modal2.style.display = "block";
+        }
+
+        // Close the modal when the 'x' is clicked
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+        closeBtn2.onclick = function() {
+            modal2.style.display = "none";
+        }
+
+        // Close the modal when clicking outside of the modal content
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        // Close the modal when clicking outside of the modal content
+        window.onclick = function(event) {
+            if (event.target == modal2) {
+                modal2.style.display = "none";
+            }
+        }
+
+        // Form submission event
+        document.getElementById("modalForm").onsubmit = function(e) {
+            e.preventDefault(); // Prevent actual form submission for demo
+            alert("Form submitted!");
+            modal.style.display = "none"; // Close modal after form submission
+        }
+        // Form submission event
+        document.getElementById("modalForm2").onsubmit = function(e) {
+            e.preventDefault(); // Prevent actual form submission for demo
+            alert("Form submitted!");
+            modal2.style.display = "none"; // Close modal after form submission
+        }
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#product_id').select2({
+                placeholder: "Select a product",
+                allowClear: true
+            });
+        });
+    </script>
+
+
 </x-adminlayout>

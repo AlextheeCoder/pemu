@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\AppwriteController;
+use App\Http\Controllers\AppwriteTransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -200,9 +201,14 @@ Route::get('/pemu/create/moblie/products', function () {
     return view('Admin.pages.create-products');
 })->name('create-products')->middleware('checkRole:admin');
 
+Route::post('/pemu/mobile/create-transaction', [AppwriteTransactionController::class, 'createFarmerTransactions'])
+    ->name('createTransaction')
+    ->middleware('checkRole:admin');
+
+
 Route::post('/pemu/mobile/create-product', [AppwriteController::class, 'createProduct'])->middleware('checkRole:admin');
 
-Route::get('/download-transactions-pdf/{farmerId}', [AppwriteController::class, 'downloadPDF'])->name('transactions.downloadPDF');
+Route::post('/download-transactions-pdf/{farmerId}', [AppwriteController::class, 'downloadPDF'])->name('transactions.downloadPDF');
 
 Route::get('/download-payments-pdf/{farmerId}', [AppwriteController::class, 'downloadFarmerPayments'])->name('transactions.downloadPaymentsPDF');
 
