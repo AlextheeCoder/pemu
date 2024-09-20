@@ -212,6 +212,8 @@ Route::post('/download-transactions-pdf/{farmerId}', [AppwriteController::class,
 
 Route::get('/download-payments-pdf/{farmerId}', [AppwriteController::class, 'downloadFarmerPayments'])->name('transactions.downloadPaymentsPDF');
 
+Route::get('/download-statement-pdf/{farmerId}', [AppwriteController::class, 'downloadFarmerStatement'])->name('transactions.downloadStatementPDF');
+
 
 // Route::get('/pemu/batch-insert-products', [AppwriteController::class, 'batchInsertProducts']);
 

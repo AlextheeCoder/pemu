@@ -801,10 +801,19 @@
 
 
                                         </div>
-                                        <a href="{{ route('transactions.downloadPaymentsPDF', ['farmerId' => $farmer['$id']]) }}"
-                                            class="btn btn-success"
-                                            style="width: 30%; margin-left:5px; margin-bottom:5px">Download
-                                            Payments PDF</a>
+
+                                        <div class="butts">
+                                            <a href="{{ route('transactions.downloadPaymentsPDF', ['farmerId' => $farmer['$id']]) }}"
+                                                class="btn btn-success"
+                                                style="width: 30%; margin-left:5px; margin-bottom:5px">Download
+                                                Payments PDF</a>
+
+                                            <a href="{{ route('transactions.downloadStatementPDF', ['farmerId' => $farmer['$id']]) }}"
+                                                class="btn btn-success"
+                                                style="width: 30%; margin-left:5px; margin-bottom:5px">Download
+                                                Statement PDF</a>
+                                        </div>
+
                                     @endif
 
                                 </div>
