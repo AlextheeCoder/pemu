@@ -484,79 +484,150 @@ private function fetchAllProducts() {
 
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////Reports and statements///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  // Fetch farmer details
+  private function fetchFarmerReportDetails($farmerId)
+  {
+      try {
+          $farmerResponse = $this->database->getDocument(
+              env('APPWRITE_DATABASE_ID'),
+              env('APPWRITE_FARMERS_COLLECTION_ID'),
+              $farmerId
+          );
+          return $farmerResponse;
+      } catch (\Exception $e) {
+          Log::error("Error fetching farmer details: " . $e->getMessage());
+          throw new \Exception("Unable to retrieve farmer details.");
+      }
+  }
 
-public function downloadPDF(Request $request, $farmerId)
-{
-    try {
-        // Fetch main farmer details
-        $farmerResponse = $this->database->getDocument(
-            env('APPWRITE_DATABASE_ID'),
-            env('APPWRITE_FARMERS_COLLECTION_ID'),
-            $farmerId
-        );
-        $farmer = $farmerResponse;
-        $farmerName = $farmer['name'];
+  // Build query filters
+  private function buildQueryFilters($farmerId, $cropID = null)
+  {
+      $filters = [Query::equal('farmerID', [$farmerId]), Query::orderAsc('$createdAt')];
+      if ($cropID) {
+          $filters[] = Query::equal('CropID', [$cropID]);
+      }
+      return $filters;
+  }
 
-        // Fetch transactions based on selected crop or all crops
-        $cropID = $request->input('CropID'); // Fetch CropID from request
+  // Fetch all documents with pagination logic
+  private function fetchAllDocuments($collectionId, $filters, $limit = 25)
+  {
+      $offset = 0;
+      $allDocuments = [];
 
-        $limit = 25;
-        $offset = 0;
-        $allFarmerTransactions = [];
-        $totalAmount = 0;
+      do {
+          $response = $this->database->listDocuments(
+              env('APPWRITE_DATABASE_ID'),
+              $collectionId,
+              array_merge($filters, [Query::limit($limit), Query::offset($offset)])
+          );
+          $documents = $response['documents'] ?? [];
+          $allDocuments = array_merge($allDocuments, $documents);
+          $offset += $limit;
+      } while (count($documents) === $limit);
 
-        $filters = [
-            Query::equal('farmerID', [$farmerId]),
-            Query::orderAsc('$createdAt')
-        ];
+      return $allDocuments;
+  }
 
-        if ($cropID) {
-            $filters[] = Query::equal('CropID', [$cropID]); // Filter by specific CropID
-        }
+  // Process payments for better modularity
+  private function processPayments(&$payment, $harvestDetails)
+  {
+      $totalPaymentsAmount = 0;
+      $totalAmount_deducted = 0;
+      $totalKgsAmount = 0;
 
-        // Pagination to fetch all transactions
-        do {
-            $farmerTransactionsResponse = $this->database->listDocuments(
-                env('APPWRITE_DATABASE_ID'),
-                env('APPWRITE_FARMERTRANSACTION_COLLECTION_ID'),
-                array_merge($filters, [Query::limit($limit), Query::offset($offset)])
-            );
+      $totalPaymentsAmount += $payment['amount_payed'];
+      $totalAmount_deducted += $payment['amount_deducted'];
 
-            $farmerTransactions = isset($farmerTransactionsResponse['documents'])
-                ? $farmerTransactionsResponse['documents']
-                : [];
+      $acceptedKgs = array_column($harvestDetails, 'accepted_kgs');
+      $payment['acceptedKgs'] = implode(', ', $acceptedKgs);
+      $payment['totalAcceptedKilos'] = array_sum($acceptedKgs);
 
-            $allFarmerTransactions = array_merge($allFarmerTransactions, $farmerTransactions);
-            $offset += $limit;
+      $totalKgsAmount += $payment['totalAcceptedKilos'];
 
-            foreach ($farmerTransactions as $transaction) {
-                $totalAmount += $transaction['amount'];
-            }
-        } while (count($farmerTransactions) === $limit);
+      $cropDetailsString = array_map(function ($harvest) {
+          $plantingDate = isset($harvest['planting_date']) ? \Carbon\Carbon::parse($harvest['planting_date'])->format('m/Y') : 'Unknown';
+          return isset($harvest['crop_name']) ? "{$harvest['crop_name']} ({$plantingDate})" : 'Unknown Crop';
+      }, $harvestDetails);
 
-        // Load the view for the PDF
-        $pdf = PDF::loadView('Admin.templates.transactions', [
-            'farmerTransactions' => $allFarmerTransactions,
-            'totalAmount' => $totalAmount,
-            'farmer' => $farmer
-        ]);
+      $payment['PaymentcropDetails'] = implode(', ', $cropDetailsString);
+      $payment['deliveryDates'] = implode(', ', array_column($harvestDetails, '$createdAt'));
+      $payment['unitPrice'] = implode(', ', array_column($harvestDetails, 'value_per_kg'));
+  }
 
-        // Create the filename
-        $date = Carbon::now()->format('d-m-Y');
-        $filename = $cropID ? "{$farmerName}-{$date}-transactions-{$cropID}.pdf" : "{$farmerName}-{$date}-transactions.pdf";
+  // Download PDF for transactions
+  public function downloadPDF(Request $request, $farmerId)
+  {
+      try {
+          // Fetch main farmer details
+          $farmerResponse = $this->database->getDocument(
+              env('APPWRITE_DATABASE_ID'),
+              env('APPWRITE_FARMERS_COLLECTION_ID'),
+              $farmerId
+          );
+          $farmer = $farmerResponse;
+          $farmerName = $farmer['name'];
+  
+          // Fetch transactions based on selected crop or all crops
+          $cropID = $request->input('CropID'); // Fetch CropID from request
+  
+          $limit = 25;
+          $offset = 0;
+          $allFarmerTransactions = [];
+          $totalAmount = 0;
+  
+          $filters = [
+              Query::equal('farmerID', [$farmerId]),
+              Query::orderAsc('$createdAt')
+          ];
+  
+          if ($cropID) {
+              $filters[] = Query::equal('CropID', [$cropID]); // Filter by specific CropID
+          }
+  
+          // Pagination to fetch all transactions
+          do {
+              $farmerTransactionsResponse = $this->database->listDocuments(
+                  env('APPWRITE_DATABASE_ID'),
+                  env('APPWRITE_FARMERTRANSACTION_COLLECTION_ID'),
+                  array_merge($filters, [Query::limit($limit), Query::offset($offset)])
+              );
+  
+              $farmerTransactions = isset($farmerTransactionsResponse['documents'])
+                  ? $farmerTransactionsResponse['documents']
+                  : [];
+  
+              $allFarmerTransactions = array_merge($allFarmerTransactions, $farmerTransactions);
+              $offset += $limit;
+  
+              foreach ($farmerTransactions as $transaction) {
+                  $totalAmount += $transaction['amount'];
+              }
+          } while (count($farmerTransactions) === $limit);
+  
+          // Load the view for the PDF
+          $pdf = PDF::loadView('Admin.templates.transactions', [
+              'farmerTransactions' => $allFarmerTransactions,
+              'totalAmount' => $totalAmount,
+              'farmer' => $farmer
+          ]);
+  
+          // Create the filename
+          $date = Carbon::now()->format('d-m-Y');
+          $filename = $cropID ? "{$farmerName}-{$date}-transactions-{$cropID}.pdf" : "{$farmerName}-{$date}-transactions.pdf";
+  
+          // Download the PDF with the customized filename
+          return $pdf->download($filename);
+      } catch (\Exception $e) {
+          return response()->json(['error' => $e->getMessage()], 500);
+      }
+  }
 
-        // Download the PDF with the customized filename
-        return $pdf->download($filename);
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
-    }
-}
-
-
-
-public function downloadFarmerPayments ($farmerId){
+///Download Payments PDF
+  public function downloadFarmerPayments ($farmerId){
     try {
             // Fetch main farmer details
             $farmerResponse = $this->database->getDocument(
@@ -735,185 +806,162 @@ public function downloadFarmerPayments ($farmerId){
 }
 
 
+  public function downloadFarmerStatement($farmerId)
+  {
+      try {
+          // Fetch farmer details
+          $farmer = $this->fetchFarmerReportDetails($farmerId);
+          $farmerName = $farmer['name'];
+  
+          // Fetch all crops associated with the farmer
+          $farmerCrops = $this->fetchFarmerCrops($farmerId);
+  
+          // Create a map of crop IDs to crop names and planting dates
+          $cropMap = [];
+          foreach ($farmerCrops as $crop) {
+              $cropMap[$crop['id']] = $crop['label']; // "Crop Name (Planted on: Date)"
+          }
+  
+          // Fetch all transactions (all crops)
+          $transactionFilters = $this->buildQueryFilters($farmerId);
+          $allFarmerTransactions = $this->fetchAllDocuments(
+              env('APPWRITE_FARMERTRANSACTION_COLLECTION_ID'),
+              $transactionFilters
+          );
+  
+          // Fetch all payments
+          $paymentFilters = $this->buildQueryFilters($farmerId);
+          $allFarmerPayments = $this->fetchAllDocuments(
+              env('APPWRITE_PEMU_PAYMENTS_COLLECTION_ID'),
+              $paymentFilters
+          );
+  
+          // Fetch all harvest details (to calculate value from produce sold)
+          $allHarvestIDs = array_merge(...array_map(function ($payment) {
+              return array_map('trim', explode(',', $payment['HarvestIDs']));
+          }, $allFarmerPayments));
+          $harvestDetails = $this->fetchAllDocuments(
+              env('APPWRITE_HARVESTS_COLLECTION_ID'),
+              [Query::equal('$id', $allHarvestIDs)]
+          );
+  
+          // Create a map of harvest IDs to crops (via the CropID relationship in the harvest)
+          $harvestCropMap = [];
+          foreach ($harvestDetails as $harvest) {
+              // Extract CropID and planting date from the nested structure
+              $cropIDObject = $harvest['CropID'] ?? null;
+              if ($cropIDObject && isset($cropIDObject['$id'])) {
+                  $plantingDate = isset($cropIDObject['planting_date']) 
+                      ? Carbon::parse($cropIDObject['planting_date'])->format('d/m/Y') 
+                      : 'Unknown Date';
+                  $cropLabel = isset($cropIDObject['crop_name']) 
+                      ? "{$cropIDObject['crop_name']} (Planted on: $plantingDate)" 
+                      : 'Unknown Crop';
+                  $harvestCropMap[$harvest['$id']] = $cropLabel;
+              } else {
+                  $harvestCropMap[$harvest['$id']] = 'Unknown Crop';
+              }
+          }
+  
+          $statement = [];
+          $cumulativeBalance = 0;
+  
+          // Combine transactions and payments into a single array
+          $combinedRecords = [];
+  
+          // Process transactions first (purchases)
+          foreach ($allFarmerTransactions as $transaction) {
+              $cropID = $transaction['CropID'] ?? null;
+              // Find the crop name with planting date for the transaction
+              $crop = $cropID && isset($cropMap[$cropID]) ? $cropMap[$cropID] : 'Unknown Crop';
+              $product = $transaction['product_name'] ?? 'Unknown Product';
+              $amountSpent = $transaction['amount'];
+              $transactionDate = Carbon::parse($transaction['$createdAt']); // Assuming 'created_at' holds the transaction date
+  
+              $combinedRecords[] = [
+                  'type' => 'transaction',
+                  'date' => $transactionDate,
+                  'crop' => $crop,
+                  'product' => $product,
+                  'amount_spent' => $amountSpent,
+                  'kg_sold' => null,
+                  'value_sold' => null
+              ];
+          }
+  
+          // Process payments (produce sold and value earned)
+          foreach ($allFarmerPayments as $payment) {
+              $harvestIDs = array_map('trim', explode(',', $payment['HarvestIDs']));
+              $currentHarvestDetails = array_filter($harvestDetails, function ($harvest) use ($harvestIDs) {
+                  return in_array($harvest['$id'], $harvestIDs);
+              });
+  
+              // Find the crop name with planting date for the payment via the associated harvests
+              $crop = isset($harvestCropMap[$harvestIDs[0]]) ? $harvestCropMap[$harvestIDs[0]] : 'Unknown Crop';
+              $acceptedKgs = array_sum(array_column($currentHarvestDetails, 'accepted_kgs'));
+              $kgsvalueamount = array_sum(array_column($currentHarvestDetails, 'total_value'));
+              $amountEarned = $payment['amount_payed'];
+              $paymentDate = Carbon::parse($payment['$createdAt']); // Assuming 'created_at' holds the payment date
+  
+              $combinedRecords[] = [
+                  'type' => 'payment',
+                  'date' => $paymentDate,
+                  'crop' => $crop,
+                  'product' => null,
+                  'amount_spent' => null,
+                  'kg_sold' => $acceptedKgs,
+                  'value_sold' => $kgsvalueamount
+              ];
+          }
+  
+          // Sort the combined records by date
+          usort($combinedRecords, function ($a, $b) {
+              return $a['date']->timestamp - $b['date']->timestamp;
+          });
+  
+          // Generate the statement
+          foreach ($combinedRecords as $record) {
+              if ($record['type'] === 'transaction') {
+                  $cumulativeBalance += $record['amount_spent']; // Increase balance by amount spent
+              } elseif ($record['type'] === 'payment') {
+                  $cumulativeBalance -= $record['value_sold']; // Decrease balance by amount earned
+              }
+  
+              $statement[] = [
+                  'crop' => $record['crop'],
+                  'transaction' => $record['product'],
+                  'amount_spent' => $record['amount_spent'],
+                  'kg_sold' => $record['kg_sold'],
+                  'value_sold' => $record['value_sold'],
+                  'balance' => $cumulativeBalance,
+              ];
+          }
+  
+          // Load the view for the PDF
+          $pdf = PDF::loadView('Admin.templates.farmer-statements', [
+              'statement' => $statement,
+              'farmer' => $farmer,
+          ])->setPaper('a4', 'landscape');
+  
+          // Create the filename
+          $date = Carbon::now()->format('d-m-Y');
+          $filename = "{$farmerName}-{$date}-statement.pdf";
+  
+          // Download the PDF with the customized filename
+          return $pdf->download($filename);
+  
+      } catch (\Exception $e) {
+          Log::error("Error generating statement: " . $e->getMessage());
+          return response()->json(['error' => 'There was an error generating the statement.'], 500);
+      }
+  }
+  
 
 
-public function downloadFarmerStatement(Request $request, $farmerId)
-{
-    try {
-        // Fetch main farmer details
-        $farmerResponse = $this->database->getDocument(
-            env('APPWRITE_DATABASE_ID'),
-            env('APPWRITE_FARMERS_COLLECTION_ID'),
-            $farmerId
-        );
-        $farmer = $farmerResponse;
-        $farmerName = $farmer['name'];
-
-        // Fetch farmer transactions with pagination and filters
-        $limit = 25;
-        $offset = 0;
-        $allFarmerTransactions = [];
-        $allFarmerPayments = [];
-        $statementEntries = [];
-        $balance = 0;
-
-        // Filters for transactions (no crop filter)
-        $filters = [
-            Query::equal('farmerID', [$farmerId]),
-            Query::orderAsc('$createdAt')
-        ];
-
-        // Fetching transactions
-        do {
-            $farmerTransactionsResponse = $this->database->listDocuments(
-                env('APPWRITE_DATABASE_ID'),
-                env('APPWRITE_FARMERTRANSACTION_COLLECTION_ID'),
-                array_merge($filters, [Query::limit($limit), Query::offset($offset)])
-            );
-
-            $farmerTransactions = isset($farmerTransactionsResponse['documents']) ? $farmerTransactionsResponse['documents'] : [];
-            $allFarmerTransactions = array_merge($allFarmerTransactions, $farmerTransactions);
-            $offset += $limit;
-
-        } while (count($farmerTransactions) === $limit);
-
-        // Reset offset for payments
-        $offset = 0;
-
-        // Fetching payments
-        do {
-            $farmerPaymentsResponse = $this->database->listDocuments(
-                env('APPWRITE_DATABASE_ID'),
-                env('APPWRITE_PEMU_PAYMENTS_COLLECTION_ID'),
-                array_merge($filters, [Query::limit($limit), Query::offset($offset)])
-            );
-
-            $farmerPayments = isset($farmerPaymentsResponse['documents']) ? $farmerPaymentsResponse['documents'] : [];
-            $allFarmerPayments = array_merge($allFarmerPayments, $farmerPayments);
-            $offset += $limit;
-
-        } while (count($farmerPayments) === $limit);
-
-        // Merging transactions and payments into one statement array
-        $allEntries = array_merge($allFarmerTransactions, $allFarmerPayments);
-
-        // Sort entries by date
-        usort($allEntries, function($a, $b) {
-            return strtotime($a['$createdAt']) - strtotime($b['$createdAt']);
-        });
-
-        // Process each entry to generate the statement rows
-        foreach ($allEntries as $entry) {
-            // Fetch crop details from the CropID
-            $crop = 'Unknown Crop';
-            if (isset($entry['CropID'])) {
-                // Fetch the crop details using the CropID
-                $cropResponse = $this->database->getDocument(
-                    env('APPWRITE_DATABASE_ID'),
-                    env('APPWRITE_CROPS_COLLECTION_ID'),  // Assuming there's a Crops collection
-                    $entry['CropID']
-                );
-
-                if ($cropResponse) {
-                    $crop = $cropResponse['name'] ?? 'Unknown Crop'; // Fetch the crop name
-                }
-            }
-
-            if (isset($entry['amount'])) { // It's a transaction
-                $product = is_array($entry['product_name']) ? implode(', ', $entry['product_name']) : $entry['product_name'];
-                $produceSold = '-'; // No produce sold for a simple transaction
-                $amount = $entry['amount'];
-                $balance += $amount;
-
-                // Add to statement
-                $statementEntries[] = [
-                    'date' => \Carbon\Carbon::parse($entry['$createdAt'])->format('d/m/Y'),
-                    'crop' => $crop,
-                    'product' => $product,
-                    'produce' => $produceSold,
-                    'balance' => $balance,
-                ];
-            }
-
-            if (isset($entry['amount_payed'])) { // It's a payment
-                $amount = $entry['amount_payed'];
-
-                // Initialize variables for produce
-                $produceSold = '-';
-
-                // Fetch the HarvestIDs and crop details from the harvest document
-                if (isset($entry['HarvestIDs'])) {
-                    $harvestIDs = explode(',', $entry['HarvestIDs']);
-                    $harvestDetails = [];
-
-                    foreach ($harvestIDs as $harvestID) {
-                        // Fetch harvest details
-                        $harvestResponse = $this->database->getDocument(
-                            env('APPWRITE_DATABASE_ID'),
-                            env('APPWRITE_HARVESTS_COLLECTION_ID'),
-                            trim($harvestID)
-                        );
-
-                        if ($harvestResponse) {
-                            // Fetch accepted kgs
-                            $harvestDetails[] = $harvestResponse['accepted_kgs'] ?? 0;
-                            // Get CropID from harvest for the payment
-                            if (isset($harvestResponse['CropID'])) {
-                                // Ensure CropID is a string before calling getDocument
-                                $cropID = is_array($harvestResponse['CropID']) ? $harvestResponse['CropID'][0] : $harvestResponse['CropID'];
-                            
-                                // Now pass the $cropID (string) to getDocument
-                                $cropResponse = $this->database->getDocument(
-                                    env('APPWRITE_DATABASE_ID'),
-                                    env('APPWRITE_CROPS_COLLECTION_ID'),
-                                    $cropID // This is now a string, not an array
-                                );
-                            
-                                if ($cropResponse) {
-                                    $crop = $cropResponse['name'] ?? 'Unknown Crop';
-                                }
-                            }
-                        }
-                      
-                        
-                    }
-
-                    // Calculate total accepted kgs for the payment
-                    $totalKgs = array_sum($harvestDetails);
-                    $produceSold = $totalKgs > 0 ? $totalKgs . ' kgs' : '-';
-                }
-
-                $balance -= $amount;
-
-                // Add to statement
-                $statementEntries[] = [
-                    'date' => \Carbon\Carbon::parse($entry['$createdAt'])->format('d/m/Y'),
-                    'crop' => $crop,
-                    'product' => 'Payment',
-                    'produce' => $produceSold,
-                    'balance' => $balance,
-                ];
-            }
-        }
-
-        // Load the view for the PDF
-        $pdf = PDF::loadView('Admin.templates.farmer-statements', [
-            'farmer' => $farmer,
-            'statementEntries' => $statementEntries,
-        ])->setPaper('a4', 'landscape');
-
-        // Create the filename
-        $date = Carbon::now()->format('d-m-Y');
-        $filename = "{$farmerName}-{$date}-statement.pdf";
-
-        // Download the PDF with the customized filename
-        return $pdf->download($filename);
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
-    }
-}
+  
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 // Admin.templates.farmer-statements
